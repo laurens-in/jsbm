@@ -1,5 +1,5 @@
 Tone.Transport.start(0);
-Tone.Transport.bpm.value = 50;
+Tone.Transport.bpm.value = 200;
 
 // Drumkit
 var Drumkit = new Tone.Sampler({
@@ -26,7 +26,7 @@ var Drumkit = new Tone.Sampler({
     56 : "Snare/Snare9.opus",
     57 : "Snare/Snare10.opus",
     58 : "Snare/Snare11.opus",
-    59 : "Snare/Snare12.opus",
+    59 : "Snare/Snare12.opus"
 }, function(){
     Drumkit.sync();
     Drumkit.toMaster();
