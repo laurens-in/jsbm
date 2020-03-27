@@ -47,7 +47,7 @@ var guitar5 = new Tone.Sampler({
 var seqGuitar = new Tone.Sequence(function(time, note){
     playGuitar(note, "4n", time, (Math.random() * 0.3) + 0.7);
 //subdivisions are given as subarrays
-}, ["C1", "C1", ["C1", "C1"], "C#1", "C#1", ["C#1", "E1"]]);
+}, ["C0", "C0", ["C0", "C0"], "C#0", "C#0", ["C#0", "E0"]]);
 
 seqGuitar.start(0);
 seqGuitar.loop = true;
