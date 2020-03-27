@@ -1,6 +1,6 @@
 // round-robin guitar sampler
 let guitarIndex = 0;
-var dist = new Tone.Distortion(0);
+var dist = new Tone.Distortion(2);
 var guitar = new Tone.Gain(1);
 
 guitar.chain(dist, Tone.Master);
@@ -47,7 +47,7 @@ var guitar5 = new Tone.Sampler({
 var seqGuitar = new Tone.Sequence(function(time, note){
     playGuitar(note, "4n", time, (Math.random() * 0.3) + 0.7);
 //subdivisions are given as subarrays
-}, ["C0", "C0", ["C0", "C0"], "C#0", "C#0", ["C#0", "E0"]]);
+}, ["C1", "D#1", ["F1", "F#1"], "C#1", "E1", ["F#1", "F1"]]);
 
 seqGuitar.start(0);
 seqGuitar.loop = true;
