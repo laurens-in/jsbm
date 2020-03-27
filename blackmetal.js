@@ -1,5 +1,5 @@
 Tone.Transport.start(0);
-Tone.Transport.bpm.value = 120;
+Tone.Transport.bpm.value = 100;
 var dist = new Tone.Distortion(0.1);
 
 var reverb = new Tone.Freeverb(0.5, 3000);
@@ -61,7 +61,7 @@ var Drumkit = new Tone.Sampler({
 var seqKick = new Tone.Sequence(function(time, note){
     Drumkit.triggerAttackRelease(getDrum(note), "1n", time, (Math.random() * 0.3) + 0.7);
 //subdivisions are given as subarrays
-}, [0, [0, 0], [1, 0], 0, [0, 1, 1], 0, [0, [0, 0], 0]]);
+}, [0, [0, 0], [1, 0], 0, [0, 1], 0, [0, 0, 0]]);
 
 var seqHat = new Tone.Sequence(function(time, note){
     Drumkit.triggerAttackRelease(getDrum(note), "1n", time + (Math.random() * 0.01), (Math.random() * 0.3) + 0.7);
