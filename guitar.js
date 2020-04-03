@@ -6,11 +6,6 @@ var guitar = new Tone.Gain(0.8);
 
 guitar.chain(dist, Tone.Master);
 
-var seqGuitar = new Tone.Sequence(function(time, note){
-    playGuitar(note, "4n", time, (Math.random() * 0.3) + 0.7);
-//subdivisions are given as subarrays
-}, ["C1", "D#1", ["F1", "F#1"], "C#1", "E1", ["F#1", "F1"]]);
-
 //seqGuitar.start(0);
 //seqGuitar.loop = true;
 
