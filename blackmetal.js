@@ -5,9 +5,6 @@ var today = new Date();
 var time = today.getHours() + ":" + today.getMinutes()
 console.log(time);
 
-
-
-
 var dist = new Tone.Distortion(0.1);
 
 var reverb = new Tone.Freeverb(0.5, 3000);

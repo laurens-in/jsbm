@@ -3,12 +3,23 @@
 <head>
 <title>Generative Black Metal</title>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/tone/13.8.25/Tone.js"></script>
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        // resume playback to enable Audio API in all browsers
+        document.querySelector('button').addEventListener('click', function() {
+            Tone.context.resume().then(() => {
+                console.log('Playback resumed successfully');
+            });
+        });
+    });
+</script>
 <script src="blackmetal.js"></script>
 <script src="guitar.js"></script>
 
 </head>
 
 <body>
+    <button class="button">play</button>
 </body>
 
 </html> 
