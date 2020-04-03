@@ -1,5 +1,13 @@
 Tone.Transport.start(0);
 Tone.Transport.bpm.value = 100;
+
+var today = new Date();
+var time = today.getHours() + ":" + today.getMinutes()
+console.log(time);
+
+
+
+
 var dist = new Tone.Distortion(0.1);
 
 var reverb = new Tone.Freeverb(0.5, 3000);
@@ -45,28 +53,49 @@ var Drumkit = new Tone.Sampler({
     'B3' : "Hat/openhat12.opus",
    
 }, function(){
-    Drumkit.chain(Tone.Master);
-    seqKick.start(0);
-    seqKick.loop = true;
-    seqHat.start(0);
-    seqHat.loop = true;
-    
-    //seqSnare.start(0);
+
+    Drumkit.chain(Tone.Master);  
+
 }, "./assets/samples/");
 
 
+let beat = [];
+
+
+// var seqKick = new Tone.Sequence(function(time, note){
+//     Drumkit.triggerAttackRelease(getDrum(note), "1n", time, (Math.random() * 0.3) + 0.7);
+// }, beat);
+// seqKick.loop = true;
+
+generateBeat(16);
+
+
+Tone.Transport.schedule(function(time){
+	generateBeat(4);
+}, 10);
 
 
 
-var seqKick = new Tone.Sequence(function(time, note){
-    Drumkit.triggerAttackRelease(getDrum(note), "1n", time, (Math.random() * 0.3) + 0.7);
-//subdivisions are given as subarrays
-}, [0, [0, 0], [1, 0], 0, [0, 1], 0, [0, 0, 0]]);
 
-var seqHat = new Tone.Sequence(function(time, note){
-    Drumkit.triggerAttackRelease(getDrum(note), "1n", time + (Math.random() * 0.01), (Math.random() * 0.3) + 0.7);
-//subdivisions are given as subarrays
-}, [2, 2]);
+
+function generateBeat(length){
+    for (let step = 0; step < length; step++) {
+        beat[step] = gRInt(3)
+
+      }
+    console.log(beat);
+    var seqKick = new Tone.Sequence(function(time, note){
+        Drumkit.triggerAttackRelease(getDrum(note), "1n", time, (Math.random() * 0.3) + 0.7);
+    }, beat);
+    seqKick.loop = true;
+    seqKick.start(0);
+}
+
+
+let seqIndex = 0
+function newSequence(){
+    let 
+}
 
 
 

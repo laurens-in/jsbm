@@ -1,13 +1,10 @@
 // round-robin guitar sampler
+let guitarLoaded = 0;
 let guitarIndex = 0;
 var dist = new Tone.Distortion(2);
 var guitar = new Tone.Gain(0.8);
 
 guitar.chain(dist, Tone.Master);
-
-Tone.Transport.start(0);
-Tone.Transport.bpm.value = 100;
-
 
 var seqGuitar = new Tone.Sequence(function(time, note){
     playGuitar(note, "4n", time, (Math.random() * 0.3) + 0.7);
@@ -20,53 +17,46 @@ var seqGuitar = new Tone.Sequence(function(time, note){
 var part = new Tone.Pattern(function(time, note){
 	//the notes given as the second element in the array
 	//will be passed in as the second argument
-	playGuitar(note, "2n", time);
+    playGuitar(note, "2n", time);
+    console.log(time);
 }, ["C1", "D#1", "E1", "F1", "F#1", "G1", "C2", "C#2"], "randomOnce");
 
 part.start(0);
 part.loop = true;
- 
-
-
-
-
-
-
-
-
 
 var guitar1 = new Tone.Sampler({
     'C1' : "Guitar/guitar10.opus",  
-
 }, function(){
     guitar1.connect(guitar);
+    guitarLoaded += 1;
 }, "./assets/samples/");
 
 var guitar2 = new Tone.Sampler({
     'C1' : "Guitar/guitar11.opus",  
 }, function(){
     guitar2.connect(guitar);
+    guitarLoaded += 1;
 }, "./assets/samples/");
 
 var guitar3 = new Tone.Sampler({
     'C1' : "Guitar/guitar12.opus",  
-
 }, function(){
     guitar3.connect(guitar);
+    guitarLoaded += 1;
 }, "./assets/samples/");
 
 var guitar4 = new Tone.Sampler({
     'C1' : "Guitar/guitar13.opus",  
-
 }, function(){
     guitar4.connect(guitar);
+    guitarLoaded += 1;
 }, "./assets/samples/");
 
 var guitar5 = new Tone.Sampler({
     'C1' : "Guitar/guitar14.opus",  
-
 }, function(){
     guitar5.connect(guitar);
+    guitarLoaded += 1;
 }, "./assets/samples/");
 
 
