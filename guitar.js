@@ -11,9 +11,9 @@ class GuitarSampler {
     guitar5;
 
     constructor() {
-        this.dist = new Tone.Distortion(2);
+        this.dist = new Tone.Distortion(0.3);
         this.guitarOut = new Tone.Gain(0.8);
-        this.guitarOut.chain(dist, Tone.Master);
+        this.guitarOut.chain(this.dist, Tone.Master);
 
         this.guitar1 = new Tone.Sampler({
             'C1' : "Guitar/guitar10.opus",  
@@ -61,7 +61,7 @@ class GuitarPlayer {
 
     constructor(patternGenerator) {
         this.patternGenerator = patternGenerator;
-        this.sequencer = new Tone.Loop(this.sequencePlayer, '8n');
+        this.sequencer = new Tone.Loop(this.sequencePlayer, '4n');
         this.sequencer.loop = true;
     }
 
