@@ -118,7 +118,7 @@ class GuitarSampler {
     guitar4;
     guitar5;
 
-    constructor() {
+    constructor(baseurl = "./assets/samples/") {
         this.dist = new Tone.Distortion(0.);
         this.guitarOut = new Tone.Gain(0.8);
         this.guitarOut.chain(this.dist, Tone.Master);
@@ -127,31 +127,31 @@ class GuitarSampler {
             'C1' : "Guitar/guitar10.opus",  
         }, () => {
             this.guitar1.connect(this.guitarOut);
-        }, "./assets/samples/");
+        }, baseurl);
         
         this.guitar2 = new Tone.Sampler({
             'C1' : "Guitar/guitar11.opus",  
         }, () => {
             this.guitar2.connect(this.guitarOut);
-        }, "./assets/samples/");
+        }, baseurl);
         
         this.guitar3 = new Tone.Sampler({
             'C1' : "Guitar/guitar12.opus",  
         }, () => {
             this.guitar3.connect(this.guitarOut);
-        }, "./assets/samples/");
+        }, baseurl);
         
         this.guitar4 = new Tone.Sampler({
             'C1' : "Guitar/guitar13.opus",  
         }, () => {
             this.guitar4.connect(this.guitarOut);
-        }, "./assets/samples/");
+        }, baseurl);
         
         this.guitar5 = new Tone.Sampler({
             'C1' : "Guitar/guitar14.opus",  
         }, () => {
             this.guitar5.connect(this.guitarOut);
-        }, "./assets/samples/");
+        }, baseurl);
     }
 }
 class GuitarPlayer {
@@ -162,8 +162,9 @@ class GuitarPlayer {
 
     sequencer;
 
-    constructor(patternGenerator) {
+    constructor(patternGenerator, sampler) {
         this.patternGenerator = patternGenerator;
+        this.sampler = sampler;
         this.sequencer = new Tone.Loop(this.sequencePlayer, '8n');
         this.sequencer.loop = true;
     }
@@ -180,27 +181,27 @@ class GuitarPlayer {
 
         switch (currentCount) {
             case 0:
-                guitarSampler.guitar1.triggerAttackRelease(note, length, time, velocity);
+                this.sampler.guitar1.triggerAttackRelease(note, length, time, velocity);
                 console.log("git1 playing");
                 break;
             
             case 1:
-                guitarSampler.guitar2.triggerAttackRelease(note, length, time, velocity);
+                this.sampler.guitar2.triggerAttackRelease(note, length, time, velocity);
                 console.log("git2 playing");
                 break;
             
             case 2:
-                guitarSampler.guitar3.triggerAttackRelease(note, length, time, velocity);
+                this.sampler.guitar3.triggerAttackRelease(note, length, time, velocity);
                 console.log("git3 playing");
                 break;
             
             case 3:
-                guitarSampler.guitar4.triggerAttackRelease(note, length, time, velocity);
+                this.sampler.guitar4.triggerAttackRelease(note, length, time, velocity);
                 console.log("git4 playing");
                 break;
     
             case 4:
-                guitarSampler.guitar5.triggerAttackRelease(note, length, time, velocity);
+                this.sampler.guitar5.triggerAttackRelease(note, length, time, velocity);
                 console.log("git5 playing");
                 break;
         }
@@ -227,7 +228,8 @@ let patternGenerator = new PatternGenerator();
 
 let drum = new Drum();
 let guitarSampler = new GuitarSampler();
-let guitarPlayer = new GuitarPlayer(patternGenerator);
+let acousticSampler = new GuitarSampler("./assets/guitar/acoustic");
+let guitarPlayer = new GuitarPlayer(patternGenerator, guitarSampler);
 guitarPlayer.sequencer.start(0);
 
 async function samplesLoaded() {
