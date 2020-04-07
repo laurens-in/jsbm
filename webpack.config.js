@@ -5,7 +5,7 @@ module.exports = {
   mode: "development",
   entry: "./src/index.ts",
   output: {
-    path: path.resolve(__dirname, './'),
+    path: path.resolve(__dirname, './dist'),
     filename: "bundle.js"
   },
   resolve: {
@@ -19,9 +19,13 @@ module.exports = {
   },
   plugins: [
 		new HtmlWebpackPlugin({
+      path: path.resolve(__dirname, './dist'),
 			filename: "index.html",
 			template: "./src/index.html",
 		})
 	],
-  devtool: 'inline-source-map'
+  devtool: 'inline-source-map',
+  devServer: {
+    contentBase: './dist',
+  },
 };
