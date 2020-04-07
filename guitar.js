@@ -1,4 +1,112 @@
-// round-robin guitar sampler
+//-------------- General Functions -----------------//
+
+// get random integer function
+function getRandomInt(max) {
+    return Math.floor(Math.random() * Math.floor(max));
+  }
+
+
+function getNote(min, max) {
+    return noteMap.get((Math.floor(Math.random() * Math.floor(max)) + min));
+}
+
+let noteArray = [
+    [24, "C1"], 
+    [25, "C#1"], 
+    [26, "D1"], 
+    [27, "D#1"], 
+    [28, "E1"], 
+    [29, "F1"], 
+    [30, "F#1"], 
+    [31, "G1"], 
+    [32, "G#1"], 
+    [33, "A1" ], 
+    [34, "A#1"], 
+    [35, "B1"], 
+    [36, "C2"], 
+    [37, "C#2"], 
+    [38, "D2"], 
+    [39, "D#2"], 
+    [40, "E2"], 
+    [41, "F2"], 
+    [42, "F#2"], 
+    [43, "G2"], 
+    [44, "G#2"], 
+    [45, "A2"], 
+    [46, "A#2"], 
+    [47, "B2"],
+    [48, "C3"],
+    [49, "C#3"],
+    [50, "D3"],
+    [51, "D#3"],
+    [52, "E3"],
+    [53, "F3"],
+    [54, "F#3"],
+    [55, "G3"],
+    [56, "G#3"],
+    [57, "A3"],
+    [58, "A#3"],
+    [59, "B3"],
+
+];
+let noteMap = new Map(noteArray);
+
+//-------------------Transport----------------------//
+// Tone.Transport.start(0);
+// Tone.Transport.bpm.value = 100;
+
+//------------------- drumkit ----------------------//
+class Drum {
+    constructor() {
+        this.kit = new Tone.Sampler({
+            'C1' : "Kick/Kick1.opus",
+            'C#1' : "Kick/Kick2.opus",
+            'D1' : "Kick/Kick3.opus",
+            'D#1' : "Kick/Kick4.opus",
+            'E1' : "Kick/Kick5.opus",
+            'F1' : "Kick/Kick6.opus",
+            'F#1' : "Kick/Kick7.opus",
+            'G1' : "Kick/Kick8.opus",
+            'G#1' : "Kick/Kick9.opus",
+            'A1' : "Kick/Kick10.opus",
+            'A#1' : "Kick/Kick11.opus",
+            'B1' : "Kick/Kick12.opus",
+            'C2' : "Snare/Snare1.opus",
+            'C#2' : "Snare/Snare2.opus",
+            'D2' : "Snare/Snare3.opus",
+            'D#2' : "Snare/Snare4.opus",
+            'E2' : "Snare/Snare5.opus",
+            'F2' : "Snare/Snare6.opus",
+            'F#2' : "Snare/Snare7.opus",
+            'G2' : "Snare/Snare8.opus",
+            'G#2' : "Snare/Snare9.opus",
+            'A2' : "Snare/Snare10.opus",
+            'A#2' : "Snare/Snare11.opus",
+            'B2' : "Snare/Snare12.opus",
+            'C3' : "Hat/openhat1.opus",
+            'C#3' : "Hat/openhat2.opus",
+            'D3' : "Hat/openhat3.opus",
+            'D#3' : "Hat/openhat4.opus",
+            'E3' : "Hat/openhat5.opus",
+            'F3' : "Hat/openhat6.opus",
+            'F#3' : "Hat/openhat7.opus",
+            'G3' : "Hat/openhat8.opus",
+            'G#3' : "Hat/openhat9.opus",
+            'A3' : "Hat/openhat10.opus",
+            'A#3' : "Hat/openhat11.opus",
+            'B3' : "Hat/openhat12.opus",
+           
+        }, () => {
+        
+            this.kit.chain(Tone.Master);
+
+        }, "./assets/samples/");
+
+    }
+    
+}
+
+//---------- round-robin guitar sampler ------------//
 class GuitarSampler {
 
     guitarLoaded = 0;
@@ -11,7 +119,7 @@ class GuitarSampler {
     guitar5;
 
     constructor() {
-        this.dist = new Tone.Distortion(0.3);
+        this.dist = new Tone.Distortion(0.);
         this.guitarOut = new Tone.Gain(0.8);
         this.guitarOut.chain(this.dist, Tone.Master);
 
@@ -19,35 +127,30 @@ class GuitarSampler {
             'C1' : "Guitar/guitar10.opus",  
         }, () => {
             this.guitar1.connect(this.guitarOut);
-            this.guitarLoaded += 1;
         }, "./assets/samples/");
         
         this.guitar2 = new Tone.Sampler({
             'C1' : "Guitar/guitar11.opus",  
         }, () => {
             this.guitar2.connect(this.guitarOut);
-            this.guitarLoaded += 1;
         }, "./assets/samples/");
         
         this.guitar3 = new Tone.Sampler({
             'C1' : "Guitar/guitar12.opus",  
         }, () => {
             this.guitar3.connect(this.guitarOut);
-            this.guitarLoaded += 1;
         }, "./assets/samples/");
         
         this.guitar4 = new Tone.Sampler({
             'C1' : "Guitar/guitar13.opus",  
         }, () => {
             this.guitar4.connect(this.guitarOut);
-            this.guitarLoaded += 1;
         }, "./assets/samples/");
         
         this.guitar5 = new Tone.Sampler({
             'C1' : "Guitar/guitar14.opus",  
         }, () => {
             this.guitar5.connect(this.guitarOut);
-            this.guitarLoaded += 1;
         }, "./assets/samples/");
     }
 }
@@ -61,7 +164,7 @@ class GuitarPlayer {
 
     constructor(patternGenerator) {
         this.patternGenerator = patternGenerator;
-        this.sequencer = new Tone.Loop(this.sequencePlayer, '4n');
+        this.sequencer = new Tone.Loop(this.sequencePlayer, '8n');
         this.sequencer.loop = true;
     }
 
@@ -122,6 +225,24 @@ class PatternGenerator {
 
 let patternGenerator = new PatternGenerator();
 
+let drum = new Drum();
 let guitarSampler = new GuitarSampler();
 let guitarPlayer = new GuitarPlayer(patternGenerator);
 guitarPlayer.sequencer.start(0);
+
+async function samplesLoaded() {
+    // Start 2 "jobs" in parallel and wait for both of them to complete
+    await Promise.all([
+        (console.log(await drum.kit.promise)),
+        (console.log(await guitarSampler.guitar1.promise)),
+        (console.log(await guitarSampler.guitar2.promise)),
+        (console.log(await guitarSampler.guitar3.promise)),
+        (console.log(await guitarSampler.guitar4.promise)),
+        (console.log(await guitarSampler.guitar5.promise))
+    ])
+    console.log('starting transport');
+    Tone.Transport.start(0);
+    Tone.Transport.bpm.value = 100;
+}
+
+samplesLoaded();
