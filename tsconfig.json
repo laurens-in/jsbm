@@ -1,0 +1,22 @@
+{
+	"compileOnSave": true,
+	"compilerOptions": {
+		"strictNullChecks": true,
+		"target": "es5",
+		"module": "es2015",
+		"noImplicitAny": false,
+		"importHelpers": true,
+		"noUnusedLocals": false,
+		"removeComments": false,
+		"sourceMap": true,
+		// "moduleResolution": "node",
+		"strictPropertyInitialization" : true,
+		"downlevelIteration" : true,
+		"experimentalDecorators": true,
+		"lib": ["es6", "dom", "es2015"],
+		"baseUrl": "./"
+	},
+	"include": [
+		"src/*.ts", "src/*.spec.ts"
+	]
+}

@@ -1,0 +1,28 @@
+{
+  "name": "jsbm",
+  "version": "1.0.0",
+  "description": "",
+  "private": true,
+  "dependencies": {
+    "tone": "^13.8.25"
+  },
+  "devDependencies": {
+    "ts-loader": "^6.2.2",
+    "webpack": "^4.42.1",
+    "webpack-cli": "^3.3.11"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/laurens-in/jsbm.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/laurens-in/jsbm/issues"
+  },
+  "homepage": "https://laurens-in.github.io/jsbm/"
+}
