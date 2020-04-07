@@ -48,10 +48,10 @@ var Drumkit = new Tone.Sampler({
     'A3' : "Hat/openhat10.opus",
     'A#3' : "Hat/openhat11.opus",
     'B3' : "Hat/openhat12.opus",
-   
+
 }, function(){
 
-    Drumkit.chain(Tone.Master);  
+    Drumkit.chain(Tone.Master);
 
 }, "./assets/samples/");
 
@@ -91,7 +91,7 @@ function generateBeat(length){
 
 let seqIndex = 0
 function newSequence(){
-    let 
+    let
 }
 
 
@@ -107,29 +107,29 @@ function rNote(min, max) {
 }
 
 let noteArray = [
-    [24, "C1"], 
-    [25, "C#1"], 
-    [26, "D1"], 
-    [27, "D#1"], 
-    [28, "E1"], 
-    [29, "F1"], 
-    [30, "F#1"], 
-    [31, "G1"], 
-    [32, "G#1"], 
-    [33, "A1" ], 
-    [34, "A#1"], 
-    [35, "B1"], 
-    [36, "C2"], 
-    [37, "C#2"], 
-    [38, "D2"], 
-    [39, "D#2"], 
-    [40, "E2"], 
-    [41, "F2"], 
-    [42, "F#2"], 
-    [43, "G2"], 
-    [44, "G#2"], 
-    [45, "A2"], 
-    [46, "A#2"], 
+    [24, "C1"],
+    [25, "C#1"],
+    [26, "D1"],
+    [27, "D#1"],
+    [28, "E1"],
+    [29, "F1"],
+    [30, "F#1"],
+    [31, "G1"],
+    [32, "G#1"],
+    [33, "A1" ],
+    [34, "A#1"],
+    [35, "B1"],
+    [36, "C2"],
+    [37, "C#2"],
+    [38, "D2"],
+    [39, "D#2"],
+    [40, "E2"],
+    [41, "F2"],
+    [42, "F#2"],
+    [43, "G2"],
+    [44, "G#2"],
+    [45, "A2"],
+    [46, "A#2"],
     [47, "B2"],
     [48, "C3"],
     [49, "C#3"],

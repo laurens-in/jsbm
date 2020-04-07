@@ -11,29 +11,29 @@ function getNote(min, max) {
 }
 
 let noteArray = [
-    [24, "C1"], 
-    [25, "C#1"], 
-    [26, "D1"], 
-    [27, "D#1"], 
-    [28, "E1"], 
-    [29, "F1"], 
-    [30, "F#1"], 
-    [31, "G1"], 
-    [32, "G#1"], 
-    [33, "A1" ], 
-    [34, "A#1"], 
-    [35, "B1"], 
-    [36, "C2"], 
-    [37, "C#2"], 
-    [38, "D2"], 
-    [39, "D#2"], 
-    [40, "E2"], 
-    [41, "F2"], 
-    [42, "F#2"], 
-    [43, "G2"], 
-    [44, "G#2"], 
-    [45, "A2"], 
-    [46, "A#2"], 
+    [24, "C1"],
+    [25, "C#1"],
+    [26, "D1"],
+    [27, "D#1"],
+    [28, "E1"],
+    [29, "F1"],
+    [30, "F#1"],
+    [31, "G1"],
+    [32, "G#1"],
+    [33, "A1" ],
+    [34, "A#1"],
+    [35, "B1"],
+    [36, "C2"],
+    [37, "C#2"],
+    [38, "D2"],
+    [39, "D#2"],
+    [40, "E2"],
+    [41, "F2"],
+    [42, "F#2"],
+    [43, "G2"],
+    [44, "G#2"],
+    [45, "A2"],
+    [46, "A#2"],
     [47, "B2"],
     [48, "C3"],
     [49, "C#3"],
@@ -95,15 +95,15 @@ class Drum {
             'A3' : "Hat/openhat10.opus",
             'A#3' : "Hat/openhat11.opus",
             'B3' : "Hat/openhat12.opus",
-           
+
         }, () => {
-        
+
             this.kit.chain(Tone.Master);
 
         }, "./assets/samples/");
 
     }
-    
+
 }
 
 //---------- round-robin guitar sampler ------------//
@@ -124,31 +124,31 @@ class GuitarSampler {
         this.guitarOut.chain(this.dist, Tone.Master);
 
         this.guitar1 = new Tone.Sampler({
-            'C1' : "Guitar/guitar10.opus",  
+            'C1' : "Guitar/guitar10.opus",
         }, () => {
             this.guitar1.connect(this.guitarOut);
         }, baseurl);
-        
+
         this.guitar2 = new Tone.Sampler({
-            'C1' : "Guitar/guitar11.opus",  
+            'C1' : "Guitar/guitar11.opus",
         }, () => {
             this.guitar2.connect(this.guitarOut);
         }, baseurl);
-        
+
         this.guitar3 = new Tone.Sampler({
-            'C1' : "Guitar/guitar12.opus",  
+            'C1' : "Guitar/guitar12.opus",
         }, () => {
             this.guitar3.connect(this.guitarOut);
         }, baseurl);
-        
+
         this.guitar4 = new Tone.Sampler({
-            'C1' : "Guitar/guitar13.opus",  
+            'C1' : "Guitar/guitar13.opus",
         }, () => {
             this.guitar4.connect(this.guitarOut);
         }, baseurl);
-        
+
         this.guitar5 = new Tone.Sampler({
-            'C1' : "Guitar/guitar14.opus",  
+            'C1' : "Guitar/guitar14.opus",
         }, () => {
             this.guitar5.connect(this.guitarOut);
         }, baseurl);
@@ -184,22 +184,22 @@ class GuitarPlayer {
                 this.sampler.guitar1.triggerAttackRelease(note, length, time, velocity);
                 console.log("git1 playing");
                 break;
-            
+
             case 1:
                 this.sampler.guitar2.triggerAttackRelease(note, length, time, velocity);
                 console.log("git2 playing");
                 break;
-            
+
             case 2:
                 this.sampler.guitar3.triggerAttackRelease(note, length, time, velocity);
                 console.log("git3 playing");
                 break;
-            
+
             case 3:
                 this.sampler.guitar4.triggerAttackRelease(note, length, time, velocity);
                 console.log("git4 playing");
                 break;
-    
+
             case 4:
                 this.sampler.guitar5.triggerAttackRelease(note, length, time, velocity);
                 console.log("git5 playing");

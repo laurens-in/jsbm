@@ -62,7 +62,7 @@ class PolyphoneSequence {
     }
 }
 
-// // EXAMPLE 
+// // EXAMPLE
 // permute_pattern = (input) => {
 //     return input.randomized();
 // }
