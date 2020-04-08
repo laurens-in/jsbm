@@ -1,8 +1,6 @@
 // Entrypoint
 import { Frequency, Time, Synth, context } from 'tone/Tone';
 
-context.rawContext.suspend
-
 document.addEventListener('DOMContentLoaded', () => {
   // resume playback to enable Audio API in all browsers
   document.querySelector('button.play')?.addEventListener('click', function() {
@@ -11,11 +9,13 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   });
   document.querySelector('button.stop')?.addEventListener('click', function() {
-
     context.rawContext.suspend().then(() => {
       console.log('Playback suspended successfully...');
     });
   });
+  document.getElementById('formControlRange')?.addEventListener('input', (event) => {
+    console.log((<HTMLInputElement>event.currentTarget).value);
+  })
 });
 
 const synth = new Synth();
