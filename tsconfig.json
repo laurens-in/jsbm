@@ -9,7 +9,7 @@
 		"noUnusedLocals": false,
 		"removeComments": false,
 		"sourceMap": true,
-		// "moduleResolution": "node",
+		"moduleResolution": "node",
 		"strictPropertyInitialization" : true,
 		"downlevelIteration" : true,
 		"experimentalDecorators": true,
