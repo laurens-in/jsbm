@@ -69,3 +69,32 @@ class PolyphoneSequence {
 
 // 1 5 1 5 1 5 1 4 5 1
 // 1 1 1 1 5 5 5 5 6 1
+
+composition = [
+    [['C1', 'G1'], ['32n', '4n']],
+    [],
+    [['C2'], ['32n']],
+    [],
+    [['C1', 'G1'], ['32n', '4n']],
+    [],
+    [['C2'], ['32n']],
+    []
+];
+
+// use map to apply transformation to individual event
+composition.map(
+    (event) => {
+        if (event.length > 0) {
+            let copy = event;
+            copy[0].push(event[0][0]);
+            return copy;
+        } else {
+            return event;
+        }
+    }
+)
+
+for (let index = 0; index < composition.length; index++) {
+    const previous = composition[index-1]; // check if index in bounds (0 <= index < max), or wrap to end
+    const current = composition[index];
+}

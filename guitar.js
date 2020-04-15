@@ -170,7 +170,10 @@ class GuitarPlayer {
     }
 
     sequencePlayer = (time) => {
-        this.playGuitar(this.patternGenerator.gen(), "2n", time);
+        // TODO: loop over amount of notes returned by gen()
+        let [notes, lengths] = this.patternGenerator.gen();
+        this.playGuitar(notes, lengths, time);
+        
     };
 
     playGuitar = (note, length, time, velocity) => {
@@ -212,15 +215,29 @@ class GuitarPlayer {
 // The "Pattern Service"
 class PatternGenerator {
     notes = ["C1", "D#1", "E1", "F1", "F#1", "G1", "C2", "C#2"];
+    notes_2 = ["C3", "D#3", "E3", "F3", "F#3", "G3", "C4", "C#4"];
     step = 0;
 
+    slots = [1, 0, 1, 0, 1, 1, 1, 1, 0, 0, 1, 0];
+
     gen = () => {
-        if (this.step % 8 == 0) {
+        const step = this.step % 8;
+        if (step == 0) {
             // generate new notes array here
             console.log('generating new notes array');
         }
+        const notes = [
+            this.notes[Math.floor(Math.random() * this.notes.length)],
+            this.notes_2[Math.floor(Math.random() * this.notes.length)]
+        ];
+        const lengths = ['32n', '8n'];
         this.step++;
-        return this.notes[Math.floor(Math.random() * this.notes.length)];
+
+        // TODO: properly handle the case of no notes returned.
+        if(this.slots[step] === 1) {
+            return this.composition[step];
+        }
+        
     }
 }
 
@@ -236,7 +253,7 @@ async function samplesLoaded() {
     // Start 2 "jobs" in parallel and wait for both of them to complete
     await Promise.all([
         (console.log(await drum.kit.promise)),
-        (console.log(await guitarSampler.guitar1.promise)),
+        (console.log(await guitarSampler.guitar3.promise)),
         (console.log(await guitarSampler.guitar2.promise)),
         (console.log(await guitarSampler.guitar3.promise)),
         (console.log(await guitarSampler.guitar4.promise)),
