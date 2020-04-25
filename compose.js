@@ -70,7 +70,7 @@ class PolyphoneSequence {
 // 1 5 1 5 1 5 1 4 5 1
 // 1 1 1 1 5 5 5 5 6 1
 
-composition = [
+var composition = [
     [['C1', 'G1'], ['32n', '4n']],
     [],
     [['C2'], ['32n']],
@@ -93,8 +93,29 @@ composition.map(
         }
     }
 )
-
-for (let index = 0; index < composition.length; index++) {
-    const previous = composition[index-1]; // check if index in bounds (0 <= index < max), or wrap to end
-    const current = composition[index];
+function permutate(){
+    for (let index = 0; index < composition.length; index++) {
+        const previous = composition[index-1]; // check if index in bounds (0 <= index < max), or wrap to end
+        const current = composition[index];
+        if (current.length !== 0){
+            composition[(index+1)%8] = current;
+        }
+        else {
+            current = current;
+        }
+    }
 }
+
+//---- ideas ---//
+
+// fill(); take an "empty" composition object and fill it. start with length (2,3,4,5,6,7,8) and have weights on lenghts and also on note positions.
+// eg: Pattern.pattern_1 --> fill with length 4, note on first beat, Pattern.pattern_1.pattern_1 --> fill with length 6 with notes on 1 and 3.
+// drum could filled by premade pattern eg.: fill drum part with blastbeat, fill drum part with (kick,hihat)(hihat...)
+// this could be a way to start from very small structures.
+// drum could be filled with going thru lists that involve probability 
+// eg: [[kick 1, hihat 1], [hihat 1], [hihat 1, kick 0.5], [hihat 1], [hihat 1]]
+// es braucht irgend eine Möglichkeit sinnvoll mit Wahrscheinlichkeiten umzugehen. evt auch ein Baumsystem...
+
+// z.B. Liste könnte sein Kick + Hihat, Rest wird mit Hihat aufgefüllt, nächstes Segment, Snare + Hihat, Rest Hihat, falls Kick + Hihat und nächstes element auch Kick, dann überall Kick
+
+// permute(); this could then permute multiple small objects at a time. eg.: change positions of notes, take chords and break them down into arpeggios

@@ -119,7 +119,7 @@ class GuitarSampler {
     guitar5;
 
     constructor(baseurl = "./assets/samples/") {
-        this.dist = new Tone.Distortion(0.);
+        this.dist = new Tone.Distortion(0.7);
         this.guitarOut = new Tone.Gain(0.8);
         this.guitarOut.chain(this.dist, Tone.Master);
 
@@ -232,7 +232,7 @@ class PatternGenerator {
         ];
         const lengths = ['32n', '8n'];
         this.step++;
-
+        return composition[step];
         // TODO: properly handle the case of no notes returned.
         if(this.slots[step] === 1) {
             return this.composition[step];
