@@ -6,7 +6,7 @@ function getRandomInt(max) {
   }
 
 
-function getNote(min, max) {
+function randomNote(min, max) {
     return noteMap.get((Math.floor(Math.random() * Math.floor(max)) + min));
 }
 
@@ -51,13 +51,36 @@ let noteArray = [
 ];
 let noteMap = new Map(noteArray);
 
+// kick = 0, snare = 1, closed hihat = 2, open hihat = 3,
+function getDrum(note){
+    if (note == 0){
+        return randomNote(24, 12);
+    }
+    else if (note == 1){
+        return randomNote(36, 12);
+    }
+    else if (note == 2){
+        return randomNote(48, 12);
+    }
+}
+
 //-------------------Transport----------------------//
 // Tone.Transport.start(0);
 // Tone.Transport.bpm.value = 100;
 
 //------------------- drumkit ----------------------//
 class Drum {
-    constructor() {
+
+    beatGenerator;
+    sequencer;
+    kit;
+
+    constructor(beatGenerator) {
+
+        this.beatGenerator = beatGenerator;
+        this.sequencer = new Tone.Loop(this.sequencePlayer, '8n');
+        this.sequencer.loop = true;
+
         this.kit = new Tone.Sampler({
             'C1' : "Kick/Kick1.opus",
             'C#1' : "Kick/Kick2.opus",
@@ -102,7 +125,14 @@ class Drum {
 
         }, "./assets/samples/");
 
-    }
+    };
+
+    sequencePlayer = (time) => {
+        // TODO: loop over amount of notes returned by gen()
+        let notes = this.beatGenerator.gen();
+        this.kit.triggerAttackRelease(getDrum(notes), '4n', time);
+        
+    };
     
 }
 
@@ -241,13 +271,64 @@ class PatternGenerator {
     }
 }
 
-let patternGenerator = new PatternGenerator();
+class BeatGenerator {
+    drumslow = [
+        [
+            [0, 2],
+            [2],
+            [2],
+            [2],
+            [2],
+            [2],
+            [2],
+            [2],
+            [2],
+        ],
+        [
+            [1, 2],
+            [2],
+            [2],
+            [2],
+            [2],
+            [2],
+            [2],
+            [2],
+            [2], 
+        ]
+    ];
+    step = 0;
+    beat = [];
 
-let drum = new Drum();
+    gen = () => {
+        console.log('drum is being generated');
+        const step = this.step % 8;
+        if (step == 0){
+            this.beat = generateDrum(0, 8, 0);
+        }
+        this.step++;
+        return this.beat[step];
+    }
+
+    generateDrum(style, length, variation) {
+        let composition = [];
+        if (style == 0){
+            for (i = 0; i < length; i++){
+                composition[i] = this.drumslow[variation][i];
+            }
+        }
+        return composition;   
+    }
+}
+
+let patternGenerator = new PatternGenerator();
+let beatGenerator = new BeatGenerator();
+
+let drum = new Drum(beatGenerator);
 let guitarSampler = new GuitarSampler();
 let acousticSampler = new GuitarSampler("./assets/guitar/acoustic");
 let guitarPlayer = new GuitarPlayer(patternGenerator, guitarSampler);
 guitarPlayer.sequencer.start(0);
+drum.sequencer.start(0);
 
 async function samplesLoaded() {
     // Start 2 "jobs" in parallel and wait for both of them to complete

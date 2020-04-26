@@ -73,11 +73,11 @@ class PolyphoneSequence {
 var composition = [
     [['C1', 'G1'], ['32n', '4n']],
     [],
-    [['C2'], ['32n']],
+    [['C#1'], ['32n']],
     [],
     [['C1', 'G1'], ['32n', '4n']],
     [],
-    [['C2'], ['32n']],
+    [['C#2'], ['32n']],
     []
 ];
 
@@ -95,10 +95,11 @@ composition.map(
 )
 function permutate(){
     for (let index = 0; index < composition.length; index++) {
-        const previous = composition[index-1]; // check if index in bounds (0 <= index < max), or wrap to end
-        const current = composition[index];
-        if (current.length !== 0){
-            composition[(index+1)%8] = current;
+        let previous = composition[index-1]; // check if index in bounds (0 <= index < max), or wrap to end
+        let current = composition[index];
+        let next = composition[(index+1)%8];
+        if (current.length == 0){
+            composition[index] = previous;
         }
         else {
             current = current;
@@ -119,3 +120,16 @@ function permutate(){
 // z.B. Liste könnte sein Kick + Hihat, Rest wird mit Hihat aufgefüllt, nächstes Segment, Snare + Hihat, Rest Hihat, falls Kick + Hihat und nächstes element auch Kick, dann überall Kick
 
 // permute(); this could then permute multiple small objects at a time. eg.: change positions of notes, take chords and break them down into arpeggios
+// Permutation könnte auf alles angewendet werden und man hat dann wie eine ander Kopie vom Baum.
+
+
+function generateDrum(style, length, variation) {
+    let composition = [];
+    if (style == 0){
+        for (i = 0; i < length; i++){
+            composition[i] = drumslow[variation][i];
+        }
+    }
+    return composition;   
+}
+
