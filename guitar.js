@@ -303,16 +303,16 @@ class BeatGenerator {
         console.log('drum is being generated');
         const step = this.step % 8;
         if (step == 0){
-            this.beat = generateDrum(0, 8, 0);
+            this.beat = this.generateDrum(0, 8, 0);
         }
         this.step++;
         return this.beat[step];
     }
 
-    generateDrum(style, length, variation) {
+    generateDrum = (style, length, variation) => {
         let composition = [];
         if (style == 0){
-            for (i = 0; i < length; i++){
+            for (let i = 0; i < length; i++){
                 composition[i] = this.drumslow[variation][i];
             }
         }
