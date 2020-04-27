@@ -130,7 +130,16 @@ class Drum {
     sequencePlayer = (time) => {
         // TODO: loop over amount of notes returned by gen()
         let notes = this.beatGenerator.gen();
-        this.kit.triggerAttackRelease(getDrum(notes), '4n', time);
+        let noteNames = notes.map(function mapper(note) {
+            if (Array.isArray(note)) {
+              return note.map(mapper);
+            }
+            else {
+                let val = getDrum(note);
+                return val;
+            }
+          })
+        this.kit.triggerAttackRelease(noteNames, '4n', time);
         
     };
     
