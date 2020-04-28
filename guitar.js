@@ -71,15 +71,15 @@ function getDrum(note){
 //------------------- drumkit ----------------------//
 class Drum {
 
-    beatGenerator;
+    patternGenerator;
     sequencer;
     kit;
 
-    constructor(beatGenerator) {
+    constructor(patternGenerator) {
 
-        this.beatGenerator = beatGenerator;
-        this.sequencer = new Tone.Loop(this.sequencePlayer, '8n');
-        this.sequencer.loop = true;
+        this.patternGenerator = patternGenerator;
+        //this.sequencer = new Tone.Loop(this.sequencePlayer, '8n');
+        //this.sequencer.loop = true;
 
         this.kit = new Tone.Sampler({
             'C1' : "Kick/Kick1.opus",
@@ -129,7 +129,7 @@ class Drum {
 
     sequencePlayer = (time) => {
         // TODO: loop over amount of notes returned by gen()
-        let notes = this.beatGenerator.generateDrum();
+        let notes = this.patternGenerator.generateDrum();
         let noteNames = notes.map(function mapper(note) {
             if (Array.isArray(note)) {
               return note.map(mapper);
@@ -159,7 +159,7 @@ class GuitarSampler {
 
     constructor(baseurl = "./assets/samples/") {
         this.dist = new Tone.Distortion(0.7);
-        this.guitarOut = new Tone.Gain(0.8);
+        this.guitarOut = new Tone.Gain(0.5);
         this.guitarOut.chain(this.dist, Tone.Master);
 
         this.guitar1 = new Tone.Sampler({
@@ -204,8 +204,8 @@ class GuitarPlayer {
     constructor(patternGenerator, sampler) {
         this.patternGenerator = patternGenerator;
         this.sampler = sampler;
-        this.sequencer = new Tone.Loop(this.sequencePlayer, '8n');
-        this.sequencer.loop = true;
+        //this.sequencer = new Tone.Loop(this.sequencePlayer, '8n');
+        //this.sequencer.loop = true;
     }
 
     sequencePlayer = (time) => {
@@ -265,8 +265,7 @@ class PatternGenerator {
             [2],
             [2],
             [2],
-            [2],
-            [2],
+            [0, 2],
         ],
         [
             [1, 2],
@@ -276,12 +275,12 @@ class PatternGenerator {
             [2],
             [2],
             [2],
-            [2],
-            [2], 
+            [0, 2], 
         ]
     ];
     step = 0;
     beat = [];
+    variation = 0;
 
     slots = [1, 0, 1, 0, 1, 1, 1, 1, 0, 0, 1, 0];
 
@@ -289,7 +288,6 @@ class PatternGenerator {
         const step = this.step % 8;
         if (step == 0) {
             // generate new notes array here
-            console.log('generating new notes array');
         }
         const notes = [
             this.notes[Math.floor(Math.random() * this.notes.length)],
@@ -306,23 +304,30 @@ class PatternGenerator {
     }
 
     generateDrum = () => {
-        console.log('drum is being generated');
         const step = this.step % 8;
         const style = 0;
         const length = 8;
-        const variation = 0;
+        //let variation = 0;
         let composition = [];
         if (step == 0){
+            this.variation++;
+            let variationCount = this.variation % 2;
+            console.log(this.variation);
             if (style == 0){
                 for (let i = 0; i < length; i++){
-                    composition[i] = this.drumslow[variation][i];
+                    composition[i] = this.drumslow[variationCount][i];
                 }
             }
             this.beat = composition; //this.generateDrum(0, 8, 0);
         }
         console.dir(this.beat);
-        this.step++;
+        //this.step++;
         return this.beat[step];
+    }
+
+    next = () => {
+        this.step++;
+        console.log(this.step);
     }
 }
 
@@ -351,10 +356,17 @@ async function samplesLoaded() {
     console.log('starting transport');
     Tone.Transport.bpm.value = 100;
     
-    guitarPlayer.sequencer.start(0);
-    drum.sequencer.start(0);
+    //guitarPlayer.sequencer.start(0);
+    //drum.sequencer.start(0);
 
     Tone.Transport.start();
 }
 
 samplesLoaded();
+
+var loop = new Tone.Loop(function(time){
+    drum.sequencePlayer();
+    guitarPlayer.sequencePlayer();
+    //patternGenerator.next();
+
+}, "8n").start(0);
