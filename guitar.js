@@ -129,7 +129,7 @@ class Drum {
 
     sequencePlayer = (time) => {
         // TODO: loop over amount of notes returned by gen()
-        let notes = this.beatGenerator.gen();
+        let notes = this.beatGenerator.generateDrum();
         let noteNames = notes.map(function mapper(note) {
             if (Array.isArray(note)) {
               return note.map(mapper);
@@ -255,32 +255,7 @@ class GuitarPlayer {
 class PatternGenerator {
     notes = ["C1", "D#1", "E1", "F1", "F#1", "G1", "C2", "C#2"];
     notes_2 = ["C3", "D#3", "E3", "F3", "F#3", "G3", "C4", "C#4"];
-    step = 0;
 
-    slots = [1, 0, 1, 0, 1, 1, 1, 1, 0, 0, 1, 0];
-
-    gen = () => {
-        const step = this.step % 8;
-        if (step == 0) {
-            // generate new notes array here
-            console.log('generating new notes array');
-        }
-        const notes = [
-            this.notes[Math.floor(Math.random() * this.notes.length)],
-            this.notes_2[Math.floor(Math.random() * this.notes.length)]
-        ];
-        const lengths = ['32n', '8n'];
-        this.step++;
-        return composition[step];
-        // TODO: properly handle the case of no notes returned.
-        if(this.slots[step] === 1) {
-            return this.composition[step];
-        }
-        
-    }
-}
-
-class BeatGenerator {
     drumslow = [
         [
             [0, 2],
@@ -308,36 +283,60 @@ class BeatGenerator {
     step = 0;
     beat = [];
 
+    slots = [1, 0, 1, 0, 1, 1, 1, 1, 0, 0, 1, 0];
+
     gen = () => {
+        const step = this.step % 8;
+        if (step == 0) {
+            // generate new notes array here
+            console.log('generating new notes array');
+        }
+        const notes = [
+            this.notes[Math.floor(Math.random() * this.notes.length)],
+            this.notes_2[Math.floor(Math.random() * this.notes.length)]
+        ];
+        const lengths = ['32n', '8n'];
+        this.step++;
+        return composition[step];
+        // TODO: properly handle the case of no notes returned.
+        if(this.slots[step] === 1) {
+            return this.composition[step];
+        }
+        
+    }
+
+    generateDrum = () => {
         console.log('drum is being generated');
         const step = this.step % 8;
+        const style = 0;
+        const length = 8;
+        const variation = 0;
+        let composition = [];
         if (step == 0){
-            this.beat = this.generateDrum(0, 8, 0);
+            if (style == 0){
+                for (let i = 0; i < length; i++){
+                    composition[i] = this.drumslow[variation][i];
+                }
+            }
+            this.beat = composition; //this.generateDrum(0, 8, 0);
         }
+        console.dir(this.beat);
         this.step++;
         return this.beat[step];
     }
-
-    generateDrum = (style, length, variation) => {
-        let composition = [];
-        if (style == 0){
-            for (let i = 0; i < length; i++){
-                composition[i] = this.drumslow[variation][i];
-            }
-        }
-        return composition;   
-    }
 }
 
-let patternGenerator = new PatternGenerator();
-let beatGenerator = new BeatGenerator();
 
-let drum = new Drum(beatGenerator);
+// patterns
+let patternGenerator = new PatternGenerator();
+
+// guitar
 let guitarSampler = new GuitarSampler();
 let acousticSampler = new GuitarSampler("./assets/guitar/acoustic");
 let guitarPlayer = new GuitarPlayer(patternGenerator, guitarSampler);
-guitarPlayer.sequencer.start(0);
-drum.sequencer.start(0);
+
+// drums
+let drum = new Drum(patternGenerator);
 
 async function samplesLoaded() {
     // Start 2 "jobs" in parallel and wait for both of them to complete
@@ -350,8 +349,12 @@ async function samplesLoaded() {
         (console.log(await guitarSampler.guitar5.promise))
     ])
     console.log('starting transport');
-    Tone.Transport.start(0);
     Tone.Transport.bpm.value = 100;
+    
+    guitarPlayer.sequencer.start(0);
+    drum.sequencer.start(0);
+
+    Tone.Transport.start();
 }
 
 samplesLoaded();

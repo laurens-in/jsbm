@@ -74,6 +74,11 @@
             <button class="btn btn-primary play">play</button>
             <button class="btn btn-primary stop">stop</button>
 
+            <br>
+
+            <button class="btn btn-success drums">drums</button>
+            <button class="btn btn-success guitar">guitar</button>
+
         </div>
     </main>
     
@@ -101,6 +106,21 @@
                 Tone.context.suspend().then(() => {
                     console.log('Playback suspended successfully');
                 });
+            });
+            // instr buttons
+            document.querySelector('button.guitar').addEventListener('click', function() {
+                if(guitarPlayer.sequencer.state === 'stopped') {
+                    guitarPlayer.sequencer.start();
+                } else {
+                    guitarPlayer.sequencer.stop();
+                }
+            });
+            document.querySelector('button.drums').addEventListener('click', function() {
+                if(drum.sequencer.state === 'stopped') {
+                    drum.sequencer.start();
+                } else {
+                    drum.sequencer.stop();
+                }
             });
         });
     </script>
