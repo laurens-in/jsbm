@@ -4,7 +4,6 @@
   "background_color": "#000000",
   "display": "standalone",
   "orientation": "portrait",
-  "Scope": "/",
   "start_url": ".",
   "icons": [
     {
