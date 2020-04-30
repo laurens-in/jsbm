@@ -4,7 +4,7 @@
   "background_color": "#000000",
   "display": "standalone",
   "orientation": "portrait",
-  "start_url": "https://laurens-in.github.io/jsbm",
+  "start_url": ".",
   "icons": [
     {
       "src": "/assets/images/icons/icon-72x72.png",
