@@ -133,3 +133,4 @@ function generateDrum(style, length, variation) {
     return composition;   
 }
 
+
