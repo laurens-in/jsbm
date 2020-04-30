@@ -7,7 +7,7 @@
   "start_url": ".",
   "icons": [
     {
-      "src": "/assets/images/icons/icon-72x72.png",
+      "src": "./assets/images/icons/icon-72x72.png",
       "sizes": "72x72",
       "type": "image/png"
     },
