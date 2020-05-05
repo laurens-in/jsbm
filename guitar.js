@@ -259,25 +259,37 @@ class PatternGenerator {
     drumslow = [
         [
             [0, 2],
-            [0],
-            [0, 2],
-            [0],
-            [0, 2],
-            [0],
-            [0, 2],
-            [0],
+            [2],
+            [2],
+            [2],
+            [2],
+            [2],
+            [2],
+            [2],
         ],
         [
-            [0, 1, 2],
-            [0],
-            [0, 2],
-            [0],
-            [0, 2],
-            [0],
-            [0, 2],
-            [0], 
+            [1, 2],
+            [2],
+            [2],
+            [2],
+            [2],
+            [2],
+            [2],
+            [2], 
         ]
     ];
+
+    drumsfast = [
+        [
+            [0,2],
+            [1]
+        ],
+        [
+            [1,2],
+            [0]
+        ]
+    ]
+
     step = 0;
     beat = [];
     variation = 0;
@@ -314,7 +326,7 @@ class PatternGenerator {
             let variationCount = this.variation % 2;
             if (style == 0){
                 for (let i = 0; i < length; i++){
-                    composition[i] = this.drumslow[variationCount][i];
+                    composition[i] = this.drumsfast[1][i%2];
                 }
             }
             this.beat = composition; //this.generateDrum(0, 8, 0);
@@ -325,7 +337,7 @@ class PatternGenerator {
 
     next = () => {
         this.step++;
-        console.log(this.step);
+        //console.log(this.step);
     }
 }
 
@@ -364,7 +376,7 @@ samplesLoaded();
 
 var loop = new Tone.Loop(function(time){
     drum.sequencePlayer();
-    guitarPlayer.sequencePlayer();
-    //patternGenerator.next();
+    //guitarPlayer.sequencePlayer();
+    patternGenerator.next();
 
-}, "8n").start(0);
+}, "32n").start(0);
