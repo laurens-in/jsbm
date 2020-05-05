@@ -39,10 +39,17 @@
             background: transparent;
             border-width: 0;
             outline: none;
+            margin: auto;
+            max-width: 15vw;
+        }
+
+        .buttons {
+            margin: auto;
+            display: grid;
         }
 
         .btnimage {
-            max-width: 50%;
+            margin: 0;
         }
         .btnimage:hover {
             mix-blend-mode: color-dodge;
@@ -54,7 +61,7 @@
   <div class="logo">
       <img src="assets/images/liveeternallogo.png">
   </div>
-  <div>
+  <div class="buttons">
     <button class="btn btn-primary play">
         <img class="btnimage" src="assets/images/play.png" alt="">
     </button>
