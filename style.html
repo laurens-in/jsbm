@@ -74,6 +74,7 @@
   <script src="guitar.js"></script>
   <script>
     document.addEventListener('DOMContentLoaded', () => {
+        Tone.context.suspend();
         // resume playback to enable Audio API in all browsers
         document.querySelector('button.play').addEventListener('click', function() {
             Tone.context.resume().then(() => {
