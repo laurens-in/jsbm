@@ -1,4 +1,5 @@
 //-------------- General Functions -----------------//
+Tone.context.suspend();
 
 // get random integer function
 function getRandomInt(max) {
