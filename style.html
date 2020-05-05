@@ -32,12 +32,51 @@
 
         img {
             max-width: 100%;
+            mix-blend-mode: difference;
         }
+
+        .btn {
+            background: transparent;
+            border-width: 0;
+        }
+
+        .btnimage {
+            max-width: 50%;
+        }
+        .btnimage:hover {
+            mix-blend-mode: color-dodge;
+        }
+
     </style>
 
 <body>
   <div class="logo">
       <img src="assets/images/liveeternallogo.png">
   </div>
+  <div>
+    <button class="btn btn-primary play">
+        <img class="btnimage" src="assets/images/play.png" alt="">
+    </button>
+    <button class="btn btn-primary stop">
+        <img class="btnimage" src="assets/images/pause.png" alt="">
+    </button>
+  </div>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/tone/13.8.25/Tone.js"></script>
+  <script src="compose.js"></script>
+  <script src="guitar.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+        // resume playback to enable Audio API in all browsers
+        document.querySelector('button.play').addEventListener('click', function() {
+            Tone.context.resume().then(() => {
+                console.log('Playback resumed successfully');
+            });
+        });
+        document.querySelector('button.stop').addEventListener('click', function() {
+            Tone.context.suspend().then(() => {
+                console.log('Playback suspended successfully');
+            });
+        });})
+    </script>
 </body>
 </html>
