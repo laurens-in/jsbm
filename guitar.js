@@ -224,27 +224,27 @@ class GuitarPlayer {
         switch (currentCount) {
             case 0:
                 this.sampler.guitar1.triggerAttackRelease(note, length, time, velocity);
-                console.log("git1 playing");
+                //console.log("git1 playing");
                 break;
             
             case 1:
                 this.sampler.guitar2.triggerAttackRelease(note, length, time, velocity);
-                console.log("git2 playing");
+                //console.log("git2 playing");
                 break;
             
             case 2:
                 this.sampler.guitar3.triggerAttackRelease(note, length, time, velocity);
-                console.log("git3 playing");
+                //console.log("git3 playing");
                 break;
             
             case 3:
                 this.sampler.guitar4.triggerAttackRelease(note, length, time, velocity);
-                console.log("git4 playing");
+                //console.log("git4 playing");
                 break;
     
             case 4:
                 this.sampler.guitar5.triggerAttackRelease(note, length, time, velocity);
-                console.log("git5 playing");
+                //console.log("git5 playing");
                 break;
         }
         this.playingNote = note;
@@ -312,7 +312,6 @@ class PatternGenerator {
         if (step == 0){
             this.variation++;
             let variationCount = this.variation % 2;
-            console.log(this.variation);
             if (style == 0){
                 for (let i = 0; i < length; i++){
                     composition[i] = this.drumslow[variationCount][i];
@@ -320,7 +319,6 @@ class PatternGenerator {
             }
             this.beat = composition; //this.generateDrum(0, 8, 0);
         }
-        console.dir(this.beat);
         //this.step++;
         return this.beat[step];
     }
