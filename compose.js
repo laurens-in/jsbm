@@ -121,16 +121,3 @@ function permutate(){
 
 // permute(); this could then permute multiple small objects at a time. eg.: change positions of notes, take chords and break them down into arpeggios
 // Permutation könnte auf alles angewendet werden und man hat dann wie eine ander Kopie vom Baum.
-
-
-function generateDrum(style, length, variation) {
-    let composition = [];
-    if (style == 0){
-        for (i = 0; i < length; i++){
-            composition[i] = drumslow[variation][i];
-        }
-    }
-    return composition;   
-}
-
-
