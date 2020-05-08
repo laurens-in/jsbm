@@ -375,7 +375,7 @@ async function samplesLoaded() {
 samplesLoaded();
 
 var loop = new Tone.Loop(function(time){
-    drum.sequencePlayer();
+    //drum.sequencePlayer();
     //guitarPlayer.sequencePlayer();
     patternGenerator.next();
 

@@ -81,3 +81,79 @@ beat = [[0, 2], [], [], [], [2], [], [], [], [1, 2], [], [], []]
 
 // there you have little options, often if riffs change they also change the cymbal, hihat to ride and vice versa.
 // and of course one can always add cymbal hits as accents.
+
+
+// first decision: fast or slow
+// second decision: duration --> different depending on first choice, slow needs 2 values
+// third decision: permutation --> different depending on first choice, fast doesn't really permutate that much, more fills and cymbals
+
+function fastDrum(length, style = 1) {
+    let beat = [];
+    for(let i = 0; i < length; i++){
+        beat[i] = drumfast[style][i%2];
+    }
+    return beat;
+}
+
+function slowDrum(length){
+    let beat = [];
+    for(let i = 0; i < 2; i++){
+        for(let x = 0; x < length; x++){
+            beat.push(drumslow[i][x]);
+        }
+    }
+    let result = beat.flatMap((e) => [e, [],[],[]]);
+    return result;
+}
+
+function permuteDrum(beat, value = 0){
+    let randomIndex = Math.floor(Math.random() * beat.length)
+    if (beat[randomIndex].includes(0) || beat[randomIndex].includes(1) || beat[randomIndex].includes(2)){
+        //beat[mod((randomIndex-4),beat.length)].push(value);
+        beat[mod((randomIndex-8),beat.length)].push(value);
+    } else {
+        permuteDrum(beat, value);
+    }
+}
+const mod = (x, n) => (x % n + n) % n
+drumfast = [
+    [
+        [0,2],
+        [1]
+    ],
+    [
+        [1,2],
+        [0]
+    ]
+]
+
+drumslow = [
+    [
+        [0, 2],
+        [2],
+        [2],
+        [2],
+        [2],
+        [2],
+        [2],
+        [2],
+    ],
+    [
+        [1, 2],
+        [2],
+        [2],
+        [2],
+        [2],
+        [2],
+        [2],
+        [2], 
+    ]
+];
+
+let comp = slowDrum(4);
+let counterDrum = 0;
+
+var drumloop = new Tone.Loop(function(time){
+    drum.kit.triggerAttackRelease(comp[counterDrum%comp.length].flatMap(x => getDrum(x)), '4n', time);
+    counterDrum++;
+}, "32n").start();
