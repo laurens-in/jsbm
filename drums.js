@@ -111,6 +111,7 @@ function permuteDrum(beat, value = 0){
     if (beat[randomIndex].includes(0) || beat[randomIndex].includes(1) || beat[randomIndex].includes(2)){
         //beat[mod((randomIndex-4),beat.length)].push(value);
         beat[mod((randomIndex-8),beat.length)].push(value);
+        beat[mod((randomIndex-8),beat.length)] = [... new Set(beat[mod((randomIndex-8),beat.length)])];
     } else {
         permuteDrum(beat, value);
     }
