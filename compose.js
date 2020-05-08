@@ -15,22 +15,6 @@ permute_pattern = (input) => {
     return input += 1;
 }
 
-class Pattern {
-
-    constructor(handwritten) {
-        this.base_pattern = handwritten;
-    }
-
-    permute() {
-        // let randomized = this.base_pattern.randomize(); // in case of base_pattern being an instance of PolyphoneSequence
-        let randomized_1 = permute_pattern(this.base_pattern);
-        let randomized_2 = permute_pattern(this.base_pattern);
-        this.pattern_1 = new Pattern(randomized_1);
-        this.pattern_2 = new Pattern(randomized_2);
-    }
-
-}
-
 let composer = new Pattern(1);
 
 composer.permute(); // this internally generates two new nodes.

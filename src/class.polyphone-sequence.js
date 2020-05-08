@@ -1,0 +1,42 @@
+class PolyphoneSequence {
+    constructor(drum_pattern) {
+        this.drums = drum_pattern;
+        this.guitar = [];
+        this.bass = [];
+    }
+
+    dosomethinginterestingwith(input) {
+        return input;
+    }
+
+    generate_guitar = () =>  {
+        this.guitar = this.dosomethinginterestingwith(this.drums);
+    }
+
+    generate_bass = () =>  {
+        this.bass = this.dosomethinginterestingwith(this.drums);
+    }
+
+    mod = (x, n) => (x % n + n) % n;
+
+    permuteDrum(value = 0) {
+        let randomIndex = Math.floor(Math.random() * this.drums.length)
+        if (this.drums[randomIndex].includes(0) || this.drums[randomIndex].includes(1) || this.drums[randomIndex].includes(2)){
+            //this.drums[mod((randomIndex-4),this.drums.length)].push(value);
+            this.drums[this.mod((randomIndex-8),this.drums.length)].push(value);
+            this.drums[this.mod((randomIndex-8),this.drums.length)] = [... new Set(this.drums[this.mod((randomIndex-8),this.drums.length)])];
+        } else {
+            permuteDrum(this.drums, value);
+        }
+    }
+
+    // think about posibility to permute single instruments
+
+    randomized() {
+        const next = new PolyphoneSequence(this.drums);
+        next.generate_guitar();
+        next.generate_bass();
+        next.permuteDrum(0);
+        return next;
+    }
+}
