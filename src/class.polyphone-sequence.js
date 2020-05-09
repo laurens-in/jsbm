@@ -26,7 +26,7 @@ class PolyphoneSequence {
             this.drums[this.mod((randomIndex-8),this.drums.length)].push(value);
             this.drums[this.mod((randomIndex-8),this.drums.length)] = [... new Set(this.drums[this.mod((randomIndex-8),this.drums.length)])];
         } else {
-            this.permuteDrum(this.drums, value);
+            this.permuteDrum(value);
         }
     }
 
