@@ -26,13 +26,13 @@ class PolyphoneSequence {
             this.drums[this.mod((randomIndex-8),this.drums.length)].push(value);
             this.drums[this.mod((randomIndex-8),this.drums.length)] = [... new Set(this.drums[this.mod((randomIndex-8),this.drums.length)])];
         } else {
-            permuteDrum(this.drums, value);
+            this.permuteDrum(this.drums, value);
         }
     }
 
     // think about posibility to permute single instruments
 
-    randomized() {
+    randomize() {
         const next = new PolyphoneSequence(this.drums);
         next.generate_guitar();
         next.generate_bass();

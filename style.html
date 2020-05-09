@@ -5,6 +5,7 @@
   <title>Live Eternal</title>
   <meta name="description" content="Generative Black Metal">
   <meta name="author" content="Laurens Inauen">
+  <link rel="manifest" href="/manifest.json">
 
 </head>
       <style>
@@ -70,9 +71,13 @@
     </button>
   </div>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/tone/13.8.25/Tone.js"></script>
-  <script src="compose.js"></script>
-  <script src="guitar.js"></script>
-  <script src="drums.js"></script>
+  <!--- <script src="guitar.js"></script> --->
+  <script src="src/class.pattern.js"></script>
+  <script src="src/class.polyphone-sequence.js"></script>
+  <script src="src/class.drum.js"></script>
+  <script src="src/class.guitar-sampler.js"></script>
+  <script src="src/class.guitar-player.js"></script>
+  <script src="prototype.js"></script>
   <script>
     document.addEventListener('DOMContentLoaded', () => {
         Tone.context.suspend();
