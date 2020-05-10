@@ -154,7 +154,20 @@ drumslow = [
 let comp = slowDrum(4);
 let counterDrum = 0;
 
+patterns = [
+    polytree.basepattern.drum,
+    polytree.pattern_1.basepattern.drum,
+    polytree.pattern_1.pattern_1.basepattern.drum,
+    polytree.pattern_1.pattern_2.basepattern.drum,
+    polytree.pattern_2.basepattern.drum,
+    polytree.pattern_2.pattern_1.basepattern.drum,
+    polytree.pattern_2.pattern_2.basepattern.drum
+]
+
 var drumloop = new Tone.Loop(function(time){
     drum.kit.triggerAttackRelease(comp[counterDrum%comp.length].flatMap(x => getDrum(x)), '4n', time);
     counterDrum++;
+    if (counterDrum % 32 == 0) {
+        comp = patterns[3];
+    }
 }, "32n").start();
