@@ -48,6 +48,18 @@ let noteArray = [
     [57, "A3"],
     [58, "A#3"],
     [59, "B3"],
+    [60, "C4"],
+    [61, "C#4"],
+    [62, "D4"],
+    [63, "D#4"],
+    [64, "E4"],
+    [65, "F4"],
+    [66, "F#4"],
+    [67, "G4"],
+    [68, "G#4"],
+    [69, "A4"],
+    [70, "A#4"],
+    [71, "B4"],
 
 ];
 let noteMap = new Map(noteArray);
@@ -141,22 +153,41 @@ function slowDrum(length){
 
 // ---------------- redefine patterns as instance of PolyphoneSequence
 
-let polytree = new Pattern(new PolyphoneSequence(slowDrum(8)));
+let polytree = new Pattern(new PolyphoneSequence(slowDrum(4)));
 
 console.log('same with poly seq');
 console.dir(polytree);
 
 console.log('second iter with poly seq');
-//console.dir(polytree.permute());
+
+polytree.permute();
+polytree.pattern_1.permute();
+polytree.pattern_2.permute();
+
+
+
+patterns = [
+    polytree.base_pattern.drums,
+    polytree.pattern_1.base_pattern.drums,
+    polytree.pattern_1.pattern_1.base_pattern.drums,
+    polytree.pattern_1.pattern_2.base_pattern.drums,
+    polytree.pattern_2.base_pattern.drums,
+    polytree.pattern_2.pattern_1.base_pattern.drums,
+    polytree.pattern_2.pattern_2.base_pattern.drums
+]
+let patterncount = 0;
+let stepcount = 0;
 
 let comp = polytree.base_pattern.drums;
 
-let stepcount = 0;
-
 Tone.Transport.start();
-Tone.Transport.bpm.value = 80;
+Tone.Transport.bpm.value = 100;
 
 var drumloop = new Tone.Loop(function(time){
     drum.kit.triggerAttackRelease(comp[stepcount%comp.length].flatMap(x => getDrum(x)), '4n', time);
     stepcount++;
+    if (stepcount%32 == 0){
+        patterncount++;
+        comp = patterns[patterncount%patterns.length];
+    }
 }, "32n").start();
