@@ -80,7 +80,7 @@
   <script src="prototype.js"></script>
   <script>
     document.addEventListener('DOMContentLoaded', () => {
-        Tone.context.suspend();
+        //Tone.context.suspend();
         // resume playback to enable Audio API in all browsers
         document.querySelector('button.play').addEventListener('click', function() {
             Tone.context.resume().then(() => {
