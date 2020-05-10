@@ -1,6 +1,11 @@
 class PolyphoneSequence {
     constructor(drum_pattern) {
-        this.drums = drum_pattern;
+        const clone = (items) => {
+            return items.map((item) => {
+                return Array.isArray(item) ? clone(item) : item;
+            });
+        };
+        this.drums = clone(drum_pattern);
         this.guitar = [];
         this.bass = [];
     }
