@@ -23,8 +23,8 @@ class PolyphoneSequence {
         let randomIndex = Math.floor(Math.random() * this.drums.length)
         if (this.drums[randomIndex].includes(0) || this.drums[randomIndex].includes(1) || this.drums[randomIndex].includes(2)){
             //this.drums[mod((randomIndex-4),this.drums.length)].push(value);
-            this.drums[this.mod((randomIndex-8),this.drums.length)].push(value);
-            this.drums[this.mod((randomIndex-8),this.drums.length)] = [... new Set(this.drums[this.mod((randomIndex-8),this.drums.length)])];
+            this.drums[this.mod((randomIndex-3),this.drums.length)].push(value);
+            this.drums[this.mod((randomIndex-3),this.drums.length)] = [... new Set(this.drums[this.mod((randomIndex-3),this.drums.length)])];
         } else {
             this.permuteDrum(value);
         }
@@ -36,7 +36,7 @@ class PolyphoneSequence {
         const next = new PolyphoneSequence(this.drums);
         next.generate_guitar();
         next.generate_bass();
-        next.permuteDrum(0);
+        next.permuteDrum(2);
         return next;
     }
 }
