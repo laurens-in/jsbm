@@ -133,6 +133,15 @@ guitarnotes = [
     51,
 ]
 
+function firstDrum(length){
+    let random = Math.floor(Math.random() * 2);
+    if (random == 0){
+        return slowDrum(length)
+    } else {
+        return fastDrum(length * 4)
+    }
+}
+
 function fastDrum(length) {
     let beat = [];
     let style = Math.floor(Math.random() * 2)
@@ -170,7 +179,7 @@ function slowDrum(length){
 
 // ---------------- redefine patterns as instance of PolyphoneSequence
 
-let polytree = new Pattern(new PolyphoneSequence(slowDrum(6)));
+let polytree = new Pattern(new PolyphoneSequence(firstDrum(6)));
 
 console.log('same with poly seq');
 console.dir(polytree);
