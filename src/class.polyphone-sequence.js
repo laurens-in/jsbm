@@ -12,7 +12,7 @@ class PolyphoneSequence {
 
     dosomethinginterestingwith(input) {
         let random = Math.floor(Math.random() * input.length);
-        input[random] = [guitarnotes[Math.floor(Math.random() * guitarnotes.length)]];
+        input[random] = [guitarnotes[(Math.floor(Math.random() * (guitarnotes.length - 1))) + 1]];
         return input
     }
 
@@ -41,6 +41,9 @@ class PolyphoneSequence {
 
     randomize() {
         const next = new PolyphoneSequence(this.drums);
+        next.generate_guitar();
+        next.generate_guitar();
+        next.generate_guitar();
         next.generate_guitar();
         //next.generate_bass();
         next.permuteDrum(Math.floor(Math.random() * 3));
