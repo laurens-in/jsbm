@@ -2,23 +2,11 @@ class GuitarPlayer {
 
     guitarIndex = 0;
     playingNote = 0;
-    patternGenerator;
 
-    sequencer;
 
-    constructor(patternGenerator, sampler) {
-        this.patternGenerator = patternGenerator;
+    constructor(sampler) {
         this.sampler = sampler;
-        //this.sequencer = new Tone.Loop(this.sequencePlayer, '8n');
-        //this.sequencer.loop = true;
     }
-
-    sequencePlayer = (time) => {
-        // TODO: loop over amount of notes returned by gen()
-        let [notes, lengths] = this.patternGenerator.gen();
-        this.playGuitar(notes, lengths, time);
-        
-    };
 
     playGuitar = (note, length, time, velocity) => {
         if (note == this.playingNote) {
