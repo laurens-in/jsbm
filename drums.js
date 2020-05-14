@@ -171,3 +171,20 @@ var drumloop = new Tone.Loop(function(time){
         comp = patterns[3];
     }
 }, "32n").start();
+
+
+// permutation options:
+
+// if kick: add kick before or after
+// if cymbal: add diferent cymbal, add cymbal before or after
+// if snare: add kick before or after
+// if last one: add fill
+
+// first level = every 4th beat, 2nd level every 2nd beat between, 3rd level every singel beat between
+
+// some trees might be special bridge trees or something?
+
+// there should be a first layer of permutation that applies directly at the start, so not every piece starts the same:
+// make double bass drum
+// delete all cymbals except on drum and snare
+// delete every second cymbal

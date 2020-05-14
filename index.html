@@ -1,136 +1,118 @@
-<!doctype html>
-<html lang="en" class="h-100">
-  <head>
-    <!-- Required meta tags -->
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <link rel="manifest" href="manifest.json" crossOrigin="use-credentials">
-    <!-- Bootstrap CSS -->
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+<html lang="en">
+<head>
+  <meta charset="utf-8">
 
-    <!-- Custom CSS -->
-    <style>
-    .bd-placeholder-img {
-        font-size: 1.125rem;
-        text-anchor: middle;
-        -webkit-user-select: none;
-        -moz-user-select: none;
-        -ms-user-select: none;
-        user-select: none;
-    }
+  <title>Live Eternal</title>
+  <meta name="description" content="Generative Black Metal">
+  <meta name="author" content="Laurens Inauen">
+  <link rel="manifest" href="/manifest.json">
 
-    @media (min-width: 768px) {
-        .bd-placeholder-img-lg {
-        font-size: 3.5rem;
+</head>
+      <style>
+        body {
+        /* Location of the image */
+        background-image: url(assets/images/background.png);
+        background-position: center center;
+        background-repeat: no-repeat;       
+        /* Background image is fixed in the viewport so that it doesn't move when 
+            the content's height is greater than the image's height */
+        background-attachment: fixed;
+        /* This is what makes the background image rescale based
+            on the container's size */
+        background-size: cover;
+        /* Set a background color that will be displayed
+            while the background image is loading */
+        background-color: #464646;
         }
-    }
-    main > .container {
-        padding: 60px 15px 0;
-    }
+        .logo {
+            max-width: 85vw;
+            margin-top: 5vh;
+            margin-left: auto;
+            margin-right: auto;
+        }
 
-    .footer {
-        background-color: #f5f5f5;
-    }
+        img {
+            max-width: 100%;
+            mix-blend-mode: difference;
+        }
 
-    .footer > .container {
-        padding-right: 15px;
-        padding-left: 15px;
-    }
+        #loader {
+            display: flex;
+            justify-content: center;
+            background-color: black;
+            width: 100%;
+            height: 100%;
+            position: absolute;
+            top: 0;
+            left: 0;
+        }
 
-    code {
-        font-size: 80%;
-    }
+        #button {
+            display: flex;
+            justify-content: center;
+            width: 100%;
+            height: 100%;
+            position: absolute;
+            top: 0;
+            left: 0;
+        }
+
+        .pentagram {
+            max-width: 25vw;
+            max-height: 25vh;
+            margin-top: auto;
+            margin-bottom: auto;
+        }
+
+        .play, .pause {
+            max-width:15vw;
+            outline-width: 0;
+            margin-top: auto;
+            margin-bottom: auto;
+            
+        }
+
     </style>
-    
-    <title>Generative Black Metal</title>
-  </head>
-  <body class="d-flex flex-column h-100">
-    <header>
-    <!-- Fixed navbar -->
-        <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
-            <a class="navbar-brand" href="#">JSBM</a>
-            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse" id="navbarCollapse">
-                <ul class="navbar-nav mr-auto">
-                    <li class="nav-item active">
-                        <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="https://github.com/laurens-in">GitHub</a>
-                    </li>
-                </ul>
-            </div>
-        </nav>
-    </header>
 
-    <!-- Begin page content -->
-    <main role="main" class="flex-shrink-0">
-        <div class="container">
-            <h1 class="mt-5">JS BlackMetal</h1>
-            <p class="lead">Project info here...</p>
+<body>
+  <div class="logo">
+      <img src="assets/images/liveeternallogo.png">
+  </div>
+  <div id="loader">
+    <input type="image" src="assets/images/Pentagram.gif" class="pentagram"/>
+  </div>
+  <div id="button" style="display:none">
+    <input type="image" src="assets/images/play.png" class="play" onclick="toggle(this);"/>
+    </div>
 
-            <button class="btn btn-primary play">play</button>
-            <button class="btn btn-primary stop">stop</button>
 
-            <br>
-
-            <button class="btn btn-success drums">drums</button>
-            <button class="btn btn-success guitar">guitar</button>
-
-        </div>
-    </main>
-    
-    <footer class="footer mt-auto py-3">
-        <div class="container">
-            <span class="text-muted">&copy; 2020 - Laurens Inauen, <a href="https://github.com/laurens-in" target="_blank">https://github.com/laurens-in</a></span>
-        </div>
-    </footer>
-
-    <!-- Optional JavaScript -->
-    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
-    <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/tone/13.8.25/Tone.js"></script>
-    <script>Tone.context.suspend()</script>
-    <script>
-        document.addEventListener('DOMContentLoaded', () => {
-            // resume playback to enable Audio API in all browsers
-            document.querySelector('button.play').addEventListener('click', function() {
-                Tone.context.resume().then(() => {
-                    console.log('Playback resumed successfully');
-                });
-            });
-            document.querySelector('button.stop').addEventListener('click', function() {
-                Tone.context.suspend().then(() => {
-                    console.log('Playback suspended successfully');
-                });
-            });
-            // instr buttons
-            document.querySelector('button.guitar').addEventListener('click', function() {
-                if(guitarPlayer.sequencer.state === 'stopped') {
-                    guitarPlayer.sequencer.start();
-                } else {
-                    guitarPlayer.sequencer.stop();
-                }
-            });
-            document.querySelector('button.drums').addEventListener('click', function() {
-                if(drum.sequencer.state === 'stopped') {
-                    drum.sequencer.start();
-                } else {
-                    drum.sequencer.stop();
-                }
-            });
-        });
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/tone/13.8.25/Tone.js"></script>
+  <script src="src/class.pattern.js"></script>
+  <script src="src/class.polyphone-sequence.js"></script>
+  <script src="src/class.drum.js"></script>
+  <script src="src/class.guitar-sampler.js"></script>
+  <script src="src/class.guitar-player.js"></script>
+  <script src="prototype.js"></script>
+  <script>
+    function toggle(el){
+    if(el.className!="pause"){
+        el.src='assets/images/pause.png';
+        el.className="pause";
+        Tone.context.resume();
+    } else if(el.className=="pause"){
+        el.src='assets/images/play.png';
+        el.className="play";
+        Tone.context.suspend();
+    }
+    return false;
+    }  
+    window.onload = function(){
+        document.getElementById("button").style.display = "flex";
+        document.getElementById("button").style.justifyContent = "center";
+        document.getElementById("loader").style.display = "none";
+        console.log('loaded')
+        Tone.context.suspend();
+    }
     </script>
-    <script src="src/class.pattern.js"></script>
-    <script src="src/class.polyphone-sequence.js"></script>
-    <script src="prototype.js"></script>
-    <script src="compose.js"></script>
-    <!-- <script src="blackmetal.js"></script> -->
-    <script src="guitar.js"></script>
-  </body>
+</body>
 </html>
-  
