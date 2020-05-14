@@ -40,7 +40,10 @@
         #loader {
             display: flex;
             justify-content: center;
+            align-items: center;
+            flex-direction: column;
             background-color: black;
+            color: white;
             width: 100%;
             height: 100%;
             position: absolute;
@@ -61,8 +64,6 @@
         .pentagram {
             max-width: 25vw;
             max-height: 25vh;
-            margin-top: auto;
-            margin-bottom: auto;
         }
 
         .play, .pause {
@@ -80,6 +81,7 @@
       <img src="assets/images/liveeternallogo.png">
   </div>
   <div id="loader">
+      <h1>loading</h1>
     <input type="image" src="assets/images/Pentagram.gif" class="pentagram"/>
   </div>
   <div id="button" style="display:none">
