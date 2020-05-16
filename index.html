@@ -11,6 +11,9 @@
 </head>
 
 <style>
+
+    @import url('https://fonts.googleapis.com/css2?family=IM+Fell+Great+Primer+SC&display=swap');
+
     body {
         margin:0;
         padding:0;
@@ -37,10 +40,24 @@
     .logoimg {
         max-width: 80%;
     }
+
+    .subtitle {
+        font-family: 'IM Fell Great Primer SC', serif;
+        color: whitesmoke;
+        display: flex;
+        justify-content: center;
+    }
+
+    h1 {
+        margin-block-start: 0.2em;
+        font-size: 3.5em;
+    }
+
     .logo {
         display: flex;
         justify-content: center;
-        align-items: center;
+        align-items: flex-end;
+        vertical-align: middle;
     }
 
     .button {
@@ -66,7 +83,7 @@
         display: grid;
         width: 100vw;
         height: 100vh;
-        grid-template-rows: 1fr 2fr 1fr;
+        grid-template-rows: 1fr 0.5fr 2fr 1fr;
     }
 
     #loader {
@@ -94,11 +111,14 @@
         <div class="logo">
             <img src="assets/images/liveeternallogo.png" class="logoimg">
         </div>
+        <div class="subtitle">
+            <h1>Generative Black Metal</h1>
+        </div>
         <div id="button" style="display:none">
             <input type="image" src="assets/images/play.png" class="play" onclick="toggle(this);"/>
         </div>
         <div class="info">
-            <p>Generative Black Metal</p>
+            <p>INFO</p>
         </div>
     </main>
     <div id="loader">
