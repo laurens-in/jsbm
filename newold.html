@@ -1,0 +1,122 @@
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+
+  <title>Live Eternal</title>
+  <meta name="description" content="Generative Black Metal">
+  <meta name="author" content="Laurens Inauen">
+  <link rel="shortcut icon" type="image/png" href="favicon.png" | prepend: site.baseurl }}" >
+  <link rel="manifest" href="manifest.json">
+
+</head>
+      <style>
+        body {
+        /* Location of the image */
+        background-image: url(assets/images/background.png);
+        background-position: center center;
+        background-repeat: no-repeat;       
+        /* Background image is fixed in the viewport so that it doesn't move when 
+            the content's height is greater than the image's height */
+        background-attachment: fixed;
+        /* This is what makes the background image rescale based
+            on the container's size */
+        background-size: cover;
+        /* Set a background color that will be displayed
+            while the background image is loading */
+        background-color: #464646;
+        }
+        .logo {
+            max-width: 75vw;
+            margin-top: 2vh;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        img {
+            max-width: 100%;
+            mix-blend-mode: difference;
+        }
+
+        #loader {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            background-color: black;
+            color: white;
+            width: 100%;
+            height: 100%;
+            position: absolute;
+            top: 0;
+            left: 0;
+        }
+
+        #button {
+            display: flex;
+            justify-content: center;
+            width: 100%;
+            height: 100%;
+            position: absolute;
+            top: 0;
+            left: 0;
+        }
+
+        .pentagram {
+            max-width: 50vw;
+            max-height: 50vh;
+        }
+
+        .play, .pause {
+            max-height: 25vh;
+            outline-width: 0;
+            margin-top: auto;
+            margin-bottom: auto;
+            -webkit-tap-highlight-color: transparent;
+            
+        }
+
+    </style>
+
+<body>
+  <div class="logo">
+      <img src="assets/images/liveeternallogo.png">
+  </div>
+  <div id="loader">
+      <h1>loading</h1>
+    <input type="image" src="assets/images/Pentagram.gif" class="pentagram"/>
+  </div>
+  <div id="button" style="display:none">
+    <input type="image" src="assets/images/play.png" class="play" onclick="toggle(this);"/>
+    </div>
+
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/tone/13.8.25/Tone.js"></script>
+  <script src="src/class.pattern.js"></script>
+  <script src="src/class.polyphone-sequence.js"></script>
+  <script src="src/class.drum.js"></script>
+  <script src="src/class.guitar-sampler.js"></script>
+  <script src="src/class.guitar-player.js"></script>
+  <script src="prototype.js"></script>
+  <script>
+    function toggle(el){
+    if(el.className!="pause"){
+        el.src='assets/images/pause.png';
+        el.className="pause";
+        Tone.context.resume();
+    } else if(el.className=="pause"){
+        el.src='assets/images/play.png';
+        el.className="play";
+        Tone.context.suspend();
+    }
+    return false;
+    }  
+    window.onload = function(){
+        document.getElementById("button").style.display = "flex";
+        document.getElementById("button").style.justifyContent = "center";
+        document.getElementById("loader").style.display = "none";
+        console.log('loaded')
+        Tone.context.suspend();
+    }
+    </script>
+</body>
+</html>
