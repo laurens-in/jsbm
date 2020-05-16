@@ -75,8 +75,14 @@
     .info {
         display: flex;
         justify-content: center;
-        align-items: center;
+        align-items: flex-end;
         color: whitesmoke;
+    }
+
+    .infoimg {
+        width: 6vh;
+        margin-bottom: 2vh;
+        opacity: 50%;
     }
 
     main {
@@ -118,7 +124,7 @@
             <input type="image" src="assets/images/play.png" class="play" onclick="toggle(this);"/>
         </div>
         <div class="info">
-            <p>INFO</p>
+            <img src="assets/images/info.png" class="infoimg">
         </div>
     </main>
     <div id="loader">
