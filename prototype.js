@@ -1,7 +1,5 @@
+// utility functions
 
-
-// functions for generating drum base pattern
-// get random integer function
 function getRandomInt(max) {
     return Math.floor(Math.random() * Math.floor(max));
   }
@@ -122,15 +120,16 @@ drumslow = [
 ];
 
 guitarnotes = [
-    25,
-    31,
-    32,
     36,
+    37,
     38,
     39,
-    48,
-    50,
-    51,
+    41,
+    42,
+    43,
+    45,
+    46,
+    47
 ]
 
 function firstDrum(length){
@@ -216,8 +215,6 @@ guitarPatterns = [
 ]
 
 
-
-
 let patterncount = 0;
 let stepcount = 0;
 
@@ -228,7 +225,7 @@ Tone.Transport.start();
 Tone.Transport.bpm.value = 100;
 
 var drumloop = new Tone.Loop(function(time){
-    guitarPlayer.playGuitar(guitarpat[stepcount%guitarpat.length].flatMap(x => getNote(x)), '1n', time);
+    guitarPlayer.playGuitar(guitarpat[stepcount%guitarpat.length].flatMap(x => getNote(x)), '16t', time);
     console.log(guitarpat[stepcount%guitarpat.length]);
     drum.kit.triggerAttackRelease(drumpat[stepcount%drumpat.length].flatMap(x => getDrum(x)), '4n', time);
     stepcount++;
@@ -237,4 +234,4 @@ var drumloop = new Tone.Loop(function(time){
         drumpat = drumPatterns[patterncount%drumPatterns.length];
         guitarpat = guitarPatterns[patterncount%guitarPatterns.length]
     }
-}, "32n").start();
+}, "32n");
