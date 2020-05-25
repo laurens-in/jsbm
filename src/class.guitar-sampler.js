@@ -9,7 +9,7 @@ class GuitarSampler {
     guitar5;
 
     constructor(baseurl = "./assets/samples/") {
-        this.dist = new Tone.Distortion(0.1);
+        this.dist = new Tone.Distortion(1.5);
         this.guitarOut = new Tone.Gain(0.9);
         this.guitarOut.chain(this.dist, Tone.Master);
 
