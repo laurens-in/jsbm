@@ -4,8 +4,9 @@ class GuitarPlayer {
     playingNote = 0;
 
 
-    constructor(sampler) {
+    constructor(sampler, start = 0) {
         this.sampler = sampler;
+        this.guitarIndex = start;
     }
 
     playGuitar = (note, length, time, velocity) => {

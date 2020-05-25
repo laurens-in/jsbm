@@ -82,8 +82,10 @@ function getNote(note){
 
 // defining instruments
 let drum = new Drum();
-let guitarSampler = new GuitarSampler();
-let guitarPlayer = new GuitarPlayer(guitarSampler);
+let guitarSamplerLeft = new GuitarSampler(-0.9);
+let guitarPlayerLeft = new GuitarPlayer(guitarSamplerLeft);
+let guitarSamplerRight = new GuitarSampler(0.9);
+let guitarPlayerRight = new GuitarPlayer(guitarSamplerRight, 3);
 
 drumfast = [
     [
@@ -219,7 +221,8 @@ Tone.Transport.start();
 Tone.Transport.bpm.value = 70;
 
 var drumloop = new Tone.Loop(function(time){
-    guitarPlayer.playGuitar(guitarpat[stepcount%guitarpat.length].flatMap(x => getNote(x)), '2n', time);
+    guitarPlayerLeft.playGuitar(guitarpat[stepcount%guitarpat.length].flatMap(x => getNote(x)), '2n', time);
+    guitarPlayerRight.playGuitar(guitarpat[stepcount%guitarpat.length].flatMap(x => getNote(x)), '2n', time);
     console.log(guitarpat[stepcount%guitarpat.length]);
     drum.kit.triggerAttackRelease(drumpat[stepcount%drumpat.length].flatMap(x => getDrum(x)), '4n', time);
     stepcount++;
