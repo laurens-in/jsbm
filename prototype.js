@@ -119,18 +119,12 @@ drumslow = [
     ]
 ];
 
-guitarnotes = [
-    36,
-    37,
-    38,
-    39,
-    41,
-    42,
-    43,
-    45,
-    46,
-    47
-]
+const chords = [[0, 7], [0, 8], [0, 5], [0, 6], [0, 7, 12, 15], [0, 7, 14]]
+
+function getChord(note){
+    let random = Math.floor(Math.random()* chords.length)
+    return chords[random].map(x => (x + note))
+}
 
 function firstDrum(length){
     let random = Math.floor(Math.random() * 2);
@@ -222,10 +216,10 @@ let drumpat = polytree.base_pattern.drums;
 let guitarpat = polytree.base_pattern.guitar;
 
 Tone.Transport.start();
-Tone.Transport.bpm.value = 100;
+Tone.Transport.bpm.value = 70;
 
 var drumloop = new Tone.Loop(function(time){
-    guitarPlayer.playGuitar(guitarpat[stepcount%guitarpat.length].flatMap(x => getNote(x)), '16t', time);
+    guitarPlayer.playGuitar(guitarpat[stepcount%guitarpat.length].flatMap(x => getNote(x)), '2n', time);
     console.log(guitarpat[stepcount%guitarpat.length]);
     drum.kit.triggerAttackRelease(drumpat[stepcount%drumpat.length].flatMap(x => getDrum(x)), '4n', time);
     stepcount++;

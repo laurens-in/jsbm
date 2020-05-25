@@ -6,14 +6,19 @@ class PolyphoneSequence {
             });
         };
         this.drums = clone(drum_pattern);
-        this.guitar = [[24, 31], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], []];
+        this.guitar = [[25], [], [], [], [], [], [], [], [], [], [], [], [26], [], [], [], [], [], [], [], [], [], [], []];
         this.bass = [];
     }
 
     dosomethinginterestingwith(input) {
-        let random = Math.floor(Math.random() * input.length);
-        input[random] = [guitarnotes[(Math.floor(Math.random() * (guitarnotes.length - 1))) + 1]];
-        return input
+        let chords = input.map(function mapper(s){
+            if (Array.isArray(s)) {
+                return s.flatMap(mapper);
+            } else {
+                return getChord(s)
+            }
+        })
+        return chords
     }
 
     generate_guitar = () =>  {
@@ -41,9 +46,6 @@ class PolyphoneSequence {
 
     randomize() {
         const next = new PolyphoneSequence(this.drums);
-        next.generate_guitar();
-        next.generate_guitar();
-        next.generate_guitar();
         next.generate_guitar();
         //next.generate_bass();
         next.permuteDrum(Math.floor(Math.random() * 3));
