@@ -44,7 +44,7 @@ class Drum {
            
         }, () => {
         
-            this.kit.chain(Tone.Master);
+            this.kit.chain(reverb, Tone.Master);
 
         }, "./assets/samples/");
     };   
