@@ -33,11 +33,17 @@ class PolyphoneSequence {
 
     permuteDrum(value = 0) {
         let randomIndex = Math.floor(Math.random() * this.drums.length)
+
+        // x x x x x x x x
+        // |   o   |   o    l1
+        //   o | o     |    l2
+
         if (randomIndex % 4 == 0){
-            //first level
+            //first level (downbeat)
             // if hihat make crash
             // if bassdrum add bassdrum 2 before or 2 after
-            if (this.drums[randomIndex].includes(0)){
+            // if snare add bassdrum 2 before or 2 after
+            if (this.drums[randomIndex].includes(0) || this.drums[randomIndex].includes(1)){
                 console.log('first level bass drum')
                 if (Math.random() < 0.6){
                     this.drums[this.mod((randomIndex-4),this.drums.length)].push(0);
@@ -47,19 +53,33 @@ class PolyphoneSequence {
                     this.drums[this.mod((randomIndex+4),this.drums.length)] = [... new Set(this.drums[this.mod((randomIndex+4),this.drums.length)])];
                 }
             }
-            // if snare add bassdrum 2 before or 2 after
             // add cymbal 2 before or 2 after
+            if (this.drums[randomIndex].includes(2)){
+                console.log('first level bass drum')
+                if (Math.random() < 0.6){
+                    this.drums[this.mod((randomIndex-2),this.drums.length)].push(2);
+                    this.drums[this.mod((randomIndex-2),this.drums.length)] = [... new Set(this.drums[this.mod((randomIndex-2),this.drums.length)])];
+                } else {
+                    this.drums[this.mod((randomIndex+2),this.drums.length)].push(2);
+                    this.drums[this.mod((randomIndex+2),this.drums.length)] = [... new Set(this.drums[this.mod((randomIndex+2),this.drums.length)])];
+                }
+            }
 
         } else if (randomIndex % 4 == 2){
-            //second level
+            //second level (upbeat)
             // if bassdrum add bassdrum 1 after
-            if (this.drums[randomIndex].includes(0)){
+            // if snare add bassdrum 1 after
+            if (this.drums[randomIndex].includes(0) || this.drums[randomIndex].includes(1)){
                 console.log('second level bass drum')
                 this.drums[this.mod((randomIndex+2),this.drums.length)].push(0);
                 this.drums[this.mod((randomIndex+2),this.drums.length)] = [... new Set(this.drums[this.mod((randomIndex-2),this.drums.length)])];
             }
-            // if snare add bassdrum 1 after
             // if cymbal add cymbal 1 before or 1 after
+            if (this.drums[randomIndex].includes(2)){
+                console.log('second level bass drum')
+                this.drums[this.mod((randomIndex+1),this.drums.length)].push(0);
+                this.drums[this.mod((randomIndex+1),this.drums.length)] = [... new Set(this.drums[this.mod((randomIndex-1),this.drums.length)])];
+            }
 
         } else {
             //third level
