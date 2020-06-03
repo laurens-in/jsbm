@@ -123,6 +123,33 @@ drumslow = [
 
 const chords = [[0, 7], [0, 8], [0, 5], [0, 6], [0, 7, 12, 15], [0, 7, 14]]
 
+chord_templates = Array(
+    { type: 'power', shape: [0, 7, 12] },
+    { type: 'diade', shape: [0, 7] },
+    { type: 'diade', shape: [0, 8] },
+    { type: 'diade', shape: [0, 9] },
+    { type: 'barre', shape: [0, 7, 12, 15] },
+);
+
+note = 24;
+
+function make_chord(note, type) {
+    const template = chord_templates.filter(t => t.type === type);
+    const chords = template.map(t => {
+        return Object.assign({type: type}, {chord: t.shape.map(n => n + note)});
+    })
+    return chords;
+}
+
+// 1. generate sequence of notes
+notes = [24, 35, 48, 23, 25];
+
+let generated_chords = notes.map(note => make_chord(note, Math.random() > 0.5 ? 'power' : 'barre'))
+
+generated_chords.filter(c => c.type === 'power');
+// or
+generated_chords.filter(c => c.type === 'barre');
+
 function getChord(note){
     let random = Math.floor(Math.random()* chords.length)
     return chords[random].map(x => (x + note))
