@@ -13,7 +13,7 @@ class GuitarSampler {
         this.dist = new Tone.Distortion(1.5);
         this.guitarOut = new Tone.Gain(0.9);
         this.pan = new Tone.Panner(panning);
-        this.guitarOut.chain(this.dist, this.pan, Tone.Master);
+        this.guitarOut.chain(this.dist, this.pan, reverb, Tone.Master);
 
         this.guitar1 = new Tone.Sampler({
             'C1' : "Guitar/guitar10.opus",  
