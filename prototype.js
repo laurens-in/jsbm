@@ -212,6 +212,10 @@ polytree.base_pattern.generate_guitar();
 polytree.permute();
 polytree.pattern_1.permute();
 polytree.pattern_2.permute();
+polytree.pattern_1.pattern_1.permute();
+polytree.pattern_1.pattern_2.permute();
+polytree.pattern_2.pattern_1.permute();
+polytree.pattern_2.pattern_2.permute();
 
 
 
@@ -223,7 +227,11 @@ drumPatterns = [
     polytree.pattern_1.pattern_2.base_pattern.drums,
     polytree.pattern_1.pattern_1.base_pattern.drums,
     polytree.pattern_2.pattern_1.base_pattern.drums,
-    polytree.pattern_2.pattern_2.base_pattern.drums
+    polytree.pattern_2.pattern_2.base_pattern.drums,
+    polytree.pattern_1.pattern_2.pattern_1.base_pattern.drums,
+    polytree.pattern_1.pattern_1.pattern_2.base_pattern.drums,
+    polytree.pattern_2.pattern_1.pattern_1.base_pattern.drums,
+    polytree.pattern_2.pattern_2.pattern_2.base_pattern.drums
 ]
 
 guitarPatterns = [
@@ -234,7 +242,11 @@ guitarPatterns = [
     polytree.pattern_1.pattern_2.base_pattern.guitar,
     polytree.pattern_1.pattern_1.base_pattern.guitar,
     polytree.pattern_2.pattern_1.base_pattern.guitar,
-    polytree.pattern_2.pattern_2.base_pattern.guitar
+    polytree.pattern_2.pattern_2.base_pattern.guitar,
+    polytree.pattern_1.pattern_2.pattern_1.base_pattern.guitar,
+    polytree.pattern_1.pattern_1.pattern_2.base_pattern.guitar,
+    polytree.pattern_2.pattern_1.pattern_1.base_pattern.guitar,
+    polytree.pattern_2.pattern_2.pattern_2.base_pattern.guitar
 ]
 
 

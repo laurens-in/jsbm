@@ -48,17 +48,40 @@ class PolyphoneSequence {
 
     permuteDrum(value = 0) {
 
-        const bd_add_remove = 0.6; // 0 ... 1 probability 0 = remove, 1 = add
-        const sd_add_remove = 0.4; // 0 ... 1 probability
-        const hh_add_remove = 0.5; // 0 ... 1 probability
+        const bd_add = 0.4; // 0 ... 1 probability 0 = remove, 1 = add
+        const bd_remove = 0.1; // 0 ... 1 probability 0 = remove, 1 = add
+        const sd_add = 0.8; // 0 ... 1 probability
+        const sd_remove = 0.1; // 0 ... 1 probability
+        const hh_add = 0.2; // 0 ... 1 probability
+        const hh_remove = 0.2; // 0 ... 1 probability
 
         // remove
         for (const step of this.drums.keys()) {
             // work on quarter notes
             if (step % 4 == 0) {
-                (Math.random() > bd_add_remove )? this.remove_instr(step, DRUMTYPES.BD) : this.add_instr(step, DRUMTYPES.BD);
-                (Math.random() > sd_add_remove )? this.remove_instr(step, DRUMTYPES.SD) : this.add_instr(step, DRUMTYPES.SD);
-                (Math.random() > hh_add_remove )? this.remove_instr(step, DRUMTYPES.HH) : this.add_instr(step, DRUMTYPES.HH);
+                (Math.random() < bd_remove)? this.remove_instr(step, DRUMTYPES.BD) : undefined;
+                (Math.random() < bd_add)? this.add_instr(step, DRUMTYPES.BD) : undefined;
+                (Math.random() < sd_remove)? this.remove_instr(step, DRUMTYPES.SD) : undefined;
+                (Math.random() < sd_add)? this.add_instr(step, DRUMTYPES.SD) : undefined;
+                //(Math.random() > sd_add_remove )? this.remove_instr(step, DRUMTYPES.SD) : this.add_instr(step, DRUMTYPES.SD);
+                //(Math.random() > hh_add_remove )? this.remove_instr(step, DRUMTYPES.HH) : this.add_instr(step, DRUMTYPES.HH);
+            }
+        }
+
+        if (Math.random() < 0.2) {
+            for (const step of this.drums.keys()) {
+                if (step % 3 == 0) {
+                    this.remove_instr(step, DRUMTYPES.BD)
+                    console.log('wup')
+                }
+            }
+        }
+        if (Math.random() < 0.2) {
+            for (const step of this.drums.keys()) {
+                if (step % 8 == 4) {
+                    this.remove_instr(step, DRUMTYPES.HH)
+                    console.log('wupwup')
+                }
             }
         }
 
@@ -68,7 +91,7 @@ class PolyphoneSequence {
         // 0 1 2 3 4 5 6 7   8 9 0 1 2 3 4 5   6 7 8 9 0 1 2 3
         // x x x x x x x x | x x x x x x x x | x x x x x x x x  
         // B - - -   - - -     - - -   - - -     - - - B - - -
-        //   - - - H - - -   H - - - H - - -   H - - - H - - - 
+        // H - - - H - - -   H - - - H - - -   H - - - H - - - 
         //   - - -   - - -     - - - S - - -     - - -   - - -
 
         // ^                          
@@ -113,13 +136,13 @@ class PolyphoneSequence {
             if (this.drums[randomIndex].includes(0) || this.drums[randomIndex].includes(1)){
                 console.log('second level bass drum')
                 this.drums[this.mod((randomIndex+1),this.drums.length)].push(DRUMTYPES.BD);
-                this.drums[this.mod((randomIndex+1),this.drums.length)] = [... new Set(this.drums[this.mod((randomIndex-1),this.drums.length)])];
+                this.drums[this.mod((randomIndex+1),this.drums.length)] = [... new Set(this.drums[this.mod((randomIndex+1),this.drums.length)])];
             }
             // if cymbal add cymbal 1 before or 1 after
             if (this.drums[randomIndex].includes(2)){
                 console.log('second level bass drum')
                 this.drums[this.mod((randomIndex+1),this.drums.length)].push(DRUMTYPES.BD);
-                this.drums[this.mod((randomIndex+1),this.drums.length)] = [... new Set(this.drums[this.mod((randomIndex-1),this.drums.length)])];
+                this.drums[this.mod((randomIndex+1),this.drums.length)] = [... new Set(this.drums[this.mod((randomIndex+1),this.drums.length)])];
             }
 
         } else {
