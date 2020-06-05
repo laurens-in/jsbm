@@ -12,7 +12,14 @@ class PolyphoneSequence {
             });
         };
         this.drums = clone(drum_pattern);
-        this.guitar = [[24, 32], [], [], [], [], [], [], [], [], [], [], [], [25, 33], [], [], [], [], [], [], [], [], [], [], []];
+        
+        // how many notes does the guitar pattern have?
+        // 2 params: count of notes, diversity in notes
+        // how to generate rhythmical structure?
+        // length of notes?
+        // tremolo picking?
+        
+        this.guitar = [];
         this.bass = [];
     }
 
@@ -27,8 +34,59 @@ class PolyphoneSequence {
         return chords
     }
 
+    // harmonize guitar root note pattern
     generate_guitar = () =>  {
-        this.guitar = this.dosomethinginterestingwith(this.guitar);
+        let root_notes = [24, 32];
+        // 1. generate base pattern
+        let base_pattern = [[24, 32], [], [], [], [], [], [], [], [], [], [], [], [25, 33], [], [], [], [], [], [], [], [], [], [], []];
+        
+        // 2. harmonize base pattern
+        let chords = base_pattern.map(function mapper(root_note) {
+            if (Array.isArray(root_note)) {
+                // unpack array
+                return s.flatMap(mapper);
+            } else {
+                // choose chord type
+                let type = Math.random() > 0.5 ? 'power' : 'dyade';
+
+                // generate array of all chords matching the type
+                let chordtypes = make_chords(root_note, type);
+                return chordtypes[Math.floor(Math.random() * chordtypes.length)];
+            }
+        })
+        this.guitar = chords;
+    }
+
+    // TODO: implement permuteGuitar()
+    permuteGuitar() {
+        // 1. change rhythmical structure
+        // 2. replace chord types
+    }
+
+    // TODO: implement melody generator
+    // how to generate melody from harmonic structure? -> select from chord, and generte rhythmical structure, repeating the set of notes if necessary
+    generate_melody() {
+        const base_chord = [0, 7, 12, 15];
+        let melody_pattern = [];
+
+        this.guitar.forEach(chord_set => {
+            let selected_chord_set = base_chord;
+            if (chord_set.length > 0) {
+                // there is a new set of chords
+                // select one of the chords in the chord set
+                selected_chord_set = chord_set[Math.floor(Math.random() * chord_set.length)];
+            }
+            // use the chords from a previous selection
+            // TODO: think about adding Tone.js Notes including length and dynamics instead if MIDI note numbers
+            if (Math.random() > chance_of_melody) {
+                melody_pattern.push(selected_chord_set[Math.floor(Math.random() * selected_chord_set.length)]);
+            } else {
+                melody_pattern.push(null);
+            }
+        })
+        return melody_pattern;
+        // or
+        // this.guitar_melody = melody_pattern;
     }
 
     generate_bass = () =>  {
