@@ -10,7 +10,7 @@ class GuitarSampler {
     guitar5;
 
     constructor(panning, baseurl = "./assets/samples/") {
-        this.dist = new Tone.Distortion(1.5);
+        this.dist = new Tone.Distortion(0.25);
         this.guitarOut = new Tone.Gain(0.9);
         this.pan = new Tone.Panner(panning);
         this.guitarOut.chain(this.dist, this.pan, reverb, Tone.Master);

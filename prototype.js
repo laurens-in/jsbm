@@ -60,6 +60,7 @@ let noteArray = [
     [71, "B4"],
 
 ];
+
 let noteMap = new Map(noteArray);
 
 // kick = 0, snare = 1, closed hihat = 2, open hihat = 3,
@@ -77,6 +78,10 @@ function getDrum(note){
 
 function getNote(note){
     return noteMap.get(note);
+}
+function getLength(length){
+    let base_length = (60 / BPM) / 16;
+    return length * base_length;
 }
 
 
@@ -125,10 +130,19 @@ const chords = [[0, 7], [0, 8], [0, 5], [0, 6], [0, 7, 12, 15], [0, 7, 14]]
 
 chord_templates = Array(
     { type: 'power', shape: [0, 7, 12] },
-    { type: 'dyade', shape: [0, 7] },
-    { type: 'dyade', shape: [0, 8] },
-    { type: 'dyade', shape: [0, 9] },
-    { type: 'barre', shape: [0, 7, 12, 15] },
+    { type: 'dyad', shape: [0, 7] },
+    { type: 'dyad', shape: [0, 8] },
+    { type: 'dyad', shape: [0, 9] },
+    { type: 'dyad', shape: [0, 5] },
+    { type: 'dyad', shape: [0, 3] },
+    { type: 'dyad', shape: [0, 2] },
+    { type: 'dyad', shape: [0, 1] },
+    { type: 'tryad', shape: [0, 7, 14] },
+    { type: 'tryad', shape: [0, 7, 15] },
+    { type: 'tryad', shape: [0, 7, 11] },
+    { type: 'barre', shape: [0, 7, 12, 15, 19, 24] },
+    { type: 'barre', shape: [0, 7, 12, 14, 15, 24] },
+    { type: 'barre', shape: [0, 7, 12, 14, 17, 24] },
 );
 
 note = 24;
@@ -210,6 +224,7 @@ console.dir(polytree);
 console.log('second iter with poly seq');
 
 polytree.base_pattern.generate_guitar();
+polytree.base_pattern.generate_melody();
 polytree.permute();
 polytree.pattern_1.permute();
 polytree.pattern_2.permute();
@@ -250,25 +265,42 @@ guitarPatterns = [
     polytree.pattern_2.pattern_2.pattern_2.base_pattern.guitar
 ]
 
+guitarMelodies = [
+    polytree.base_pattern.guitar_melody,
+    polytree.pattern_1.base_pattern.guitar_melody,
+    polytree.base_pattern.guitar_melody,
+    polytree.pattern_2.base_pattern.guitar_melody,
+    polytree.pattern_1.pattern_2.base_pattern.guitar_melody,
+    polytree.pattern_1.pattern_1.base_pattern.guitar_melody,
+    polytree.pattern_2.pattern_1.base_pattern.guitar_melody,
+    polytree.pattern_2.pattern_2.base_pattern.guitar_melody,
+    polytree.pattern_1.pattern_2.pattern_1.base_pattern.guitar_melody,
+    polytree.pattern_1.pattern_1.pattern_2.base_pattern.guitar_melody,
+    polytree.pattern_2.pattern_1.pattern_1.base_pattern.guitar_melody,
+    polytree.pattern_2.pattern_2.pattern_2.base_pattern.guitar_melody
+]
+
 
 let patterncount = 0;
 let stepcount = 0;
 
 let drumpat = polytree.base_pattern.drums;
 let guitarpat = polytree.base_pattern.guitar;
+let guitarmel = polytree.base_pattern.guitar_melody;
 
 Tone.Transport.start();
-Tone.Transport.bpm.value = 70;
+Tone.Transport.bpm.value = 140;
 
 var drumloop = new Tone.Loop(function(time){
-    guitarPlayerLeft.playGuitar(guitarpat[stepcount%guitarpat.length].flatMap(x => getNote(x)), '2n', time);
-    guitarPlayerRight.playGuitar(guitarpat[stepcount%guitarpat.length].flatMap(x => getNote(x)), '2n', time);
+    guitarPlayerLeft.playGuitar(guitarpat[stepcount%guitarpat.length].flatMap(x => getNote(x)), '4n.', time);
+    guitarPlayerRight.playGuitar(guitarmel[stepcount%guitarmel.length].flatMap(x => getNote(x)), '4n.', time);
     console.log(guitarpat[stepcount%guitarpat.length]);
     drum.kit.triggerAttackRelease(drumpat[stepcount%drumpat.length].flatMap(x => getDrum(x)), '4n', time);
     stepcount++;
     if (stepcount%polytree.base_pattern.drums.length == 0){
         patterncount++;
         drumpat = drumPatterns[patterncount%drumPatterns.length];
-        guitarpat = guitarPatterns[patterncount%guitarPatterns.length]
+        guitarpat = guitarPatterns[patterncount%guitarPatterns.length];
+        guitarmel = guitarMelodies[patterncount%guitarMelodies.length];
     }
-}, "32n");
+}, "16n");

@@ -21,37 +21,37 @@ class PolyphoneSequence {
         
         this.guitar = [];
         this.bass = [];
+        this.guitar_melody = [];
     }
 
-    dosomethinginterestingwith(input) {
-        let chords = input.map(function mapper(s){
-            if (Array.isArray(s)) {
-                return s.flatMap(mapper);
-            } else {
-                return getChord(s)
-            }
-        })
-        return chords
-    }
+    // dosomethinginterestingwith(input) {
+    //     let chords = input.map(function mapper(s){
+    //         if (Array.isArray(s)) {
+    //             return s.flatMap(mapper);
+    //         } else {
+    //             return getChord(s)
+    //         }
+    //     })
+    //     return chords
+    // }
 
     // harmonize guitar root note pattern
     generate_guitar = () =>  {
-        let root_notes = [24, 32];
         // 1. generate base pattern
-        let base_pattern = [[24, 32], [], [], [], [], [], [], [], [], [], [], [], [25, 33], [], [], [], [], [], [], [], [], [], [], []];
+        let base_pattern = [[24], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [27], [], [], [], [], [], [], []];
         
         // 2. harmonize base pattern
         let chords = base_pattern.map(function mapper(root_note) {
             if (Array.isArray(root_note)) {
                 // unpack array
-                return s.flatMap(mapper);
+                return root_note.flatMap(mapper);
             } else {
                 // choose chord type
-                let type = Math.random() > 0.5 ? 'power' : 'dyade';
+                let type = Math.random() < 0.7 ? 'barre' : 'dyad';
 
                 // generate array of all chords matching the type
                 let chordtypes = make_chords(root_note, type);
-                return chordtypes[Math.floor(Math.random() * chordtypes.length)];
+                return chordtypes[Math.floor(Math.random() * chordtypes.length)].chord;
             }
         })
         this.guitar = chords;
@@ -67,24 +67,34 @@ class PolyphoneSequence {
     // how to generate melody from harmonic structure? -> select from chord, and generte rhythmical structure, repeating the set of notes if necessary
     generate_melody() {
         const base_chord = [0, 7, 12, 15];
-        let melody_pattern = [];
-
-        this.guitar.forEach(chord_set => {
-            let selected_chord_set = base_chord;
+        let melody = [];
+        let melody_pattern = [5, 4, 3, 4, 3, 2];
+        let melody_index = 0;
+        let selected_chord_set = base_chord;
+        this.guitar.forEach((chord_set, i) => {
             if (chord_set.length > 0) {
                 // there is a new set of chords
                 // select one of the chords in the chord set
-                selected_chord_set = chord_set[Math.floor(Math.random() * chord_set.length)];
+                //selected_chord_set = chord_set[Math.floor(Math.random() * chord_set.length)];
+                selected_chord_set = chord_set
             }
             // use the chords from a previous selection
             // TODO: think about adding Tone.js Notes including length and dynamics instead if MIDI note numbers
-            if (Math.random() > chance_of_melody) {
-                melody_pattern.push(selected_chord_set[Math.floor(Math.random() * selected_chord_set.length)]);
+            if (i % 4 == 0 && Math.random() < 0.99) {
+                melody[i] = [selected_chord_set[melody_pattern[melody_index % melody_pattern.length] % selected_chord_set.length]];
+                melody_index += 1;
+            } else if (i % 4 == 2 && Math.random() < 0.2){
+                //melody[i] = [selected_chord_set[Math.floor(Math.random() * selected_chord_set.length)]];
+                melody[i] = [selected_chord_set[melody_pattern[melody_index % melody_pattern.length] % selected_chord_set.length]];
+                melody_index += 1;
+            } else if (i % 4 == 3 && Math.random() < 0){
+                melody[i] = [selected_chord_set[melody_pattern[melody_index % melody_pattern.length] % selected_chord_set.length]];
+                melody_index += 1;
             } else {
-                melody_pattern.push(null);
+                melody[i] = [];
             }
         })
-        return melody_pattern;
+        this.guitar_melody = melody;
         // or
         // this.guitar_melody = melody_pattern;
     }
@@ -116,7 +126,7 @@ class PolyphoneSequence {
         // remove
         for (const step of this.drums.keys()) {
             // work on quarter notes
-            if (step % 7 == 0) {
+            if (step % 8 == 0) {
                 (Math.random() < bd_remove)? this.remove_instr(step, DRUMTYPES.BD) : undefined;
                 (Math.random() < bd_add)? this.add_instr(step, DRUMTYPES.BD) : undefined;
                 (Math.random() < sd_remove)? this.remove_instr(step, DRUMTYPES.SD) : undefined;
@@ -128,7 +138,7 @@ class PolyphoneSequence {
 
         if (Math.random() < 0.5) {
             for (const step of this.drums.keys()) {
-                if (step % 5 == 0) {
+                if (step % 3 == 0) {
                     this.add_instr(step, DRUMTYPES.BD)
                 }
             }
@@ -213,6 +223,7 @@ class PolyphoneSequence {
     randomize() {
         const next = new PolyphoneSequence(this.drums);
         next.generate_guitar();
+        next.generate_melody();
         //next.generate_bass();
         next.permuteDrum();
         return next;
