@@ -38,7 +38,7 @@ class PolyphoneSequence {
     // harmonize guitar root note pattern
     generate_guitar = () =>  {
         // 1. generate base pattern
-        let base_pattern = [[24], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [27], [], [], [], [], [], [], []];
+        let base_pattern = [[30], [], [], [], [], [], [], [], [], [], [], [], [35], [], [], [], [], [], [], [], [], [], [], []];
         
         // 2. harmonize base pattern
         let chords = base_pattern.map(function mapper(root_note) {
@@ -81,14 +81,14 @@ class PolyphoneSequence {
             // use the chords from a previous selection
             // TODO: think about adding Tone.js Notes including length and dynamics instead if MIDI note numbers
             if (i % 4 == 0 && Math.random() < 0.99) {
-                melody[i] = [selected_chord_set[melody_pattern[melody_index % melody_pattern.length] % selected_chord_set.length] + 12];
+                melody[i] = [selected_chord_set[melody_pattern[melody_index % melody_pattern.length] % selected_chord_set.length]];
                 melody_index += 1;
             } else if (i % 4 == 2 && Math.random() < 0.2){
                 //melody[i] = [selected_chord_set[Math.floor(Math.random() * selected_chord_set.length)]];
-                melody[i] = [selected_chord_set[melody_pattern[melody_index % melody_pattern.length] % selected_chord_set.length] + 12];
+                melody[i] = [selected_chord_set[melody_pattern[melody_index % melody_pattern.length] % selected_chord_set.length]];
                 melody_index += 1;
             } else if (i % 4 == 3 && Math.random() < 0){
-                melody[i] = [selected_chord_set[melody_pattern[melody_index % melody_pattern.length] % selected_chord_set.length] + 12];
+                melody[i] = [selected_chord_set[melody_pattern[melody_index % melody_pattern.length] % selected_chord_set.length]];
                 melody_index += 1;
             } else {
                 melody[i] = [];
