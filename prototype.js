@@ -91,7 +91,7 @@ let guitarSamplerLeft = new GuitarSampler(-0.9, 2);
 let guitarPlayerLeft = new GuitarPlayer(guitarSamplerLeft);
 let guitarSamplerRight = new GuitarSampler(0.9, 2);
 let guitarPlayerRight = new GuitarPlayer(guitarSamplerRight, 3);
-let guitarSamplerLead = new GuitarSampler(0, 2);
+let guitarSamplerLead = new GuitarSampler(-0.2, 2);
 let guitarPlayerLead = new GuitarPlayer(guitarSamplerLead, 4);
 
 drumfast = [
@@ -127,8 +127,6 @@ drumslow = [
         [2], 
     ]
 ];
-
-const chords = [[0, 7], [0, 8], [0, 5], [0, 6], [0, 7, 12, 15], [0, 7, 14]]
 
 chord_templates = Array(
     { type: 'power', shape: [0, 7, 12] },
