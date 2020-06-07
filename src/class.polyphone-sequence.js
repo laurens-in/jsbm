@@ -47,7 +47,7 @@ class PolyphoneSequence {
                 return root_note.flatMap(mapper);
             } else {
                 // choose chord type
-                let type = Math.random() < 0.5 ? 'barre' : 'tryad';
+                let type = Math.random() < 0.5 ? 'barre' : 'barre';
 
                 // generate array of all chords matching the type
                 let chordtypes = make_chords(root_note, type);
@@ -68,7 +68,7 @@ class PolyphoneSequence {
     generate_melody() {
         const base_chord = [0, 7, 12, 15];
         let melody = [];
-        let melody_pattern = [6,5,4];
+        let melody_pattern = [0,5,4,3,2,1];
         let melody_index = 0;
         let selected_chord_set = base_chord;
         this.guitar.forEach((chord_set, i) => {
@@ -80,14 +80,14 @@ class PolyphoneSequence {
             }
             // use the chords from a previous selection
             // TODO: think about adding Tone.js Notes including length and dynamics instead if MIDI note numbers
-            if (i % 4 == 0 && Math.random() < 0.99) {
+            if (i % 8 == 0 && Math.random() < 0.99) {
                 melody[i] = [selected_chord_set[melody_pattern[melody_index % melody_pattern.length] % selected_chord_set.length]];
                 melody_index += 1;
-            } else if (i % 4 == 2 && Math.random() < 0.8){
+            } else if (i % 8 == 4 && Math.random() < 0.8){
                 //melody[i] = [selected_chord_set[Math.floor(Math.random() * selected_chord_set.length)]];
                 melody[i] = [selected_chord_set[melody_pattern[melody_index % melody_pattern.length] % selected_chord_set.length]];
                 melody_index += 1;
-            } else if (i % 4 == 3 && Math.random() < 0.1){
+            } else if (i % 4 == 3 && Math.random() < 0){
                 melody[i] = [selected_chord_set[melody_pattern[melody_index % melody_pattern.length] % selected_chord_set.length]];
                 melody_index += 1;
             } else {
