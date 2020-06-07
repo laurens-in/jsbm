@@ -68,7 +68,7 @@ class PolyphoneSequence {
     generate_melody() {
         const base_chord = [0, 7, 12, 15];
         let melody = [];
-        let melody_pattern = [0, 6, 5, 6, 5];
+        let melody_pattern = [6,5,4];
         let melody_index = 0;
         let selected_chord_set = base_chord;
         this.guitar.forEach((chord_set, i) => {
@@ -83,11 +83,11 @@ class PolyphoneSequence {
             if (i % 4 == 0 && Math.random() < 0.99) {
                 melody[i] = [selected_chord_set[melody_pattern[melody_index % melody_pattern.length] % selected_chord_set.length]];
                 melody_index += 1;
-            } else if (i % 4 == 2 && Math.random() < 0.2){
+            } else if (i % 4 == 2 && Math.random() < 0.8){
                 //melody[i] = [selected_chord_set[Math.floor(Math.random() * selected_chord_set.length)]];
                 melody[i] = [selected_chord_set[melody_pattern[melody_index % melody_pattern.length] % selected_chord_set.length]];
                 melody_index += 1;
-            } else if (i % 4 == 3 && Math.random() < 0){
+            } else if (i % 4 == 3 && Math.random() < 0.1){
                 melody[i] = [selected_chord_set[melody_pattern[melody_index % melody_pattern.length] % selected_chord_set.length]];
                 melody_index += 1;
             } else {

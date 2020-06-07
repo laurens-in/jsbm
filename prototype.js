@@ -86,7 +86,7 @@ function getLength(length){
 
 
 // defining instruments
-let drum = new Drum();
+let drum = new Drum(0.8);
 let guitarSamplerLeft = new GuitarSampler(1.5, 0, -0.9);
 let guitarPlayerLeft = new GuitarPlayer(guitarSamplerLeft);
 let guitarSamplerRight = new GuitarSampler(1.5, 0, 0.9);
@@ -296,7 +296,7 @@ var drumloop = new Tone.Loop(function(time){
     guitarPlayerRight.playGuitar(guitarpat[stepcount%guitarpat.length].flatMap(x => getNote(x)), '2n', time);
     guitarPlayerLead.playGuitar(guitarmel[stepcount%guitarmel.length].flatMap(x => getNote(x)), '2n', time);
     console.log(guitarpat[stepcount%guitarpat.length]);
-    drum.kit.triggerAttackRelease(drumpat[stepcount%drumpat.length].flatMap(x => getDrum(x)), '4n', time);
+    drum.kit.triggerAttackRelease(drumpat[stepcount%drumpat.length].flatMap(x => getDrum(x)), '1n', time);
     stepcount++;
     if (stepcount%polytree.base_pattern.drums.length == 0){
         patterncount++;
