@@ -87,10 +87,12 @@ function getLength(length){
 
 // defining instruments
 let drum = new Drum();
-let guitarSamplerLeft = new GuitarSampler(-0.9);
+let guitarSamplerLeft = new GuitarSampler(-0.9, 2);
 let guitarPlayerLeft = new GuitarPlayer(guitarSamplerLeft);
-let guitarSamplerRight = new GuitarSampler(0.9);
+let guitarSamplerRight = new GuitarSampler(0.9, 2);
 let guitarPlayerRight = new GuitarPlayer(guitarSamplerRight, 3);
+let guitarSamplerLead = new GuitarSampler(0, 2);
+let guitarPlayerLead = new GuitarPlayer(guitarSamplerLead, 4);
 
 drumfast = [
     [
@@ -293,7 +295,8 @@ Tone.Transport.bpm.value = 140;
 
 var drumloop = new Tone.Loop(function(time){
     guitarPlayerLeft.playGuitar(guitarpat[stepcount%guitarpat.length].flatMap(x => getNote(x)), '4n.', time);
-    guitarPlayerRight.playGuitar(guitarmel[stepcount%guitarmel.length].flatMap(x => getNote(x)), '4n.', time);
+    guitarPlayerRight.playGuitar(guitarpat[stepcount%guitarpat.length].flatMap(x => getNote(x)), '4n.', time);
+    guitarPlayerLead.playGuitar(guitarmel[stepcount%guitarmel.length].flatMap(x => getNote(x)), '4n.', time);
     console.log(guitarpat[stepcount%guitarpat.length]);
     drum.kit.triggerAttackRelease(drumpat[stepcount%drumpat.length].flatMap(x => getDrum(x)), '4n', time);
     stepcount++;
