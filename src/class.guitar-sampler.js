@@ -11,9 +11,10 @@ class GuitarSampler {
 
     constructor(volume, distortion, panning, baseurl = "./assets/samples/") {
         this.dist = new Tone.Distortion(distortion);
-        this.guitarOut = new Tone.Gain(volume);
+        this.guitarOut = new Tone.Gain(1);
+        this.volume = new Tone.Gain(volume);
         this.pan = new Tone.Panner(panning);
-        this.guitarOut.chain(this.dist, this.pan, reverb, Tone.Master);
+        this.guitarOut.chain(this.dist, this.volume, this.pan, reverb, Tone.Master);
 
         this.guitar1 = new Tone.Sampler({
             'C1' : "Guitar/guitar10.opus",  

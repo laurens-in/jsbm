@@ -38,7 +38,7 @@ class PolyphoneSequence {
     // harmonize guitar root note pattern
     generate_guitar = () =>  {
         // 1. generate base pattern
-        let base_pattern = [[30], [], [], [], [], [], [], [], [], [], [], [], [35], [], [], [], [], [], [], [], [], [], [], []];
+        let base_pattern = [[28], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [27], [], [], []];
         
         // 2. harmonize base pattern
         let chords = base_pattern.map(function mapper(root_note) {
@@ -47,7 +47,7 @@ class PolyphoneSequence {
                 return root_note.flatMap(mapper);
             } else {
                 // choose chord type
-                let type = Math.random() < 0.5 ? 'barre' : 'barre';
+                let type = Math.random() < 0.5 ? 'barre' : 'tryad';
 
                 // generate array of all chords matching the type
                 let chordtypes = make_chords(root_note, type);
@@ -68,7 +68,7 @@ class PolyphoneSequence {
     generate_melody() {
         const base_chord = [0, 7, 12, 15];
         let melody = [];
-        let melody_pattern = [0,5,4,3,2,1];
+        let melody_pattern = [2, 6, 5, 6, 4, 3];
         let melody_index = 0;
         let selected_chord_set = base_chord;
         this.guitar.forEach((chord_set, i) => {
@@ -76,14 +76,28 @@ class PolyphoneSequence {
                 // there is a new set of chords
                 // select one of the chords in the chord set
                 //selected_chord_set = chord_set[Math.floor(Math.random() * chord_set.length)];
-                selected_chord_set = chord_set
+                
+                // use the same chord as rhythm guitar
+                //selected_chord_set = chord_set working
+                //return selected_chord_set
+
+                // make a new chord or scale
+                //let chordtypes = make_chords(chord_set[0], 'barre');
+                //selected_chord_set = chordtypes[Math.floor(Math.random() * chordtypes.length)].chord;
+                //melody_index = Math.floor(Math.random() * melody_pattern.length);
+
+                let melody_barre = make_chords(chord_set[0], 'barre');
+                let melody_dyad = make_chords(chord_set[0], 'dyad');
+                selected_chord_set = mergeArrays(melody_barre[Math.floor(Math.random() * melody_barre.length)].chord, melody_dyad[Math.floor(Math.random() * melody_dyad.length)].chord, melody_dyad[Math.floor(Math.random() * melody_dyad.length)].chord)
+                console.log(selected_chord_set)
+
             }
             // use the chords from a previous selection
             // TODO: think about adding Tone.js Notes including length and dynamics instead if MIDI note numbers
-            if (i % 8 == 0 && Math.random() < 0.99) {
+            if (i % 3 == 0 && Math.random() < 0.9) {
                 melody[i] = [selected_chord_set[melody_pattern[melody_index % melody_pattern.length] % selected_chord_set.length]];
-                melody_index += 1;
-            } else if (i % 8 == 4 && Math.random() < 0.8){
+                Math.random() < 0.99 ? melody_index += 1 : melody_index += 2;
+            } else if (i % 4 == 2 && Math.random() < 0){
                 //melody[i] = [selected_chord_set[Math.floor(Math.random() * selected_chord_set.length)]];
                 melody[i] = [selected_chord_set[melody_pattern[melody_index % melody_pattern.length] % selected_chord_set.length]];
                 melody_index += 1;
@@ -117,9 +131,9 @@ class PolyphoneSequence {
     permuteDrum(value = 0) {
 
         const bd_add = 0.4; // 0 ... 1 probability 0 = remove, 1 = add
-        const bd_remove = 0.1; // 0 ... 1 probability 0 = remove, 1 = add
+        const bd_remove = 0.2; // 0 ... 1 probability 0 = remove, 1 = add
         const sd_add = 0.3; // 0 ... 1 probability
-        const sd_remove = 0.1; // 0 ... 1 probability
+        const sd_remove = 0.2; // 0 ... 1 probability
         const hh_add = 0.2; // 0 ... 1 probability
         const hh_remove = 0.2; // 0 ... 1 probability
 
@@ -176,22 +190,17 @@ class PolyphoneSequence {
                 console.log('first level bass drum')
                 if (Math.random() < 0.6){
                     // TODO: use this.add_instr(step, DRUMTYPE.X)
-                    this.drums[this.mod((randomIndex-2),this.drums.length)].push(DRUMTYPES.BD);
-                    this.drums[this.mod((randomIndex-2),this.drums.length)] = [... new Set(this.drums[this.mod((randomIndex-2),this.drums.length)])];
+                    this.add_instr(randomIndex - 2, DRUMTYPES.BD)
                 } else {
-                    this.drums[this.mod((randomIndex+2),this.drums.length)].push(DRUMTYPES.BD);
-                    this.drums[this.mod((randomIndex+2),this.drums.length)] = [... new Set(this.drums[this.mod((randomIndex+2),this.drums.length)])];
+                    this.add_instr(randomIndex + 2, DRUMTYPES.BD)
                 }
             }
             // add cymbal 2 before or 2 after
             if (this.drums[randomIndex].includes(2)){
-                console.log('first level bass drum')
                 if (Math.random() < 0.6){
-                    this.drums[this.mod((randomIndex-2),this.drums.length)].push(2);
-                    this.drums[this.mod((randomIndex-2),this.drums.length)] = [... new Set(this.drums[this.mod((randomIndex-2),this.drums.length)])];
+                    this.add_instr(randomIndex - 2, DRUMTYPES.HH)
                 } else {
-                    this.drums[this.mod((randomIndex+2),this.drums.length)].push(2);
-                    this.drums[this.mod((randomIndex+2),this.drums.length)] = [... new Set(this.drums[this.mod((randomIndex+2),this.drums.length)])];
+                    this.add_instr(randomIndex - 2, DRUMTYPES.HH)
                 }
             }
 

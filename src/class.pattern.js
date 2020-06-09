@@ -1,11 +1,10 @@
 class Pattern {
 
-    constructor(handwritten) {
-        this.base_pattern = handwritten;
+    constructor(pattern) {
+        this.base_pattern = pattern;
     }
 
     permute() {
-        // let randomized = this.base_pattern.randomize(); // in case of base_pattern being an instance of PolyphoneSequence
         let randomized_1 = this.base_pattern.randomize();
         let randomized_2 = this.base_pattern.randomize();
         this.pattern_1 = new Pattern(randomized_1);

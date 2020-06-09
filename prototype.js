@@ -63,6 +63,19 @@ let noteArray = [
 
 let noteMap = new Map(noteArray);
 
+function mergeArrays(...arrays) {
+    let jointArray = []
+
+    arrays.forEach(array => {
+        jointArray = [...jointArray, ...array]
+    });
+    let numbers = [...new Set([...jointArray])];
+    numbers.sort(function(a, b) {
+        return a - b;
+    });
+    return numbers; 
+}
+
 // kick = 0, snare = 1, closed hihat = 2, open hihat = 3,
 function getDrum(note){
     if (note == 0){
@@ -87,11 +100,11 @@ function getLength(length){
 
 // defining instruments
 let drum = new Drum(0.8);
-let guitarSamplerLeft = new GuitarSampler(1.5, 0, -0.9);
+let guitarSamplerLeft = new GuitarSampler(1, 0, -0.9);
 let guitarPlayerLeft = new GuitarPlayer(guitarSamplerLeft);
-let guitarSamplerRight = new GuitarSampler(1.5, 0, 0.9);
+let guitarSamplerRight = new GuitarSampler(1, 0, 0.9);
 let guitarPlayerRight = new GuitarPlayer(guitarSamplerRight, 3);
-let guitarSamplerLead = new GuitarSampler(1.5, 0, -0.2);
+let guitarSamplerLead = new GuitarSampler(1, 0, -0.2);
 let guitarPlayerLead = new GuitarPlayer(guitarSamplerLead, 4);
 
 drumfast = [
@@ -132,17 +145,18 @@ chord_templates = Array(
     { type: 'power', shape: [0, 7, 12] },
     { type: 'dyad', shape: [0, 7] },
     { type: 'dyad', shape: [0, 8] },
-    { type: 'dyad', shape: [0, 9] },
     { type: 'dyad', shape: [0, 5] },
     { type: 'dyad', shape: [0, 3] },
     { type: 'dyad', shape: [0, 2] },
     { type: 'dyad', shape: [0, 1] },
+    { type: 'dyad', shape: [0, 10] },
     { type: 'tryad', shape: [0, 7, 14] },
     { type: 'tryad', shape: [0, 7, 15] },
-    { type: 'tryad', shape: [0, 7, 11] },
     { type: 'barre', shape: [0, 7, 12, 15, 19, 24] },
     { type: 'barre', shape: [0, 7, 12, 14, 15, 24] },
     { type: 'barre', shape: [0, 7, 12, 14, 17, 24] },
+    { type: 'melody', shape: [0, 2, 3, 5, 7, 8, 10, 12] },
+    { type: 'melody', shape: [0, 2, 3, 5, 7, 8, 11, 12] }
 );
 
 note = 24;
@@ -171,8 +185,7 @@ function getChord(note){
 }
 
 function firstDrum(length){
-    let random = Math.floor(Math.random() * 2);
-    if (random == 0){
+    if (Math.random() < 0.7){
         return slowDrum(length)
     } else {
         return fastDrum(length * 4)
@@ -289,7 +302,7 @@ let guitarpat = polytree.base_pattern.guitar;
 let guitarmel = polytree.base_pattern.guitar_melody;
 
 Tone.Transport.start();
-Tone.Transport.bpm.value = 140;
+Tone.Transport.bpm.value = 90;
 
 var drumloop = new Tone.Loop(function(time){
     guitarPlayerLeft.playGuitar(guitarpat[stepcount%guitarpat.length].flatMap(x => getNote(x)), '2n', time);
