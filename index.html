@@ -113,9 +113,10 @@
         max-width: 50vw;
         max-height: 50vh;
     }
+
 </style>
 
-<body>
+<body id='body'>
     <main>
         <div class="logo">
             <img src="assets/images/liveeternallogo.png" class="logoimg">
@@ -144,6 +145,27 @@
     <script src="src/class.guitar-player.js"></script>
     <script src="prototype.js"></script>
     <script>
+        if(!((!(navigator.userAgent.toLowerCase().indexOf('firefox') > -1)) && (navigator.userAgent.toLowerCase().indexOf('chrome') > -1) || ((navigator.userAgent.toLowerCase().indexOf('firefox') > -1) && (!(navigator.userAgent.toLowerCase().indexOf('chrome') > -1))))){
+            var div = document.createElement("div");
+            div.style.display = "flex";
+            div.style.justifyContent = "center";
+            div.style.alignItems = "center";
+            div.style.textAlign = "center";
+            div.style.position = "absolute";
+            div.style.top = "0";
+            div.style.left = "0";
+            div.style.margin = "auto";
+            div.style.minWidth= "100%";
+            div.style.minHeight = "7%";
+            div.style.background = "red";
+            div.style.color = "black";
+            div.innerHTML = "Looks like you're accessing this site from an unsupported browser. If the composition doesn't start try using Firefox, Chromium or Chrome.";
+
+            document.getElementById("body").appendChild(div);
+        }
+
+
+
         function toggle(el){
         if(el.className!="pause"){
             el.src='assets/images/pause.png';

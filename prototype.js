@@ -100,11 +100,11 @@ function getLength(length){
 
 // defining instruments
 let drum = new Drum(0.8);
-let guitarSamplerLeft = new GuitarSampler(1, 0, -0.9);
+let guitarSamplerLeft = new GuitarSampler(1, 1.5, -0.9);
 let guitarPlayerLeft = new GuitarPlayer(guitarSamplerLeft);
-let guitarSamplerRight = new GuitarSampler(1, 0, 0.9);
+let guitarSamplerRight = new GuitarSampler(1, 1.5, 0.9);
 let guitarPlayerRight = new GuitarPlayer(guitarSamplerRight, 3);
-let guitarSamplerLead = new GuitarSampler(1, 0, -0.2);
+let guitarSamplerLead = new GuitarSampler(1, 1.5, -0.2);
 let guitarPlayerLead = new GuitarPlayer(guitarSamplerLead, 4);
 
 drumfast = [
@@ -142,8 +142,7 @@ drumslow = [
 ];
 
 chord_templates = Array(
-    { type: 'power', shape: [0, 7, 12] },
-    { type: 'dyad', shape: [0, 7] },
+    { type: 'power', shape: [0, 7] },
     { type: 'dyad', shape: [0, 8] },
     { type: 'dyad', shape: [0, 5] },
     { type: 'dyad', shape: [0, 3] },

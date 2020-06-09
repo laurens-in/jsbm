@@ -38,7 +38,7 @@ class PolyphoneSequence {
     // harmonize guitar root note pattern
     generate_guitar = () =>  {
         // 1. generate base pattern
-        let base_pattern = [[28], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [27], [], [], []];
+        let base_pattern = [[29], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [24], [], [], []];
         
         // 2. harmonize base pattern
         let chords = base_pattern.map(function mapper(root_note) {
@@ -47,7 +47,7 @@ class PolyphoneSequence {
                 return root_note.flatMap(mapper);
             } else {
                 // choose chord type
-                let type = Math.random() < 0.5 ? 'barre' : 'tryad';
+                let type = Math.random() < 0.5 ? 'tryad' : 'tryad';
 
                 // generate array of all chords matching the type
                 let chordtypes = make_chords(root_note, type);
@@ -68,7 +68,7 @@ class PolyphoneSequence {
     generate_melody() {
         const base_chord = [0, 7, 12, 15];
         let melody = [];
-        let melody_pattern = [2, 6, 5, 6, 4, 3];
+        let melody_pattern = [2, 6, 5, 6, 2, 1];
         let melody_index = 0;
         let selected_chord_set = base_chord;
         this.guitar.forEach((chord_set, i) => {
@@ -77,19 +77,17 @@ class PolyphoneSequence {
                 // select one of the chords in the chord set
                 //selected_chord_set = chord_set[Math.floor(Math.random() * chord_set.length)];
                 
-                // use the same chord as rhythm guitar
-                //selected_chord_set = chord_set working
-                //return selected_chord_set
-
-                // make a new chord or scale
-                //let chordtypes = make_chords(chord_set[0], 'barre');
-                //selected_chord_set = chordtypes[Math.floor(Math.random() * chordtypes.length)].chord;
-                //melody_index = Math.floor(Math.random() * melody_pattern.length);
-
-                let melody_barre = make_chords(chord_set[0], 'barre');
-                let melody_dyad = make_chords(chord_set[0], 'dyad');
-                selected_chord_set = mergeArrays(melody_barre[Math.floor(Math.random() * melody_barre.length)].chord, melody_dyad[Math.floor(Math.random() * melody_dyad.length)].chord, melody_dyad[Math.floor(Math.random() * melody_dyad.length)].chord)
-                console.log(selected_chord_set)
+                //use the same chord as rhythm guitar --> arpeggiate
+                
+                if (Math.random() < 0.5) {
+                    selected_chord_set = chord_set
+                    console.log('arpeggiate')
+                } else {
+                    let melody_barre = make_chords(chord_set[0], 'barre');
+                    let melody_dyad = make_chords(chord_set[0], 'dyad');
+                    selected_chord_set = mergeArrays(melody_barre[Math.floor(Math.random() * melody_barre.length)].chord, melody_dyad[Math.floor(Math.random() * melody_dyad.length)].chord, melody_dyad[Math.floor(Math.random() * melody_dyad.length)].chord)
+                    console.log('new set')
+                }
 
             }
             // use the chords from a previous selection
@@ -128,18 +126,16 @@ class PolyphoneSequence {
         this.drums[step] = this.drums[step].filter((inst) => inst != instr);
     }
 
-    permuteDrum(value = 0) {
+    permuteDrum() {
 
-        const bd_add = 0.4; // 0 ... 1 probability 0 = remove, 1 = add
-        const bd_remove = 0.2; // 0 ... 1 probability 0 = remove, 1 = add
-        const sd_add = 0.3; // 0 ... 1 probability
-        const sd_remove = 0.2; // 0 ... 1 probability
-        const hh_add = 0.2; // 0 ... 1 probability
-        const hh_remove = 0.2; // 0 ... 1 probability
+        const bd_add = 0.4;
+        const bd_remove = 0.2;
+        const sd_add = 0.3; 
+        const sd_remove = 0.2; 
+        const hh_add = 0.2; 
+        const hh_remove = 0.2; 
 
-        // remove
         for (const step of this.drums.keys()) {
-            // work on quarter notes
             if (step % 8 == 0) {
                 (Math.random() < bd_remove)? this.remove_instr(step, DRUMTYPES.BD) : undefined;
                 (Math.random() < bd_add)? this.add_instr(step, DRUMTYPES.BD) : undefined;
