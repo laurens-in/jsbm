@@ -20,8 +20,10 @@ class PolyphoneSequence {
         // tremolo picking?
         
         this.guitar = [];
+        this.guitar_lengths = [];
         this.bass = [];
         this.guitar_melody = [];
+        this.guitar_melody_lengths = [];
     }
 
     // dosomethinginterestingwith(input) {
@@ -47,7 +49,7 @@ class PolyphoneSequence {
                 return root_note.flatMap(mapper);
             } else {
                 // choose chord type
-                let type = Math.random() < 0.5 ? 'tryad' : 'tryad';
+                let type = Math.random() < 0.5 ? 'triad' : 'triad';
 
                 // generate array of all chords matching the type
                 let chordtypes = make_chords(root_note, type);
@@ -58,9 +60,39 @@ class PolyphoneSequence {
     }
 
     // TODO: implement permuteGuitar()
-    permuteGuitar() {
+    generate_rhythm() {
         // 1. change rhythmical structure
         // 2. replace chord types
+        let selected_chord_set;
+        let generated_chords;
+        let last_change = 0;
+
+        this.guitar.forEach((chord_set, i) => {
+
+            if (chord_set.length > 0) {
+                selected_chord_set = chord_set;
+                generated_chords = make_chords(selected_chord_set[0], 'barre')
+                
+            }
+
+            if ((this.drums[i].includes(0) || this.drums[i].includes(1)) && Math.random() < 0.3) {
+                if (i - last_change > 3){
+                    Math.random() < 0.9 ? this.guitar[i] = selected_chord_set : this.guitar[i] = generated_chords[Math.floor(Math.random() * generated_chords.length)].chord;
+                } else {
+                    Math.random() < 0.5 ? this.guitar[i] = selected_chord_set : this.guitar[i] = generated_chords[Math.floor(Math.random() * generated_chords.length)].chord;
+                }
+                last_change = i;
+            }
+
+            if (this.drums[i].includes(2) && Math.random() < 0.1) {
+                if (i - last_change > 3){
+                    Math.random() < 0.9 ? this.guitar[i] = selected_chord_set : this.guitar[i] = generated_chords[Math.floor(Math.random() * generated_chords.length)].chord;
+                } else {
+                    Math.random() < 0.5 ? this.guitar[i] = selected_chord_set : this.guitar[i] = generated_chords[Math.floor(Math.random() * generated_chords.length)].chord;
+                }
+                last_change = i;
+            }
+        })
     }
 
     // TODO: implement melody generator
@@ -111,6 +143,35 @@ class PolyphoneSequence {
         // this.guitar_melody = melody_pattern;
     }
 
+    generate_lengths() {
+        let rhythm_length_counter = 0;
+        let rhythm_last_index = 0;
+        let melody_length_counter = 0;
+        let melody_last_index;
+        this.guitar.forEach((chord_set, i) => {
+            if (chord_set.length > 1) {
+                rhythm_last_index = i;
+                rhythm_length_counter = 1;
+                this.guitar_lengths[rhythm_last_index] = [rhythm_length_counter];
+            } else {
+                rhythm_length_counter += 1;
+                this.guitar_lengths[rhythm_last_index] = [rhythm_length_counter];
+                this.guitar_lengths[i] = [];
+            }
+        })
+        this.guitar_melody.forEach((chord_set, i) => {
+            if (chord_set.length > 1) {
+                melody_last_index = i;
+                melody_length_counter = 1;
+                this.guitar_melody_lengths[melody_last_index] = [melody_length_counter];
+            } else {
+                rhythm_length_counter += 1;
+                this.guitar_melody_lengths[melody_last_index] = [melody_length_counter];
+                this.guitar_melody_lengths[i] = [];
+            }
+        })
+    }
+
     generate_bass = () =>  {
         this.bass = this.dosomethinginterestingwith(this.drums);
     }
@@ -125,6 +186,8 @@ class PolyphoneSequence {
     remove_instr(step, instr) {
         this.drums[step] = this.drums[step].filter((inst) => inst != instr);
     }
+
+
 
     permuteDrum() {
 
@@ -231,6 +294,8 @@ class PolyphoneSequence {
         next.generate_melody();
         //next.generate_bass();
         next.permuteDrum();
+        next.generate_rhythm();
+        next.generate_lengths();
         return next;
     }
 }
