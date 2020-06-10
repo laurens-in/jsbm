@@ -113,12 +113,10 @@ class PolyphoneSequence {
                 
                 if (Math.random() < 0.5) {
                     selected_chord_set = chord_set
-                    console.log('arpeggiate')
                 } else {
                     let melody_barre = make_chords(chord_set[0], 'barre');
                     let melody_dyad = make_chords(chord_set[0], 'dyad');
-                    selected_chord_set = mergeArrays(melody_barre[Math.floor(Math.random() * melody_barre.length)].chord, melody_dyad[Math.floor(Math.random() * melody_dyad.length)].chord, melody_dyad[Math.floor(Math.random() * melody_dyad.length)].chord)
-                    console.log('new set')
+                    selected_chord_set = mergeArrays(melody_barre[Math.floor(Math.random() * melody_barre.length)].chord, melody_dyad[Math.floor(Math.random() * melody_dyad.length)].chord, melody_dyad[Math.floor(Math.random() * melody_dyad.length)].chord);
                 }
 
             }
@@ -246,7 +244,6 @@ class PolyphoneSequence {
             // if bassdrum add bassdrum 2 before or 2 after
             // if snare add bassdrum 2 before or 2 after
             if (this.drums[randomIndex].includes(DRUMTYPES.BD) || this.drums[randomIndex].includes(DRUMTYPES.SD)){
-                console.log('first level bass drum')
                 if (Math.random() < 0.6){
                     // TODO: use this.add_instr(step, DRUMTYPE.X)
                     this.add_instr(randomIndex - 2, DRUMTYPES.BD)
@@ -268,13 +265,11 @@ class PolyphoneSequence {
             // if bassdrum add bassdrum 1 after
             // if snare add bassdrum 1 after
             if (this.drums[randomIndex].includes(0) || this.drums[randomIndex].includes(1)){
-                console.log('second level bass drum')
                 this.drums[this.mod((randomIndex+1),this.drums.length)].push(DRUMTYPES.BD);
                 this.drums[this.mod((randomIndex+1),this.drums.length)] = [... new Set(this.drums[this.mod((randomIndex+1),this.drums.length)])];
             }
             // if cymbal add cymbal 1 before or 1 after
             if (this.drums[randomIndex].includes(2)){
-                console.log('second level bass drum')
                 this.drums[this.mod((randomIndex+1),this.drums.length)].push(DRUMTYPES.BD);
                 this.drums[this.mod((randomIndex+1),this.drums.length)] = [... new Set(this.drums[this.mod((randomIndex+1),this.drums.length)])];
             }

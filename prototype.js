@@ -93,7 +93,7 @@ function getNote(note){
     return noteMap.get(note);
 }
 
-let BPM = 60;
+let BPM = 175;
 function getLength(length){
     let base_length = (60 / BPM) / 4;
     return length * base_length;
@@ -232,10 +232,6 @@ function slowDrum(length){
 
 let polytree = new Pattern(new PolyphoneSequence(firstDrum(6)));
 
-console.log('same with poly seq');
-console.dir(polytree);
-
-console.log('second iter with poly seq');
 
 polytree.base_pattern.generate_guitar();
 polytree.base_pattern.generate_melody();
