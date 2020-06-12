@@ -93,7 +93,7 @@ function getNote(note){
     return noteMap.get(note);
 }
 
-let BPM = 90;
+let BPM = 120;
 function getLength(length){
     let base_length = (60 / BPM) / 4;
     return length * base_length;
@@ -102,11 +102,11 @@ function getLength(length){
 
 // defining instruments
 let drum = new Drum(0.8);
-let guitarSamplerLeft = new GuitarSampler(1, 0, -0.9);
+let guitarSamplerLeft = new GuitarSampler(1, 1, -0.9);
 let guitarPlayerLeft = new GuitarPlayer(guitarSamplerLeft);
-let guitarSamplerRight = new GuitarSampler(1, 0, 0.9);
+let guitarSamplerRight = new GuitarSampler(1, 1, 0.9);
 let guitarPlayerRight = new GuitarPlayer(guitarSamplerRight, 3);
-let guitarSamplerLead = new GuitarSampler(1, 1, -0.2);
+let guitarSamplerLead = new GuitarSampler(1.5, 1, -0.2);
 let guitarPlayerLead = new GuitarPlayer(guitarSamplerLead, 4);
 
 drumfast = [
@@ -157,9 +157,7 @@ chord_templates = Array(
     { type: 'triad', shape: [0, 7, 14, 15] },
     { type: 'barre', shape: [0, 7, 12, 15, 19, 24] },
     { type: 'barre', shape: [0, 7, 12, 14, 15, 24] },
-    { type: 'barre', shape: [0, 7, 12, 14, 17, 24] },
-    { type: 'melody', shape: [0, 2, 3, 5, 7, 8, 10, 12] },
-    { type: 'melody', shape: [0, 2, 3, 5, 7, 8, 11, 12] }
+    { type: 'barre', shape: [0, 7, 12, 14, 17, 24] }
 );
 
 note = 24;
@@ -232,7 +230,7 @@ function slowDrum(length){
 
 // ---------------- redefine patterns as instance of PolyphoneSequence
 
-let polytree = new Pattern(new PolyphoneSequence(firstDrum(4)));
+let polytree = new Pattern(new PolyphoneSequence(firstDrum(8)));
 
 
 polytree.base_pattern.generate_guitar();
@@ -336,10 +334,11 @@ let guitarmellen = polytree.base_pattern.guitar_lengths;
 Tone.Transport.start();
 Tone.Transport.bpm.value = BPM;
 
+
 var drumloop = new Tone.Loop(function(time){
-    //guitarPlayerLeft.playGuitar(guitarpat[stepcount%guitarpat.length].flatMap(x => getNote(x)), guitarpatlen[stepcount%guitarpat.length].flatMap(x => getLength(x)) , time);
-    //guitarPlayerRight.playGuitar(guitarpat[stepcount%guitarpat.length].flatMap(x => getNote(x)), guitarpatlen[stepcount%guitarpat.length].flatMap(x => getLength(x)), time);
-    guitarPlayerLead.playGuitar(guitarmel[stepcount%guitarmel.length].flatMap(x => getNote(x)), guitarmellen[stepcount%guitarpat.length].flatMap(x => getLength(x)), time);
+    guitarPlayerLeft.playGuitar(guitarpat[stepcount%guitarpat.length].flatMap(x => getNote(x)), guitarpatlen[stepcount%guitarpat.length].flatMap(x => getLength(x)) , time);
+    guitarPlayerRight.playGuitar(guitarpat[stepcount%guitarpat.length].flatMap(x => getNote(x)), guitarpatlen[stepcount%guitarpat.length].flatMap(x => getLength(x)), time);
+    //guitarPlayerLead.playGuitar(guitarmel[stepcount%guitarmel.length].flatMap(x => getNote(x)), guitarmellen[stepcount%guitarpat.length].flatMap(x => getLength(x)), time);
     drum.kit.triggerAttackRelease(drumpat[stepcount%drumpat.length].flatMap(x => getDrum(x)), '1n', time);
     console.log(guitarpat[stepcount%guitarpat.length])
     stepcount++;
