@@ -109,7 +109,7 @@ let guitarPlayerRight = new GuitarPlayer(guitarSamplerRight, 3);
 let guitarSamplerLead = new GuitarSampler(1.5, 1, -0.2);
 let guitarPlayerLead = new GuitarPlayer(guitarSamplerLead, 4);
 
-drumfast = [
+const drumfast = [
     [
         [0,2],
         [1]
@@ -120,7 +120,7 @@ drumfast = [
     ]
 ]
 
-drumslow = [
+const drumslow = [
     [
         [0, 2],
         [2],
@@ -143,7 +143,7 @@ drumslow = [
     ]
 ];
 
-chord_templates = Array(
+const chord_templates = Array(
     { type: 'power', shape: [0, 7] },
     { type: 'dyad', shape: [0, 8] },
     { type: 'dyad', shape: [0, 5] },
@@ -160,7 +160,7 @@ chord_templates = Array(
     { type: 'barre', shape: [0, 7, 12, 14, 17, 24] }
 );
 
-note = 24;
+const note = 24;
 
 function make_chords(note, type) {
     // template can contain multiple chords of a type
@@ -172,7 +172,7 @@ function make_chords(note, type) {
 }
 
 // 1. generate sequence of notes
-notes = [24, 35, 48, 23, 25];
+const notes = [24, 35, 48, 23, 25];
 
 let generated_chords = notes.map(note => make_chords(note, Math.random() > 0.5 ? 'power' : 'barre'))
 
@@ -203,8 +203,8 @@ function fastDrum(length) {
 }
 
 function slowDrum(length){
-    length1 = Math.ceil(length/2);
-    length2 = length - length1;
+    const length1 = Math.ceil(length/2);
+    const length2 = length - length1;
     let beat = [];
     for(let x = 0; x < length1; x++){
         beat.push(drumslow[0][x]);
@@ -230,124 +230,68 @@ function slowDrum(length){
 
 // ---------------- redefine patterns as instance of PolyphoneSequence
 
+const config = {
+    traverse_mode: 'random',
+    explode_at: 10
+}
+
+let patterncount = 0;
+let stepcount = 0;
+const s_len = 32;
+let explosion_probability = 0;
+
 let polytree = new Pattern(new PolyphoneSequence(firstDrum(8)));
-
-
 polytree.base_pattern.generate_guitar();
 polytree.base_pattern.generate_melody();
 polytree.base_pattern.generate_rhythm();
 polytree.base_pattern.generate_lengths();
-polytree.permute();
-polytree.pattern_1.permute();
-polytree.pattern_2.permute();
-polytree.pattern_1.pattern_1.permute();
-polytree.pattern_1.pattern_2.permute();
-polytree.pattern_2.pattern_1.permute();
-polytree.pattern_2.pattern_2.permute();
-
-
-
-drumPatterns = [
-    polytree.base_pattern.drums,
-    polytree.pattern_1.base_pattern.drums,
-    polytree.base_pattern.drums,
-    polytree.pattern_2.base_pattern.drums,
-    polytree.pattern_1.pattern_2.base_pattern.drums,
-    polytree.pattern_1.pattern_1.base_pattern.drums,
-    polytree.pattern_2.pattern_1.base_pattern.drums,
-    polytree.pattern_2.pattern_2.base_pattern.drums,
-    polytree.pattern_1.pattern_2.pattern_1.base_pattern.drums,
-    polytree.pattern_1.pattern_1.pattern_2.base_pattern.drums,
-    polytree.pattern_2.pattern_1.pattern_1.base_pattern.drums,
-    polytree.pattern_2.pattern_2.pattern_2.base_pattern.drums
-]
-
-guitarPatterns = [
-    polytree.base_pattern.guitar,
-    polytree.pattern_1.base_pattern.guitar,
-    polytree.base_pattern.guitar,
-    polytree.pattern_2.base_pattern.guitar,
-    polytree.pattern_1.pattern_2.base_pattern.guitar,
-    polytree.pattern_1.pattern_1.base_pattern.guitar,
-    polytree.pattern_2.pattern_1.base_pattern.guitar,
-    polytree.pattern_2.pattern_2.base_pattern.guitar,
-    polytree.pattern_1.pattern_2.pattern_1.base_pattern.guitar,
-    polytree.pattern_1.pattern_1.pattern_2.base_pattern.guitar,
-    polytree.pattern_2.pattern_1.pattern_1.base_pattern.guitar,
-    polytree.pattern_2.pattern_2.pattern_2.base_pattern.guitar
-]
-guitarPatternsLengths = [
-    polytree.base_pattern.guitar_lengths,
-    polytree.pattern_1.base_pattern.guitar_lengths,
-    polytree.base_pattern.guitar_lengths,
-    polytree.pattern_2.base_pattern.guitar_lengths,
-    polytree.pattern_1.pattern_2.base_pattern.guitar_lengths,
-    polytree.pattern_1.pattern_1.base_pattern.guitar_lengths,
-    polytree.pattern_2.pattern_1.base_pattern.guitar_lengths,
-    polytree.pattern_2.pattern_2.base_pattern.guitar_lengths,
-    polytree.pattern_1.pattern_2.pattern_1.base_pattern.guitar_lengths,
-    polytree.pattern_1.pattern_1.pattern_2.base_pattern.guitar_lengths,
-    polytree.pattern_2.pattern_1.pattern_1.base_pattern.guitar_lengths,
-    polytree.pattern_2.pattern_2.pattern_2.base_pattern.guitar_lengths
-]
-
-guitarMelodies = [
-    polytree.base_pattern.guitar_melody,
-    polytree.pattern_1.base_pattern.guitar_melody,
-    polytree.base_pattern.guitar_melody,
-    polytree.pattern_2.base_pattern.guitar_melody,
-    polytree.pattern_1.pattern_2.base_pattern.guitar_melody,
-    polytree.pattern_1.pattern_1.base_pattern.guitar_melody,
-    polytree.pattern_2.pattern_1.base_pattern.guitar_melody,
-    polytree.pattern_2.pattern_2.base_pattern.guitar_melody,
-    polytree.pattern_1.pattern_2.pattern_1.base_pattern.guitar_melody,
-    polytree.pattern_1.pattern_1.pattern_2.base_pattern.guitar_melody,
-    polytree.pattern_2.pattern_1.pattern_1.base_pattern.guitar_melody,
-    polytree.pattern_2.pattern_2.pattern_2.base_pattern.guitar_melody
-]
-
-guitarMelodiesLengths = [
-    polytree.base_pattern.guitar_melody_lengths,
-    polytree.pattern_1.base_pattern.guitar_melody_lengths,
-    polytree.base_pattern.guitar_melody_lengths,
-    polytree.pattern_2.base_pattern.guitar_melody_lengths,
-    polytree.pattern_1.pattern_2.base_pattern.guitar_melody_lengths,
-    polytree.pattern_1.pattern_1.base_pattern.guitar_melody_lengths,
-    polytree.pattern_2.pattern_1.base_pattern.guitar_melody_lengths,
-    polytree.pattern_2.pattern_2.base_pattern.guitar_melody_lengths,
-    polytree.pattern_1.pattern_2.pattern_1.base_pattern.guitar_melody_lengths,
-    polytree.pattern_1.pattern_1.pattern_2.base_pattern.guitar_melody_lengths,
-    polytree.pattern_2.pattern_1.pattern_1.base_pattern.guitar_melody_lengths,
-    polytree.pattern_2.pattern_2.pattern_2.base_pattern.guitar_melody_lengths
-]
-
-
-let patterncount = 0;
-let stepcount = 0;
-
-let drumpat = polytree.base_pattern.drums;
-let guitarpat = polytree.base_pattern.guitar;
-let guitarmel = polytree.base_pattern.guitar_melody;
-let guitarpatlen = polytree.base_pattern.guitar_lengths;
-let guitarmellen = polytree.base_pattern.guitar_lengths;
+let sequence_part = polytree.next();
 
 Tone.Transport.start();
 Tone.Transport.bpm.value = BPM;
 
+var drumloop = new Tone.Loop(function(time) {
 
-var drumloop = new Tone.Loop(function(time){
-    guitarPlayerLeft.playGuitar(guitarpat[stepcount%guitarpat.length].flatMap(x => getNote(x)), guitarpatlen[stepcount%guitarpat.length].flatMap(x => getLength(x)) , time);
-    guitarPlayerRight.playGuitar(guitarpat[stepcount%guitarpat.length].flatMap(x => getNote(x)), guitarpatlen[stepcount%guitarpat.length].flatMap(x => getLength(x)), time);
-    guitarPlayerLead.playGuitar(guitarmel[stepcount%guitarmel.length].flatMap(x => getNote(x)), guitarmellen[stepcount%guitarpat.length].flatMap(x => getLength(x)), time);
-    drum.kit.triggerAttackRelease(drumpat[stepcount%drumpat.length].flatMap(x => getDrum(x)), '1n', time);
-    console.log(guitarpat[stepcount%guitarpat.length])
+    const step = stepcount%s_len;
+
+    guitarPlayerLeft.playGuitar(
+        sequence_part.guitar[step].flatMap(x => getNote(x)),
+        sequence_part.guitar_lengths[step].flatMap(x => getLength(x)),
+        time
+    );
+
+    guitarPlayerRight.playGuitar(
+        sequence_part.guitar[step].flatMap(x => getNote(x)),
+        sequence_part.guitar_lengths[step].flatMap(x => getLength(x)),
+        time
+    );
+
+    guitarPlayerLead.playGuitar(
+        sequence_part.guitar_melody[step].flatMap(x => getNote(x)),
+        sequence_part.guitar_melody_lengths[step].flatMap(x => getLength(x)),
+        time
+    );
+    
+    drum.kit.triggerAttackRelease(
+        sequence_part.drums[step].flatMap(x => getDrum(x)),
+        '1n', time
+    );
+
     stepcount++;
-    if (stepcount%polytree.base_pattern.drums.length == 0){
+
+    if (stepcount%polytree.base_pattern.drums.length == 0) {
+
+        if (explosion_probability > config.explode_at) {
+            polytree = new Pattern(new PolyphoneSequence(firstDrum(8)));
+            polytree.base_pattern.generate_guitar();
+            polytree.base_pattern.generate_melody();
+            polytree.base_pattern.generate_rhythm();
+            polytree.base_pattern.generate_lengths();
+            explosion_probability = 0;
+            config.explode_at = 2 + (Math.random() * 16);
+            console.log('generating new tree');
+        }
+        sequence_part = polytree.next();
         patterncount++;
-        drumpat = drumPatterns[patterncount%drumPatterns.length];
-        guitarpat = guitarPatterns[patterncount%guitarPatterns.length];
-        guitarpatlen = guitarPatternsLengths[patterncount%guitarPatterns.length];
-        guitarmel = guitarMelodies[patterncount%guitarMelodies.length];
-        guitarmellen = guitarMelodiesLengths[patterncount%guitarPatterns.length];
     }
 }, "16n");
