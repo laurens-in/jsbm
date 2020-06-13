@@ -338,7 +338,7 @@ Tone.Transport.bpm.value = BPM;
 var drumloop = new Tone.Loop(function(time){
     guitarPlayerLeft.playGuitar(guitarpat[stepcount%guitarpat.length].flatMap(x => getNote(x)), guitarpatlen[stepcount%guitarpat.length].flatMap(x => getLength(x)) , time);
     guitarPlayerRight.playGuitar(guitarpat[stepcount%guitarpat.length].flatMap(x => getNote(x)), guitarpatlen[stepcount%guitarpat.length].flatMap(x => getLength(x)), time);
-    //guitarPlayerLead.playGuitar(guitarmel[stepcount%guitarmel.length].flatMap(x => getNote(x)), guitarmellen[stepcount%guitarpat.length].flatMap(x => getLength(x)), time);
+    guitarPlayerLead.playGuitar(guitarmel[stepcount%guitarmel.length].flatMap(x => getNote(x)), guitarmellen[stepcount%guitarpat.length].flatMap(x => getLength(x)), time);
     drum.kit.triggerAttackRelease(drumpat[stepcount%drumpat.length].flatMap(x => getDrum(x)), '1n', time);
     console.log(guitarpat[stepcount%guitarpat.length])
     stepcount++;
