@@ -40,7 +40,7 @@ class PolyphoneSequence {
     // harmonize guitar root note pattern
     generate_guitar = () =>  {
         // 1. generate base pattern
-        let base_pattern = [[29], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [27], [], [], [], [], [], [], [], [25], [], [], [], [], [], [], []];
+        let base_pattern = [[29], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], []];
         
         // 2. harmonize base pattern
         let chords = base_pattern.map(function mapper(root_note) {
@@ -49,7 +49,7 @@ class PolyphoneSequence {
                 return root_note.flatMap(mapper);
             } else {
                 // choose chord type
-                let type = Math.random() < 0.5 ? 'triad' : 'triad';
+                let type = Math.random() < 0.5 ? 'power' : 'power';
 
                 // generate array of all chords matching the type
                 let chordtypes = make_chords(root_note, type);
@@ -77,14 +77,14 @@ class PolyphoneSequence {
 
             if ((this.drums[i].includes(0) || this.drums[i].includes(1)) && Math.random() < 0.4) {
                 if (i - last_change > 4){
-                    Math.random() < 0.3 ? this.guitar[i] = selected_chord_set : this.guitar[i] = generated_chords[Math.floor(Math.random() * generated_chords.length)].chord;
+                    Math.random() < 0.2 ? this.guitar[i] = selected_chord_set : this.guitar[i] = generated_chords[Math.floor(Math.random() * generated_chords.length)].chord;
                 }
                 last_change = i;
             }
 
             if (this.drums[i].length > 0 && Math.random() < 0.1) {
                 if (i - last_change > 2){
-                    Math.random() < 0.9 ? this.guitar[i] = selected_chord_set : this.guitar[i] = generated_chords[Math.floor(Math.random() * generated_chords.length)].chord;
+                    Math.random() < 0.6 ? this.guitar[i] = selected_chord_set : this.guitar[i] = generated_chords[Math.floor(Math.random() * generated_chords.length)].chord;
                 }
 
                 last_change = i;
@@ -97,7 +97,7 @@ class PolyphoneSequence {
     generate_melody() {
         const base_chord = [0, 7, 12, 15];
         let melody = [];
-        let melody_pattern = [0, 6, 1, 2, 1, 5];
+        let melody_pattern = [0, 6, 5, 2, 4, 5];
         let melody_index = 0;
         let selected_chord_set = base_chord;
         let last_change = 0;
@@ -110,7 +110,7 @@ class PolyphoneSequence {
                 
                 //use the same chord as rhythm guitar --> arpeggiate
                 
-                if (Math.random() < 0.01) {
+                if (Math.random() < 0.5) {
                     selected_chord_set = chord_set
                 } else {
                     let melody_barre = make_chords(chord_set[0], 'barre');
@@ -122,43 +122,43 @@ class PolyphoneSequence {
             // use the chords from a previous selection
             // TODO: think about adding Tone.js Notes including length and dynamics instead if MIDI note numbers
 
-            if (i % 6 == 0 && Math.random() < 0.9) {
-                melody[i] = [selected_chord_set[melody_pattern[melody_index % melody_pattern.length] % selected_chord_set.length]];
-                Math.random() < 0.99 ? melody_index += 1 : melody_index += 2;
-            } else if (i % 8 == 2 && Math.random() < 0){
-                //melody[i] = [selected_chord_set[Math.floor(Math.random() * selected_chord_set.length)]];
-                melody[i] = [selected_chord_set[melody_pattern[melody_index % melody_pattern.length] % selected_chord_set.length]];
-                melody_index += 1;
-            } else if (i % 7 == 3 && Math.random() < 0){
-                melody[i] = [selected_chord_set[melody_pattern[melody_index % melody_pattern.length] % selected_chord_set.length]];
-                melody_index += 1;
-            } else {
-                melody[i] = [];
-            }
+            // if (i % 6 == 0 && Math.random() < 0.9) {
+            //     melody[i] = [selected_chord_set[melody_pattern[melody_index % melody_pattern.length] % selected_chord_set.length]];
+            //     Math.random() < 0.99 ? melody_index += 1 : melody_index += 2;
+            // } else if (i % 8 == 2 && Math.random() < 0){
+            //     //melody[i] = [selected_chord_set[Math.floor(Math.random() * selected_chord_set.length)]];
+            //     melody[i] = [selected_chord_set[melody_pattern[melody_index % melody_pattern.length] % selected_chord_set.length]];
+            //     melody_index += 1;
+            // } else if (i % 7 == 3 && Math.random() < 0){
+            //     melody[i] = [selected_chord_set[melody_pattern[melody_index % melody_pattern.length] % selected_chord_set.length]];
+            //     melody_index += 1;
+            // } else {
+            //     melody[i] = [];
+            // }
 
 
             // other approach
-        //     if ((this.drums[i].length >= 2) && Math.random() < 0.4 && i % 2 == 0) {   
-        //         melody[i] = [selected_chord_set[melody_pattern[melody_index % melody_pattern.length] % selected_chord_set.length]];
-        //         if (i - last_change > 4) {
-        //             Math.random() < 0.5 ? melody_index += 1 : melody_index += 2;
-        //             last_change = i;
-        //         } else {
-        //             Math.random() < 0.1 ? melody_index += 1 : undefined;
-        //         }
-        //         last_note = melody[i];
+            if ((this.drums[i].length >= 2) && Math.random() < 0.4 && i % 2 == 0) {   
+                melody[i] = [selected_chord_set[melody_pattern[melody_index % melody_pattern.length] % selected_chord_set.length]];
+                if (i - last_change > 4) {
+                    Math.random() < 0.5 ? melody_index += 1 : melody_index += 2;
+                    last_change = i;
+                } else {
+                    Math.random() < 0.1 ? melody_index += 1 : undefined;
+                }
+                last_note = melody[i];
 
-        //     } else if ((this.drums[i].length > 0) && Math.random() < 0.8 && i % 2 == 0){
-        //         melody[i] = [selected_chord_set[melody_pattern[melody_index % melody_pattern.length] % selected_chord_set.length]];
-        //         if (i - last_change > 2) {
-        //             melody_index += 1;
-        //             last_change = i; 
-        //         }
-        //         last_note = melody[i];
+            } else if ((this.drums[i].length > 0) && Math.random() < 0.8 && i % 2 == 0){
+                melody[i] = [selected_chord_set[melody_pattern[melody_index % melody_pattern.length] % selected_chord_set.length]];
+                if (i - last_change > 2) {
+                    melody_index += 1;
+                    last_change = i; 
+                }
+                last_note = melody[i];
 
-        //     } else {
-        //         melody[i] = [];
-        //     }
+            } else {
+                melody[i] = [];
+            }
 
         })
         this.guitar_melody = melody;
