@@ -15,7 +15,7 @@ class BassPlayer {
         }
         let currentCount = this.bassIndex % 10;
 
-        switch (Math.floor(Math.random() * 5)) {
+        switch (this.bassIndex) {
             case 0:
                 this.sampler.bass1.triggerAttackRelease(note, length, time, velocity);
                 break;

@@ -93,22 +93,22 @@ function getNote(note){
     return noteMap.get(note);
 }
 
-let BPM = 120;
+let BPM = 100;
 function getLength(length){
-    let base_length = (60 / BPM) / 4;
+    let base_length = (60 / config.BPM) / 4;
     return length * base_length;
 }
 
 
 // defining instruments
-let drum = new Drum(0.8);
+let drum = new Drum(0.5);
 let guitarSamplerLeft = new GuitarSampler(1, 1, -0.9);
 let guitarPlayerLeft = new GuitarPlayer(guitarSamplerLeft);
 let guitarSamplerRight = new GuitarSampler(1, 1, 0.9);
 let guitarPlayerRight = new GuitarPlayer(guitarSamplerRight, 3);
 let guitarSamplerLead = new GuitarSampler(1.5, 1, -0.2);
 let guitarPlayerLead = new GuitarPlayer(guitarSamplerLead, 4);
-let bassSampler = new BassSampler(1, 0, 0);
+let bassSampler = new BassSampler(2, 0.05, 0);
 let bassPlayer = new BassPlayer(bassSampler);
 
 const drumfast = [
@@ -234,7 +234,8 @@ function slowDrum(length){
 
 const config = {
     traverse_mode: 'random',
-    explode_at: 10
+    explode_at: 10,
+    BPM: 90
 }
 
 let patterncount = 0;
