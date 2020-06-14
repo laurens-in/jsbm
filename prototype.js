@@ -108,6 +108,8 @@ let guitarSamplerRight = new GuitarSampler(1, 1, 0.9);
 let guitarPlayerRight = new GuitarPlayer(guitarSamplerRight, 3);
 let guitarSamplerLead = new GuitarSampler(1.5, 1, -0.2);
 let guitarPlayerLead = new GuitarPlayer(guitarSamplerLead, 4);
+let bassSampler = new BassSampler(1, 0, 0);
+let bassPlayer = new BassPlayer(bassSampler);
 
 const drumfast = [
     [
@@ -254,19 +256,25 @@ var drumloop = new Tone.Loop(function(time) {
 
     const step = stepcount%s_len;
 
-    guitarPlayerLeft.playGuitar(
-        sequence_part.guitar[step].flatMap(x => getNote(x)),
-        sequence_part.guitar_lengths[step].flatMap(x => getLength(x)),
-        time
-    );
+    // guitarPlayerLeft.playGuitar(
+    //     sequence_part.guitar[step].flatMap(x => getNote(x)),
+    //     sequence_part.guitar_lengths[step].flatMap(x => getLength(x)),
+    //     time
+    // );
 
-    guitarPlayerRight.playGuitar(
-        sequence_part.guitar[step].flatMap(x => getNote(x)),
-        sequence_part.guitar_lengths[step].flatMap(x => getLength(x)),
-        time
-    );
+    // guitarPlayerRight.playGuitar(
+    //     sequence_part.guitar[step].flatMap(x => getNote(x)),
+    //     sequence_part.guitar_lengths[step].flatMap(x => getLength(x)),
+    //     time
+    // );
 
-    guitarPlayerLead.playGuitar(
+    // guitarPlayerLead.playGuitar(
+    //     sequence_part.guitar_melody[step].flatMap(x => getNote(x)),
+    //     sequence_part.guitar_melody_lengths[step].flatMap(x => getLength(x)),
+    //     time
+    // );
+
+    bassPlayer.playBass(
         sequence_part.guitar_melody[step].flatMap(x => getNote(x)),
         sequence_part.guitar_melody_lengths[step].flatMap(x => getLength(x)),
         time
