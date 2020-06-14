@@ -99,6 +99,12 @@ class BassSampler {
             'E3' : "Bass/Bass_E3_-_10.opus" 
         }, () => {
             this.bass10.connect(this.bassOut);
+            document.getElementById("button").style.display = "flex";
+            document.getElementById("button").style.justifyContent = "center";
+            document.getElementById("button").style.alignItems = "center";
+            document.getElementById("loader").style.display = "none";
+            console.log('loaded');
+            Tone.context.suspend();
         }, baseurl);
         
     }

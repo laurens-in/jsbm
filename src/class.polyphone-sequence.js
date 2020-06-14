@@ -172,7 +172,7 @@ class PolyphoneSequence {
         let melody_length_counter = 0;
         let melody_last_index;
         this.guitar.forEach((chord_set, i) => {
-            if (chord_set.length > 1) {
+            if (chord_set.length > 0) {
                 rhythm_last_index = i;
                 rhythm_length_counter = 1;
                 this.guitar_lengths[rhythm_last_index] = [rhythm_length_counter];
@@ -183,12 +183,12 @@ class PolyphoneSequence {
             }
         })
         this.guitar_melody.forEach((chord_set, i) => {
-            if (chord_set.length > 1) {
+            if (chord_set.length > 0) {
                 melody_last_index = i;
                 melody_length_counter = 1;
                 this.guitar_melody_lengths[melody_last_index] = [melody_length_counter];
             } else {
-                rhythm_length_counter += 1;
+                melody_length_counter += 1;
                 this.guitar_melody_lengths[melody_last_index] = [melody_length_counter];
                 this.guitar_melody_lengths[i] = [];
             }

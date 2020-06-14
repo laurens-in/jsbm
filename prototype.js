@@ -108,7 +108,7 @@ let guitarSamplerRight = new GuitarSampler(1, 1, 0.9);
 let guitarPlayerRight = new GuitarPlayer(guitarSamplerRight, 3);
 let guitarSamplerLead = new GuitarSampler(1.5, 1, -0.2);
 let guitarPlayerLead = new GuitarPlayer(guitarSamplerLead, 4);
-let bassSampler = new BassSampler(2, 0.05, 0);
+let bassSampler = new BassSampler(2, 0.15, 0);
 let bassPlayer = new BassPlayer(bassSampler);
 
 const drumfast = [
