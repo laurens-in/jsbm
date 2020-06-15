@@ -272,19 +272,19 @@ var drumloop = new Tone.Loop(function(time) {
     const step = stepcount%s_len;
 
     guitarPlayerLeft.playGuitar(
-        sequence_part.guitar[step].flatMap(x => getNote(x)),
+        sequence_part.guitar[step][0].chord.flatMap(x => getNote(x)),
         sequence_part.guitar_lengths[step].flatMap(x => getLength(x)),
         time
     );
 
     guitarPlayerRight.playGuitar(
-        sequence_part.guitar[step].flatMap(x => getNote(x)),
+        sequence_part.guitar[step][0].chord.flatMap(x => getNote(x)),
         sequence_part.guitar_lengths[step].flatMap(x => getLength(x)),
         time
     );
 
     guitarPlayerAccoustic.playGuitar(
-        sequence_part.guitar[step].flatMap(x => getNote(x)),
+        sequence_part.guitar[step][0].chord.flatMap(x => getNote(x)),
         sequence_part.guitar_lengths[step].flatMap(x => getLength(x)),
         time
     );
