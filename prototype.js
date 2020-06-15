@@ -113,7 +113,7 @@ function getLength(length){
 
 
 // defining instruments
-let drum = new Drum(1);
+let drum = new Drum(0.8);
 let guitarSamplerLeft = new GuitarSampler(1, 0, -0.9);
 let guitarPlayerLeft = new GuitarPlayer(guitarSamplerLeft);
 let guitarSamplerRight = new GuitarSampler(1, 0, 0.9);
@@ -288,15 +288,15 @@ var drumloop = new Tone.Loop(function(time) {
     );
 
     bassPlayer.playBass(
-        sequence_part.guitar_melody[step].flatMap(x => getNote(x - 12)),
+        sequence_part.guitar_melody[step].flatMap(x => getNote(x - 24)),
         sequence_part.guitar_melody_lengths[step].flatMap(x => getLength(x)),
         time
     );
     
-    drum.kit.triggerAttackRelease(
-        sequence_part.drums[step].flatMap(x => getDrum(x)),
-        '1n', time
-    );
+    // drum.kit.triggerAttackRelease(
+    //     sequence_part.drums[step].flatMap(x => getDrum(x)),
+    //     '1n', time
+    // );
 
     stepcount++;
 
