@@ -257,26 +257,26 @@ var drumloop = new Tone.Loop(function(time) {
 
     const step = stepcount%s_len;
 
-    // guitarPlayerLeft.playGuitar(
-    //     sequence_part.guitar[step].flatMap(x => getNote(x)),
-    //     sequence_part.guitar_lengths[step].flatMap(x => getLength(x)),
-    //     time
-    // );
+    guitarPlayerLeft.playGuitar(
+        sequence_part.guitar[step].flatMap(x => getNote(x)),
+        sequence_part.guitar_lengths[step].flatMap(x => getLength(x)),
+        time
+    );
 
-    // guitarPlayerRight.playGuitar(
-    //     sequence_part.guitar[step].flatMap(x => getNote(x)),
-    //     sequence_part.guitar_lengths[step].flatMap(x => getLength(x)),
-    //     time
-    // );
+    guitarPlayerRight.playGuitar(
+        sequence_part.guitar[step].flatMap(x => getNote(x)),
+        sequence_part.guitar_lengths[step].flatMap(x => getLength(x)),
+        time
+    );
 
-    // guitarPlayerLead.playGuitar(
-    //     sequence_part.guitar_melody[step].flatMap(x => getNote(x)),
-    //     sequence_part.guitar_melody_lengths[step].flatMap(x => getLength(x)),
-    //     time
-    // );
+    guitarPlayerLead.playGuitar(
+        sequence_part.guitar_melody[step].flatMap(x => getNote(x)),
+        sequence_part.guitar_melody_lengths[step].flatMap(x => getLength(x)),
+        time
+    );
 
     bassPlayer.playBass(
-        sequence_part.guitar_melody[step].flatMap(x => getNote(x)),
+        sequence_part.guitar_melody[step].flatMap(x => getNote(x - 12)),
         sequence_part.guitar_melody_lengths[step].flatMap(x => getLength(x)),
         time
     );
