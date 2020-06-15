@@ -1,7 +1,9 @@
 class GuitarSampler {
     
     dist;
+    doubledist;
     pan;
+    limiter;
     guitarOut;
     guitar1;
     guitar2;
@@ -14,9 +16,11 @@ class GuitarSampler {
 
     constructor(volume, distortion, panning, baseurl = "./assets/samples/") {
         this.dist = new Tone.Distortion(distortion);
+        this.doubledist = new Tone.Distortion(distortion/2);
         this.guitarOut = new Tone.Gain(1);
         this.volume = new Tone.Gain(volume);
         this.pan = new Tone.Panner(panning);
+        this.limiter = new Tone.Limiter(-16);
         this.guitarOut.chain(this.dist, this.volume, this.pan, reverb, Tone.Master);
 
         this.guitar1 = new Tone.Sampler({

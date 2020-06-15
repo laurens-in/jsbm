@@ -57,7 +57,19 @@ let noteArray = [
     [68, "G#4"],
     [69, "A4"],
     [70, "A#4"],
-    [71, "B4"],
+    [71, "B5"],
+    [72, "C5"],
+    [73, "C#5"],
+    [74, "D5"],
+    [75, "D#5"],
+    [76, "E5"],
+    [77, "F5"],
+    [78, "F#5"],
+    [79, "G5"],
+    [80, "G#5"],
+    [81, "A5"],
+    [82, "A#5"],
+    [83, "B5"]
 
 ];
 
@@ -101,14 +113,14 @@ function getLength(length){
 
 
 // defining instruments
-let drum = new Drum(0.5);
-let guitarSamplerLeft = new GuitarSampler(1, 1, -0.9);
+let drum = new Drum(1);
+let guitarSamplerLeft = new GuitarSampler(1, 0, -0.9);
 let guitarPlayerLeft = new GuitarPlayer(guitarSamplerLeft);
-let guitarSamplerRight = new GuitarSampler(1, 1, 0.9);
+let guitarSamplerRight = new GuitarSampler(1, 0, 0.9);
 let guitarPlayerRight = new GuitarPlayer(guitarSamplerRight, 3);
-let guitarSamplerLead = new GuitarSampler(1.5, 1, -0.2);
+let guitarSamplerLead = new GuitarSampler(1, 0, -0.2);
 let guitarPlayerLead = new GuitarPlayer(guitarSamplerLead, 4);
-let bassSampler = new BassSampler(2, 0.15, 0);
+let bassSampler = new BassSampler(1, 0.15, 0);
 let bassPlayer = new BassPlayer(bassSampler);
 
 const drumfast = [

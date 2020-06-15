@@ -40,7 +40,7 @@ class PolyphoneSequence {
     // harmonize guitar root note pattern
     generate_guitar = () =>  {
         // 1. generate base pattern
-        let base_pattern = [[40], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], []];
+        let base_pattern = [[50], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], []];
         
         // 2. harmonize base pattern
         let chords = base_pattern.map(function mapper(root_note) {
@@ -49,7 +49,7 @@ class PolyphoneSequence {
                 return root_note.flatMap(mapper);
             } else {
                 // choose chord type
-                let type = Math.random() < 0.5 ? 'power' : 'power';
+                let type = Math.random() < 0.5 ? 'barre' : 'triad';
 
                 // generate array of all chords matching the type
                 let chordtypes = make_chords(root_note, type);
