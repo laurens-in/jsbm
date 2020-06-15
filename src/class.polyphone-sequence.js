@@ -40,7 +40,7 @@ class PolyphoneSequence {
     // harmonize guitar root note pattern
     generate_guitar() {
         // 1. generate base pattern
-        let base_pattern = [[42], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], []];
+        let base_pattern = [[46], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], []];
         
         // 2. harmonize base pattern
         let chords = base_pattern.map(function mapper(root_note) {
@@ -50,7 +50,8 @@ class PolyphoneSequence {
             } else {
                 // choose chord type
                 const ctypes = ['power', 'dyad', 'triad', 'barre'];
-                let type = ctypes[Math.floor(Math.random() * ctypes.length)];
+                // let type = ctypes[Math.floor(Math.random() * ctypes.length)];
+                let type = ctypes[Math.floor(Math.random() * 2)];
 
                 // generate array of all chords matching the type
                 let chordtypes = make_chords(root_note, type);
@@ -164,6 +165,20 @@ class PolyphoneSequence {
         this.guitar_melody = melody;
         // or
         // this.guitar_melody = melody_pattern;
+    }
+
+    generate_tremolo() {
+        this.guitar.forEach((chord_set, i) => {
+            if (this.guitar[i].length == 0 && i > 0) {
+                this.guitar[i] = this.guitar[i - 1];
+            }
+        })
+
+        this.guitar_melody.forEach((chord_set, i) => {
+            if (this.guitar_melody[i].length == 0 && i > 0) {
+                this.guitar_melody[i] = this.guitar_melody[i - 1];
+            }
+        })
     }
 
     generate_lengths() {
@@ -316,6 +331,7 @@ class PolyphoneSequence {
         //next.generate_bass();
         next.permuteDrum();
         next.generate_rhythm();
+        next.generate_tremolo();
         next.generate_lengths();
         return next;
     }

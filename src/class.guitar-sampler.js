@@ -37,7 +37,7 @@ class GuitarSampler {
             //'E2' : "Guitar_ESP_E2_-_2.opus",
             //'E3' : "Guitar_ESP_E3_-_2.opus",
             //'E4' : "Guitar_ESP_E4_-_2.opus"
-            'D2' : "guitar_-_10.opus"
+            'D2' : "guitar_-_11.opus"
         }, () => {
             this.guitar2.connect(this.guitarOut);
         }, baseurl);
@@ -46,7 +46,7 @@ class GuitarSampler {
             //'E2' : "Guitar_ESP_E2_-_3.opus",
             //'E3' : "Guitar_ESP_E3_-_3.opus",
             //'E4' : "Guitar_ESP_E4_-_3.opus"
-            'D2' : "guitar_-_10.opus"
+            'D2' : "guitar_-_12.opus"
         }, () => {
             this.guitar3.connect(this.guitarOut);
         }, baseurl);
@@ -55,7 +55,7 @@ class GuitarSampler {
             //'E2' : "Guitar_ESP_E2_-_4.opus",
             //'E3' : "Guitar_ESP_E3_-_4.opus",
             //'E4' : "Guitar_ESP_E4_-_4.opus"
-            'D2' : "guitar_-_10.opus"
+            'D2' : "guitar_-_13.opus"
         }, () => {
             this.guitar4.connect(this.guitarOut);
         }, baseurl);
@@ -64,7 +64,7 @@ class GuitarSampler {
             //'E2' : "Guitar_ESP_E2_-_5.opus",
             //'E3' : "Guitar_ESP_E3_-_5.opus",
             //'E4' : "Guitar_ESP_E4_-_5.opus"
-            'D2' : "guitar_-_10.opus"
+            'D2' : "guitar_-_14.opus"
         }, () => {
             this.guitar5.connect(this.guitarOut);
         }, baseurl);

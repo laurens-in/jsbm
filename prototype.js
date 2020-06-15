@@ -120,9 +120,9 @@ let guitarSamplerRight = new GuitarSampler(0.25, 1, 0.9);
 let guitarPlayerRight = new GuitarPlayer(guitarSamplerRight, 3);
 let guitarSamplerLead = new GuitarSampler(0.5, 0.5, -0.2);
 let guitarPlayerLead = new GuitarPlayer(guitarSamplerLead, 4);
-let acousticSampler = new GuitarSampler(8, 0, 0.2, "./assets/samples/GuitarAcoustic/")
+let acousticSampler = new GuitarSampler(4, 0, 0.2, "./assets/samples/GuitarAcoustic/")
 let guitarPlayerAccoustic = new GuitarPlayer(acousticSampler);
-let bassSampler = new BassSampler(1, 0.25, 0);
+let bassSampler = new BassSampler(1.5, 0.25, 0);
 let bassPlayer = new BassPlayer(bassSampler);
 
 const drumfast = [
@@ -247,9 +247,9 @@ function slowDrum(length){
 // ---------------- redefine patterns as instance of PolyphoneSequence
 
 const config = {
-    traverse_mode: 'random',
+    traverse_mode: 'linear',
     explode_at: 10,
-    BPM: 90
+    BPM: 140
 }
 
 let patterncount = 0;
@@ -261,11 +261,12 @@ let polytree = new Pattern(new PolyphoneSequence(firstDrum(8)));
 polytree.base_pattern.generate_guitar();
 polytree.base_pattern.generate_melody();
 polytree.base_pattern.generate_rhythm();
+polytree.base_pattern.generate_tremolo();
 polytree.base_pattern.generate_lengths();
 let sequence_part = polytree.next();
 
 Tone.Transport.start();
-Tone.Transport.bpm.value = BPM;
+Tone.Transport.bpm.value = config.BPM;
 
 var drumloop = new Tone.Loop(function(time) {
 
@@ -283,11 +284,11 @@ var drumloop = new Tone.Loop(function(time) {
         time
     );
 
-    guitarPlayerAccoustic.playGuitar(
-        sequence_part.guitar[step][0].chord.flatMap(x => getNote(x)),
-        sequence_part.guitar_lengths[step].flatMap(x => getLength(x)),
-        time
-    );
+    // guitarPlayerAccoustic.playGuitar(
+    //     sequence_part.guitar[step][0].chord.flatMap(x => getNote(x)),
+    //     sequence_part.guitar_lengths[step].flatMap(x => getLength(x)),
+    //     time
+    // );
 
     guitarPlayerLead.playGuitar(
         sequence_part.guitar_melody[step].flatMap(x => getNote(x)),
@@ -295,11 +296,11 @@ var drumloop = new Tone.Loop(function(time) {
         time
     );
 
-    bassPlayer.playBass(
-        sequence_part.guitar_melody[step].flatMap(x => getNote(x - 12)),
-        sequence_part.guitar_melody_lengths[step].flatMap(x => getLength(x)),
-        time
-    );
+    // bassPlayer.playBass(
+    //     sequence_part.guitar_melody[step].flatMap(x => getNote(x)),
+    //     sequence_part.guitar_melody_lengths[step].flatMap(x => getLength(x)),
+    //     time
+    // );
     
     drum.kit.triggerAttackRelease(
         sequence_part.drums[step].flatMap(x => getDrum(x)),
@@ -315,6 +316,7 @@ var drumloop = new Tone.Loop(function(time) {
             polytree.base_pattern.generate_guitar();
             polytree.base_pattern.generate_melody();
             polytree.base_pattern.generate_rhythm();
+            polytree.base_pattern.generate_tremolo();
             polytree.base_pattern.generate_lengths();
             explosion_probability = 0;
             config.explode_at = 2 + (Math.random() * 16);
