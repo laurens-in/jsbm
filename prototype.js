@@ -113,13 +113,15 @@ function getLength(length){
 
 
 // defining instruments
-let drum = new Drum(0.7);
-let guitarSamplerLeft = new GuitarSampler(0.7, 1, -0.9);
+let drum = new Drum(0.5);
+let guitarSamplerLeft = new GuitarSampler(0.25, 1, -0.9);
 let guitarPlayerLeft = new GuitarPlayer(guitarSamplerLeft);
-let guitarSamplerRight = new GuitarSampler(0.7, 1, 0.9);
+let guitarSamplerRight = new GuitarSampler(0.25, 1, 0.9);
 let guitarPlayerRight = new GuitarPlayer(guitarSamplerRight, 3);
-let guitarSamplerLead = new GuitarSampler(0.8, 1, -0.2);
+let guitarSamplerLead = new GuitarSampler(0.5, 0.5, -0.2);
 let guitarPlayerLead = new GuitarPlayer(guitarSamplerLead, 4);
+let acousticSampler = new GuitarSampler(8, 0, 0.2, "./assets/samples/GuitarAcoustic/")
+let guitarPlayerAccoustic = new GuitarPlayer(acousticSampler);
 let bassSampler = new BassSampler(1, 0.25, 0);
 let bassPlayer = new BassPlayer(bassSampler);
 
@@ -276,6 +278,12 @@ var drumloop = new Tone.Loop(function(time) {
     );
 
     guitarPlayerRight.playGuitar(
+        sequence_part.guitar[step].flatMap(x => getNote(x)),
+        sequence_part.guitar_lengths[step].flatMap(x => getLength(x)),
+        time
+    );
+
+    guitarPlayerAccoustic.playGuitar(
         sequence_part.guitar[step].flatMap(x => getNote(x)),
         sequence_part.guitar_lengths[step].flatMap(x => getLength(x)),
         time
