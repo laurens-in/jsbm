@@ -13,9 +13,9 @@ class GuitarPlayer {
         if (note == this.playingNote) {
             this.guitarIndex += 1;
         }
-        let currentCount = this.guitarIndex % 8;
+        let currentCount = this.guitarIndex % 5;
 
-        switch (Math.floor(Math.random() * 8)) {
+        switch (Math.floor(Math.random() * 5)) {
             case 0:
                 this.sampler.guitar1.triggerAttackRelease(note, length, time, velocity);
                 break;
