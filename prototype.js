@@ -7,11 +7,11 @@ const config = {
     // when to create a new tree
     explode_at: 10,
     // speed
-    BPM: 100,
+    BPM: 170,
     // length of the initial pattern
-    base_pattern_length: 8,
+    base_pattern_length: 4,
     // how many root notes in inital guitar pattern
-    base_root_notes: 6,
+    base_root_notes: 1,
     // chord range
     chord_range: [0, 3],
 
@@ -230,13 +230,13 @@ function initialize_drum(length){
 
 function initialize_guitar(length, root_notes){
     let notes = [];
-    let root_note_counter = 0;
-    notes[0] = [Math.floor((Math.random() * 12) + 38)];
+    let root_note_counter = 1;
+    notes[0] = [Math.floor((Math.random() * 12) + 36)];
     for(let i = 1; i < length; i++){
         notes[i] = [];
     }
-    while (root_note_counter < root_notes){
-        notes[(Math.floor(Math.random() * length - 1) + 1)] = [Math.floor((Math.random() * 12) + 38)];
+    while (root_note_counter <= root_notes){
+        notes[(Math.floor(Math.random() * length - 1) + 1)] = [Math.floor((Math.random() * 12) + 36)];
         root_note_counter += 1;
     }
     let result = notes.flatMap((e) => [e, [],[],[]]);
@@ -272,11 +272,11 @@ function straight_beat(length){
 
 // defining samplers & players
 let drum = new Drum(0.6);
-let guitarSamplerLeft = new GuitarSampler(0.4, 1, -0.9);
+let guitarSamplerLeft = new GuitarSampler(0.4, 0.8, -1);
 let guitarPlayerLeft = new GuitarPlayer(guitarSamplerLeft);
-let guitarSamplerRight = new GuitarSampler(0.4, 1, 0.9);
+let guitarSamplerRight = new GuitarSampler(0.4, 0.8, 1);
 let guitarPlayerRight = new GuitarPlayer(guitarSamplerRight, 3);
-let guitarSamplerLead = new GuitarSampler(0.4, 1, -0.2);
+let guitarSamplerLead = new GuitarSampler(0.5, 0.8, -0.2);
 let guitarPlayerLead = new GuitarPlayer(guitarSamplerLead, 4);
 let acousticSampler = new GuitarSampler(4, 0, 0.2, "./assets/samples/GuitarAcoustic/")
 let guitarPlayerAccoustic = new GuitarPlayer(acousticSampler);
@@ -332,7 +332,7 @@ Tone.Transport.bpm.value = config.BPM;
 // define variables for counting through patterns
 let patterncount = 0;
 let stepcount = 0;
-const s_len = 32;
+const s_len = config.base_pattern_length * 4;
 let explosion_probability = 0;
 
 // define the sequencer and its player functions

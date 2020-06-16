@@ -94,7 +94,7 @@ class PolyphoneSequence {
     generate_melody() {
         const base_chord = [0, 7, 12, 15];
         let melody = [[]];
-        let melody_pattern = [0, 6, 5, 2, 4, 5];
+        let melody_pattern = [0, 6, 5, 0, 5, 6];
         let melody_index = 0;
         let selected_chord_set = base_chord;
         let last_change = 0;
@@ -103,7 +103,7 @@ class PolyphoneSequence {
         this.guitar.forEach((chord_set, i) => {
             if (chord_set.length > 0) {
                 // use the same chord as rhythm guitar --> arpeggiate or create a new set from 3 chords
-                if (Math.random() < 0.5) {
+                if (Math.random() < 0.2) {
                     selected_chord_set = chord_set[0].chord
                 } else {
                     let melody_barre = make_chords(chord_set[0].chord[0], 'barre');
@@ -268,7 +268,7 @@ class PolyphoneSequence {
 
         const bd_add = 0.4;
         const bd_remove = 0.2;
-        const sd_add = 0.3; 
+        const sd_add = 0.5; 
         const sd_remove = 0.2; 
         const hh_add = 0.2; 
         const hh_remove = 0.2; 
