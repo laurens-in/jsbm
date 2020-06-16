@@ -13,7 +13,15 @@ const config = {
     // chord range
     chord_range: [0, 3],
 
+    rhythm_guitar: true,
+    melody_guitar: true,
+    bass: true,
+    drums: true,
+
 }
+
+function change_configs(){};
+function update_configs(){};
 
 // array to generate blast beat
 const blast_beat_array = [
@@ -340,7 +348,7 @@ var sequencer = new Tone.Loop(function(time) {
             time
         );
     }
-    
+
     bassPlayer.playBass(
         sequence_part.guitar_melody[step].flatMap(x => getNoteName(x - 24)),
         sequence_part.guitar_melody_lengths[step].flatMap(x => getLength(x)),
