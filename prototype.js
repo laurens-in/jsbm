@@ -10,6 +10,8 @@ const config = {
     BPM: 100,
     // length of the initial pattern
     base_pattern_length: 8,
+    // how many root notes in inital guitar pattern
+    base_root_notes: 6,
     // chord range
     chord_range: [0, 3],
 
@@ -226,6 +228,23 @@ function initialize_drum(length){
     }
 }
 
+function initialize_guitar(length, root_notes){
+    let notes = [];
+    let root_note_counter = 0;
+    notes[0] = [Math.floor((Math.random() * 12) + 38)];
+    for(let i = 1; i < length; i++){
+        notes[i] = [];
+    }
+    while (root_note_counter < root_notes){
+        notes[(Math.floor(Math.random() * length - 1) + 1)] = [Math.floor((Math.random() * 12) + 38)];
+        root_note_counter += 1;
+    }
+    let result = notes.flatMap((e) => [e, [],[],[]]);
+    console.log(result)
+    return result;
+
+}
+
 // generate a blast beat
 function blast_beat(length) {
     let beat = [];
@@ -252,12 +271,12 @@ function straight_beat(length){
 }
 
 // defining samplers & players
-let drum = new Drum(0.5);
-let guitarSamplerLeft = new GuitarSampler(0.5, 1, -0.9);
+let drum = new Drum(0.6);
+let guitarSamplerLeft = new GuitarSampler(0.4, 1, -0.9);
 let guitarPlayerLeft = new GuitarPlayer(guitarSamplerLeft);
-let guitarSamplerRight = new GuitarSampler(0.5, 1, 0.9);
+let guitarSamplerRight = new GuitarSampler(0.4, 1, 0.9);
 let guitarPlayerRight = new GuitarPlayer(guitarSamplerRight, 3);
-let guitarSamplerLead = new GuitarSampler(0.5, 1, -0.2);
+let guitarSamplerLead = new GuitarSampler(0.4, 1, -0.2);
 let guitarPlayerLead = new GuitarPlayer(guitarSamplerLead, 4);
 let acousticSampler = new GuitarSampler(4, 0, 0.2, "./assets/samples/GuitarAcoustic/")
 let guitarPlayerAccoustic = new GuitarPlayer(acousticSampler);
@@ -297,10 +316,11 @@ function straight_beat(length){
 }
 
 // instantiate polytree object and apply first permutations
-let polytree = new Pattern(new PolyphoneSequence(initialize_drum(8)));
+let polytree = new Pattern(new PolyphoneSequence(initialize_drum(config.base_pattern_length), initialize_guitar(config.base_pattern_length, config.base_root_notes)));
 polytree.base_pattern.generate_guitar();
 polytree.base_pattern.generate_melody();
 polytree.base_pattern.generate_rhythm();
+polytree.base_pattern.generate_bass();
 //polytree.base_pattern.generate_tremolo();
 polytree.base_pattern.generate_lengths();
 let sequence_part = polytree.next();
@@ -350,8 +370,8 @@ var sequencer = new Tone.Loop(function(time) {
     }
 
     bassPlayer.playBass(
-        sequence_part.guitar_melody[step].flatMap(x => getNoteName(x - 24)),
-        sequence_part.guitar_melody_lengths[step].flatMap(x => getLength(x)),
+        sequence_part.bass[step].flatMap(x => getNoteName(x)),
+        sequence_part.bass_lengths[step].flatMap(x => getLength(x)),
         time
     );
     
@@ -367,10 +387,11 @@ var sequencer = new Tone.Loop(function(time) {
     if (stepcount%polytree.base_pattern.drums.length == 0) {
 
         if (explosion_probability > config.explode_at) {
-            polytree = new Pattern(new PolyphoneSequence(initialize_drum(8)));
+            polytree = new Pattern(new PolyphoneSequence(initialize_drum(config.base_pattern_length), initialize_guitar(config.base_pattern_length, config.base_root_notes)));
             polytree.base_pattern.generate_guitar();
             polytree.base_pattern.generate_melody();
             polytree.base_pattern.generate_rhythm();
+            polytree.base_pattern.generate_bass();
             polytree.base_pattern.generate_tremolo();
             polytree.base_pattern.generate_lengths();
             explosion_probability = 0;
