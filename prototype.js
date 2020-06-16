@@ -1,15 +1,70 @@
-// utility functions
+// arrays & objects
 
-function getRandomInt(max) {
-    return Math.floor(Math.random() * Math.floor(max));
-  }
+// config object, holds all parameters
+const config = {
+    // how to progress in the tree, 'linear' = follow one branch, 'random' = alternate between branches
+    traverse_mode: 'linear',
+    // when to create a new tree
+    explode_at: 10,
+    // speed
+    BPM: 100,
+    // length of the initial pattern
+    base_pattern_length: 8,
+    // chord range
+    chord_range: [0, 3],
 
-
-function randomNote(min, max) {
-    return noteMap.get((Math.floor(Math.random() * Math.floor(max)) + min));
 }
 
+// array to generate blast beat
+const blast_beat_array = [
+    [
+        [0,2],
+        [1]
+    ],
+    [
+        [1,2],
+        [0]
+    ]
+]
+
+// array to generate straight beat
+const straight_beat_array = [
+    [
+        [0, 2],
+        [2],
+        [2],
+        [2],
+        [2],
+        [2],
+        [2],
+        [2],
+    ],
+    [
+        [1, 2],
+        [2],
+        [2],
+        [2],
+        [2],
+        [2],
+        [2],
+        [2], 
+    ]
+];
+
+// array of midi numbers with their corresponding note names
 let noteArray = [
+    [12, "C0"], 
+    [13, "C#0"], 
+    [14, "D0"], 
+    [15, "D#0"], 
+    [16, "E0"], 
+    [17, "F0"], 
+    [18, "F#0"], 
+    [19, "G0"], 
+    [20, "G#0"], 
+    [21, "A0" ], 
+    [22, "A#0"], 
+    [23, "B0"], 
     [24, "C1"], 
     [25, "C#1"], 
     [26, "D1"], 
@@ -73,92 +128,7 @@ let noteArray = [
 
 ];
 
-let noteMap = new Map(noteArray);
-
-function mergeArrays(...arrays) {
-    let jointArray = []
-
-    arrays.forEach(array => {
-        jointArray = [...jointArray, ...array]
-    });
-    let numbers = [...new Set([...jointArray])];
-    numbers.sort(function(a, b) {
-        return a - b;
-    });
-    return numbers; 
-}
-
-// kick = 0, snare = 1, closed hihat = 2, open hihat = 3,
-function getDrum(note){
-    if (note == 0){
-        return randomNote(24, 12);
-    }
-    else if (note == 1){
-        return randomNote(36, 12);
-    }
-    else if (note == 2){
-        return randomNote(48, 12);
-    }
-}
-
-function getNote(note){
-    return noteMap.get(note);
-}
-
-let BPM = 100;
-function getLength(length){
-    let base_length = (60 / config.BPM) / 4;
-    return length * base_length;
-}
-
-
-// defining instruments
-let drum = new Drum(0.5);
-let guitarSamplerLeft = new GuitarSampler(0.25, 1, -0.9);
-let guitarPlayerLeft = new GuitarPlayer(guitarSamplerLeft);
-let guitarSamplerRight = new GuitarSampler(0.25, 1, 0.9);
-let guitarPlayerRight = new GuitarPlayer(guitarSamplerRight, 3);
-let guitarSamplerLead = new GuitarSampler(0.5, 0.5, -0.2);
-let guitarPlayerLead = new GuitarPlayer(guitarSamplerLead, 4);
-let acousticSampler = new GuitarSampler(4, 0, 0.2, "./assets/samples/GuitarAcoustic/")
-let guitarPlayerAccoustic = new GuitarPlayer(acousticSampler);
-let bassSampler = new BassSampler(1.5, 0.25, 0);
-let bassPlayer = new BassPlayer(bassSampler);
-
-const drumfast = [
-    [
-        [0,2],
-        [1]
-    ],
-    [
-        [1,2],
-        [0]
-    ]
-]
-
-const drumslow = [
-    [
-        [0, 2],
-        [2],
-        [2],
-        [2],
-        [2],
-        [2],
-        [2],
-        [2],
-    ],
-    [
-        [1, 2],
-        [2],
-        [2],
-        [2],
-        [2],
-        [2],
-        [2],
-        [2], 
-    ]
-];
-
+// object containing all chord shapes with their type
 const chord_templates = Array(
     { type: 'power', shape: [0, 7] },
     { type: 'dyad', shape: [0, 8] },
@@ -176,8 +146,46 @@ const chord_templates = Array(
     { type: 'barre', shape: [0, 7, 12, 14, 17, 24] }
 );
 
-const note = 24;
+// utility functions
 
+// get a random integer
+function getRandomInt(max) {
+    return Math.floor(Math.random() * Math.floor(max));
+  }
+
+// get a random integer in a certain range (used for choosing drum notes)
+function randomNote(min, max) {
+    return noteMap.get((Math.floor(Math.random() * Math.floor(max)) + min));
+}
+
+// create a map of noteArray
+let noteMap = new Map(noteArray);
+
+// convert drum numbers to note names
+function getDrumNoteName(note){
+    if (note == 0){
+        return randomNote(24, 12);
+    }
+    else if (note == 1){
+        return randomNote(36, 12);
+    }
+    else if (note == 2){
+        return randomNote(48, 12);
+    }
+}
+
+// convert midi numbers to note names
+function getNoteName(note){
+    return noteMap.get(note);
+}
+
+// convert raltive length values into seconds
+function getLength(length){
+    let base_length = (60 / config.BPM) / 4;
+    return length * base_length;
+}
+
+// generate a chord from a root note and type
 function make_chords(note, type) {
     // template can contain multiple chords of a type
     const template = chord_templates.filter(t => t.type === type);
@@ -187,77 +195,101 @@ function make_chords(note, type) {
     return chords;
 }
 
-// 1. generate sequence of notes
-const notes = [24, 35, 48, 23, 25];
+// merge arrays, used to create scales from different chords
+function mergeArrays(...arrays) {
+    let jointArray = []
 
-let generated_chords = notes.map(note => make_chords(note, Math.random() > 0.5 ? 'power' : 'barre'))
-
-generated_chords.filter(c => c.type === 'power');
-// or
-generated_chords.filter(c => c.type === 'barre');
-
-function getChord(note){
-    let random = Math.floor(Math.random()* chords.length)
-    return chords[random].map(x => (x + note))
+    arrays.forEach(array => {
+        jointArray = [...jointArray, ...array]
+    });
+    let numbers = [...new Set([...jointArray])];
+    numbers.sort(function(a, b) {
+        return a - b;
+    });
+    return numbers; 
 }
 
-function firstDrum(length){
+// function for generating initial drum beat
+function initialize_drum(length){
     if (Math.random() < 0.7){
-        return slowDrum(length)
+        return straight_beat(length)
     } else {
-        return fastDrum(length * 4)
+        return blast_beat(length * 4)
     }
 }
 
-function fastDrum(length) {
+// generate a blast beat
+function blast_beat(length) {
     let beat = [];
     let style = Math.floor(Math.random() * 2)
     for(let i = 0; i < length; i++){
-        beat[i] = drumfast[style][i%2];
+        beat[i] = blast_beat_array[style][i%2];
     }
     return beat;
 }
 
-function slowDrum(length){
+// generate a straight beat
+function straight_beat(length){
     const length1 = Math.ceil(length/2);
     const length2 = length - length1;
     let beat = [];
     for(let x = 0; x < length1; x++){
-        beat.push(drumslow[0][x]);
+        beat.push(straight_beat_array[0][x]);
     }
     for (let y = 0; y < length2; y++){
-        beat.push(drumslow[1][y])
+        beat.push(straight_beat_array[1][y])
     }
     let result = beat.flatMap((e) => [e, [],[],[]]);
     return result;
 }
 
-// let tree = new Pattern(slowDrum(8));
+// defining samplers & players
+let drum = new Drum(0.5);
+let guitarSamplerLeft = new GuitarSampler(0.25, 1, -0.9);
+let guitarPlayerLeft = new GuitarPlayer(guitarSamplerLeft);
+let guitarSamplerRight = new GuitarSampler(0.25, 1, 0.9);
+let guitarPlayerRight = new GuitarPlayer(guitarSamplerRight, 3);
+let guitarSamplerLead = new GuitarSampler(0.3, 1, -0.2);
+let guitarPlayerLead = new GuitarPlayer(guitarSamplerLead, 4);
+let acousticSampler = new GuitarSampler(4, 0, 0.2, "./assets/samples/GuitarAcoustic/")
+let guitarPlayerAccoustic = new GuitarPlayer(acousticSampler);
+let bassSampler = new BassSampler(1.5, 0.25, 0);
+let bassPlayer = new BassPlayer(bassSampler);
 
-// tree.permute()
-
-// console.log('first iteration looks like this: ');
-// console.dir(tree);
-
-
-// console.log('second iteration looks like this: ');
-// tree.pattern_1.permute();
-// console.dir(tree);
-
-// ---------------- redefine patterns as instance of PolyphoneSequence
-
-const config = {
-    traverse_mode: 'linear',
-    explode_at: 10,
-    BPM: 100
+// function for generating initial drum beat
+function initialize_drum(length){
+    if (Math.random() < 0.7){
+        return straight_beat(length)
+    } else {
+        return blast_beat(length * 4)
+    }
 }
 
-let patterncount = 0;
-let stepcount = 0;
-const s_len = 32;
-let explosion_probability = 0;
+function blast_beat(length) {
+    let beat = [];
+    let style = Math.floor(Math.random() * 2)
+    for(let i = 0; i < length; i++){
+        beat[i] = blast_beat_array[style][i%2];
+    }
+    return beat;
+}
 
-let polytree = new Pattern(new PolyphoneSequence(firstDrum(8)));
+function straight_beat(length){
+    const length1 = Math.ceil(length/2);
+    const length2 = length - length1;
+    let beat = [];
+    for(let x = 0; x < length1; x++){
+        beat.push(straight_beat_array[0][x]);
+    }
+    for (let y = 0; y < length2; y++){
+        beat.push(straight_beat_array[1][y])
+    }
+    let result = beat.flatMap((e) => [e, [],[],[]]);
+    return result;
+}
+
+// instantiate polytree object and apply first permutations
+let polytree = new Pattern(new PolyphoneSequence(initialize_drum(8)));
 polytree.base_pattern.generate_guitar();
 polytree.base_pattern.generate_melody();
 polytree.base_pattern.generate_rhythm();
@@ -265,54 +297,66 @@ polytree.base_pattern.generate_rhythm();
 polytree.base_pattern.generate_lengths();
 let sequence_part = polytree.next();
 
+// start Tone.Transport and set tempo
 Tone.Transport.start();
 Tone.Transport.bpm.value = config.BPM;
 
-var drumloop = new Tone.Loop(function(time) {
+// define variables for counting through patterns
+let patterncount = 0;
+let stepcount = 0;
+const s_len = 32;
+let explosion_probability = 0;
 
+// define the sequencer and its player functions
+var sequencer = new Tone.Loop(function(time) {
+
+    // current step
     const step = stepcount%s_len;
 
+    // player functions for all instruments
     guitarPlayerLeft.playGuitar(
-        sequence_part.guitar[step][0].chord.flatMap(x => getNote(x)),
+        sequence_part.guitar[step][0].chord.flatMap(x => getNoteName(x)),
         sequence_part.guitar_lengths[step].flatMap(x => getLength(x)),
         time
     );
 
     guitarPlayerRight.playGuitar(
-        sequence_part.guitar[step][0].chord.flatMap(x => getNote(x)),
+        sequence_part.guitar[step][0].chord.flatMap(x => getNoteName(x)),
         sequence_part.guitar_lengths[step].flatMap(x => getLength(x)),
         time
     );
 
     // guitarPlayerAccoustic.playGuitar(
-    //     sequence_part.guitar[step][0].chord.flatMap(x => getNote(x)),
+    //     sequence_part.guitar[step][0].chord.flatMap(x => getNoteName(x)),
     //     sequence_part.guitar_lengths[step].flatMap(x => getLength(x)),
     //     time
     // );
 
-    // guitarPlayerLead.playGuitar(
-    //     sequence_part.guitar_melody[step].flatMap(x => getNote(x)),
-    //     sequence_part.guitar_melody_lengths[step].flatMap(x => getLength(x)),
-    //     time
-    // );
+    guitarPlayerLead.playGuitar(
+        sequence_part.guitar_melody[step].flatMap(x => getNoteName(x)),
+        sequence_part.guitar_melody_lengths[step].flatMap(x => getLength(x)),
+        time
+    );
 
     bassPlayer.playBass(
-        sequence_part.guitar_melody[step].flatMap(x => getNote(x - 12)),
+        sequence_part.guitar_melody[step].flatMap(x => getNoteName(x - 24)),
         sequence_part.guitar_melody_lengths[step].flatMap(x => getLength(x)),
         time
     );
     
     drum.kit.triggerAttackRelease(
-        sequence_part.drums[step].flatMap(x => getDrum(x)),
+        sequence_part.drums[step].flatMap(x => getDrumNoteName(x)),
         '1n', time
     );
 
+    // increase step
     stepcount++;
 
+    // functions that get called at the end of a sequence_part
     if (stepcount%polytree.base_pattern.drums.length == 0) {
 
         if (explosion_probability > config.explode_at) {
-            polytree = new Pattern(new PolyphoneSequence(firstDrum(8)));
+            polytree = new Pattern(new PolyphoneSequence(initialize_drum(8)));
             polytree.base_pattern.generate_guitar();
             polytree.base_pattern.generate_melody();
             polytree.base_pattern.generate_rhythm();

@@ -10,9 +10,6 @@ class GuitarSampler {
     guitar3;
     guitar4;
     guitar5;
-    guitar6;
-    guitar7;
-    guitar8;
 
     constructor(volume, distortion, panning, baseurl = "./assets/samples/Guitar/") {
         this.dist = new Tone.Distortion(distortion);

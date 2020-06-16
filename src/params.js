@@ -12,9 +12,6 @@ complexity // between 0 and 1
 
 BPM // between 70 and maybe 175
 
-? tree_depth
-? tree_duration
-? cross // go vertically or horizontally through tree?
 
 base_pattern_length // shorter when tempo slow, can be longer when tempo high, even with low complexity, odd with high complexity
 blast_beat // 1 or 0, can influence other stuff

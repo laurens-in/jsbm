@@ -1,5 +1,6 @@
 class Drum {
 
+    gain;
     kit;
 
     constructor(volume) {
