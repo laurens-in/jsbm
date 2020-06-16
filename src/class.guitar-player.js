@@ -35,18 +35,7 @@ class GuitarPlayer {
             case 4:
                 this.sampler.guitar5.triggerAttackRelease(note, length, time, velocity);
                 break;
-            
-            case 5:
-                this.sampler.guitar6.triggerAttackRelease(note, length, time, velocity);
-                break;
-            
-            case 6:
-                this.sampler.guitar7.triggerAttackRelease(note, length, time, velocity);
-                break;
 
-            case 7:
-                this.sampler.guitar8.triggerAttackRelease(note, length, time, velocity);
-                break;
         }
         this.playingNote = note;
     };

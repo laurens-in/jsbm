@@ -249,7 +249,7 @@ function slowDrum(length){
 const config = {
     traverse_mode: 'linear',
     explode_at: 10,
-    BPM: 140
+    BPM: 100
 }
 
 let patterncount = 0;
@@ -261,7 +261,7 @@ let polytree = new Pattern(new PolyphoneSequence(firstDrum(8)));
 polytree.base_pattern.generate_guitar();
 polytree.base_pattern.generate_melody();
 polytree.base_pattern.generate_rhythm();
-polytree.base_pattern.generate_tremolo();
+//polytree.base_pattern.generate_tremolo();
 polytree.base_pattern.generate_lengths();
 let sequence_part = polytree.next();
 
@@ -290,17 +290,17 @@ var drumloop = new Tone.Loop(function(time) {
     //     time
     // );
 
-    guitarPlayerLead.playGuitar(
-        sequence_part.guitar_melody[step].flatMap(x => getNote(x)),
-        sequence_part.guitar_melody_lengths[step].flatMap(x => getLength(x)),
-        time
-    );
-
-    // bassPlayer.playBass(
+    // guitarPlayerLead.playGuitar(
     //     sequence_part.guitar_melody[step].flatMap(x => getNote(x)),
     //     sequence_part.guitar_melody_lengths[step].flatMap(x => getLength(x)),
     //     time
     // );
+
+    bassPlayer.playBass(
+        sequence_part.guitar_melody[step].flatMap(x => getNote(x - 12)),
+        sequence_part.guitar_melody_lengths[step].flatMap(x => getLength(x)),
+        time
+    );
     
     drum.kit.triggerAttackRelease(
         sequence_part.drums[step].flatMap(x => getDrum(x)),
