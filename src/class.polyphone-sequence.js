@@ -40,7 +40,7 @@ class PolyphoneSequence {
     // harmonize guitar root note pattern
     generate_guitar() {
         // 1. generate base pattern
-        let base_pattern = [[46], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], []];
+        let base_pattern = [[42], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], []];
         
         // 2. harmonize base pattern
         let chords = base_pattern.map(function mapper(root_note) {
@@ -112,12 +112,7 @@ class PolyphoneSequence {
         let which_melody = Math.random();
         this.guitar.forEach((chord_set, i) => {
             if (chord_set.length > 0) {
-                // there is a new set of chords
-                // select one of the chords in the chord set
-                //selected_chord_set = chord_set[Math.floor(Math.random() * chord_set.length)];
-                
-                //use the same chord as rhythm guitar --> arpeggiate
-                
+                // use the same chord as rhythm guitar --> arpeggiate or create a new set from 3 chords
                 if (Math.random() < 0.5) {
                     selected_chord_set = chord_set[0].chord
                 } else {
@@ -127,8 +122,6 @@ class PolyphoneSequence {
                 }
 
             }
-            // use the chords from a previous selection
-            // TODO: think about adding Tone.js Notes including length and dynamics instead if MIDI note numbers
 
             if (which_melody < 0.5) {
                 if (i % 6 == 0 && Math.random() < 0.9) {
@@ -170,8 +163,6 @@ class PolyphoneSequence {
 
         })
         this.guitar_melody = melody;
-        // or
-        // this.guitar_melody = melody_pattern;
     }
 
     generate_tremolo() {
@@ -198,11 +189,12 @@ class PolyphoneSequence {
                 rhythm_last_index = i;
                 rhythm_length_counter = 1;
                 this.guitar_lengths[rhythm_last_index] = [rhythm_length_counter];
+                this.guitar[i] = this.guitar[i][0].chord
             } else {
                 rhythm_length_counter += 1;
                 this.guitar_lengths[rhythm_last_index] = [rhythm_length_counter];
                 this.guitar_lengths[i] = [];
-                this.guitar[i] = [{chord: []}];
+                this.guitar[i] = [];
             }
         });
         this.guitar_melody.forEach((chord_set, i) => {
@@ -338,7 +330,7 @@ class PolyphoneSequence {
         //next.generate_bass();
         next.permuteDrum();
         next.generate_rhythm();
-        //next.generate_tremolo();
+        next.generate_tremolo();
         next.generate_lengths();
         return next;
     }

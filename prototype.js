@@ -245,11 +245,11 @@ function straight_beat(length){
 
 // defining samplers & players
 let drum = new Drum(0.5);
-let guitarSamplerLeft = new GuitarSampler(0.25, 1, -0.9);
+let guitarSamplerLeft = new GuitarSampler(0.5, 1, -0.9);
 let guitarPlayerLeft = new GuitarPlayer(guitarSamplerLeft);
-let guitarSamplerRight = new GuitarSampler(0.25, 1, 0.9);
+let guitarSamplerRight = new GuitarSampler(0.5, 1, 0.9);
 let guitarPlayerRight = new GuitarPlayer(guitarSamplerRight, 3);
-let guitarSamplerLead = new GuitarSampler(0.3, 1, -0.2);
+let guitarSamplerLead = new GuitarSampler(0.5, 1, -0.2);
 let guitarPlayerLead = new GuitarPlayer(guitarSamplerLead, 4);
 let acousticSampler = new GuitarSampler(4, 0, 0.2, "./assets/samples/GuitarAcoustic/")
 let guitarPlayerAccoustic = new GuitarPlayer(acousticSampler);
@@ -315,13 +315,15 @@ var sequencer = new Tone.Loop(function(time) {
 
     // player functions for all instruments
     guitarPlayerLeft.playGuitar(
-        sequence_part.guitar[step][0].chord.flatMap(x => getNoteName(x)),
+        //sequence_part.guitar[step][0].chord.flatMap(x => getNoteName(x)),
+        sequence_part.guitar[step].flatMap(x => getNoteName(x)),
         sequence_part.guitar_lengths[step].flatMap(x => getLength(x)),
         time
     );
 
     guitarPlayerRight.playGuitar(
-        sequence_part.guitar[step][0].chord.flatMap(x => getNoteName(x)),
+        //sequence_part.guitar[step][0].chord.flatMap(x => getNoteName(x)),
+        sequence_part.guitar[step].flatMap(x => getNoteName(x)),
         sequence_part.guitar_lengths[step].flatMap(x => getLength(x)),
         time
     );
@@ -331,13 +333,14 @@ var sequencer = new Tone.Loop(function(time) {
     //     sequence_part.guitar_lengths[step].flatMap(x => getLength(x)),
     //     time
     // );
-
-    guitarPlayerLead.playGuitar(
-        sequence_part.guitar_melody[step].flatMap(x => getNoteName(x)),
-        sequence_part.guitar_melody_lengths[step].flatMap(x => getLength(x)),
-        time
-    );
-
+    if (true){
+        guitarPlayerLead.playGuitar(
+            sequence_part.guitar_melody[step].flatMap(x => getNoteName(x)),
+            sequence_part.guitar_melody_lengths[step].flatMap(x => getLength(x)),
+            time
+        );
+    }
+    
     bassPlayer.playBass(
         sequence_part.guitar_melody[step].flatMap(x => getNoteName(x - 24)),
         sequence_part.guitar_melody_lengths[step].flatMap(x => getLength(x)),
