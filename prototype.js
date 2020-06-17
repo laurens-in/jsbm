@@ -135,9 +135,9 @@ function change_configs(){
         //set instrument values
         guitarSamplerLead.volume.gain.value = 1.5;
         guitarSamplerLead.dist.distortion = 0;
-        guitarSamplerLeft.volume.gain.value = 1.5;
+        guitarSamplerLeft.volume.gain.value = 1.2;
         guitarSamplerLeft.dist.distortion = 0;
-        guitarSamplerRight.volume.gain.value = 1.5;
+        guitarSamplerRight.volume.gain.value = 1.2;
         guitarSamplerRight.dist.distortion = 0;
     }
 
