@@ -26,6 +26,7 @@ const config = {
 
     rhythm_tremolo: false,
     melody_tremolo: false,
+    bass_offset: 0,
 
     length_multi: 2,
 
@@ -123,6 +124,7 @@ function change_configs(){
         if (config.drums = true){
             Math.random() < 0.5 ? config.make_toms = true : config.make_toms = false;
             config.bass = true;
+            config.make_toms? config.bass_offset = 12 : config.bass_offset = 0;
             //decide if rhythm guitar
             Math.random() < 0.6 ? config.rhythm_guitar = true : config.rhythm_guitar = false;
             config.melody_guitar = true;
@@ -486,7 +488,7 @@ var sequencer = new Tone.Loop(function(time) {
 
     if (config.bass){
         bassPlayer.playBass(
-            sequence_part.bass[step].flatMap(x => getNoteName(x)),
+            sequence_part.bass[step].flatMap(x => getNoteName(x + config.bass_offset)),
             sequence_part.bass_lengths[step].flatMap(x => getLength(x)),
             time
         );
