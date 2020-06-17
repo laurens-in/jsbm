@@ -1,7 +1,10 @@
 const DRUMTYPES = {
     BD: 0,
     SD: 1,
-    HH: 2
+    HH: 2,
+    RD: 3,
+    CC: 4,
+    TM: 5
 }
 
 class PolyphoneSequence {
@@ -268,19 +271,21 @@ class PolyphoneSequence {
 
 
 
-    permuteDrum() {
+    permute_drum() {
 
         const bd_add = 0.4; // param drum_level0_bd_add
         const bd_remove = 0.5; // param drum_level0_bd_remove
         const sd_add = 0.5; // pram drum_level0_sd_add
         const sd_remove = 0.5; //param drum level0_sd_remove
+        const cc_add = 0.1; //param drum level0_cc_add careful!
 
         for (const step of this.drums.keys()) {
-            if (step % 8 == 0) {
+            if (step % 8 == 0) { // param drum level0_stepsize --> bigger 4
                 (Math.random() < bd_remove)? this.remove_instr(step, DRUMTYPES.BD) : undefined;
                 (Math.random() < bd_add)? this.add_instr(step, DRUMTYPES.BD) : undefined;
                 (Math.random() < sd_remove)? this.remove_instr(step, DRUMTYPES.SD) : undefined;
                 (Math.random() < sd_add)? this.add_instr(step, DRUMTYPES.SD) : undefined;
+                (Math.random() < cc_add)? this.add_instr(step, DRUMTYPES.CC) : undefined;
             }
         }
 
@@ -298,6 +303,16 @@ class PolyphoneSequence {
                 }
             }
         }
+
+        if (Math.random() < 1) { // drum_level0_doubletime_prob
+            for (const step of this.drums.keys()) {
+                if (step % 2 == 0) {
+                    this.add_instr(step, DRUMTYPES.HH)
+                }
+            }
+        }
+
+
 
         let randomIndex = Math.floor(Math.random() * this.drums.length)
 
@@ -318,6 +333,12 @@ class PolyphoneSequence {
         if (randomIndex % 4 == 0){
             //first level (downbeat)
             // if hihat make crash
+            if (this.drums[randomIndex].includes(DRUMTYPES.HH) || this.drums[randomIndex].includes(DRUMTYPES.RD)){
+                this.remove_instr(randomIndex, DRUMTYPES.HH);
+                this.remove_instr(randomIndex, DRUMTYPES.RD);
+                this.add_instr(randomIndex, DRUMTYPES.CC);
+                console.log('crash');
+            }
             // if bassdrum add bassdrum 2 before or 2 after
             // if snare add bassdrum 2 before or 2 after
             if (this.drums[randomIndex].includes(DRUMTYPES.BD) || this.drums[randomIndex].includes(DRUMTYPES.SD)){
@@ -328,12 +349,20 @@ class PolyphoneSequence {
                     this.add_instr(randomIndex + 2, DRUMTYPES.BD)
                 }
             }
-            // add cymbal 2 before or 2 after
-            if (this.drums[randomIndex].includes(2)){
+            // add hihat 2 before or 2 after
+            if (this.drums[randomIndex].includes(DRUMTYPES.HH)){
                 if (Math.random() < 0.6){
                     this.add_instr(randomIndex - 2, DRUMTYPES.HH)
                 } else {
                     this.add_instr(randomIndex - 2, DRUMTYPES.HH)
+                }
+            }
+
+            if (this.drums[randomIndex].includes(DRUMTYPES.RD)){
+                if (Math.random() < 0.6){
+                    this.add_instr(randomIndex - 2, DRUMTYPES.RD)
+                } else {
+                    this.add_instr(randomIndex - 2, DRUMTYPES.RD)
                 }
             }
 
@@ -342,27 +371,49 @@ class PolyphoneSequence {
             // if bassdrum add bassdrum 1 after
             // if snare add bassdrum 1 after
             if (this.drums[randomIndex].includes(0) || this.drums[randomIndex].includes(1)){
-                this.drums[this.mod((randomIndex+1),this.drums.length)].push(DRUMTYPES.BD);
-                this.drums[this.mod((randomIndex+1),this.drums.length)] = [... new Set(this.drums[this.mod((randomIndex+1),this.drums.length)])];
+                this.add_instr(randomIndex+1, DRUMTYPES.BD);
             }
             // if cymbal add cymbal 1 before or 1 after
-            if (this.drums[randomIndex].includes(2)){
-                this.drums[this.mod((randomIndex+1),this.drums.length)].push(DRUMTYPES.BD);
-                this.drums[this.mod((randomIndex+1),this.drums.length)] = [... new Set(this.drums[this.mod((randomIndex+1),this.drums.length)])];
+            if (this.drums[randomIndex].includes(DRUMTYPES.HH)){
+                this.add_instr(randomIndex+1, DRUMTYPES.HH);
+            }
+
+            if (this.drums[randomIndex].includes(DRUMTYPES.RD)){
+                this.add_instr(randomIndex+1, DRUMTYPES.RD);
+            }
+
+            if (this.drums.length == 0){
+                this.add_instr(randomIndex, DRUMTYPES.HH);
             }
 
         } else {
             //third level
             // if cymbal add cymbal +/- 1
+            if (this.drums.length == 0 && Math.random() < 0.4){
+                this.add_instr(randomIndex, DRUMTYPES.HH);
+            }
 
         }
 
-        if (Math.random() < 1) { // param prob_make_toms
+        if (config.make_ride) { // param prob_make_ride
             for (const step of this.drums.keys()) {
-                if (this.drums[step].length > 0) {
-                    console.log('hi ',step)
+                if (this.drums[step].includes(2)) {
+                    this.remove_instr(step, DRUMTYPES.HH)
+                    this.add_instr(step, DRUMTYPES.RD)
                 }
 
+            }
+        }
+
+        if (config.make_toms) { // param prob_make_toms
+            for (const step of this.drums.keys()) {
+                if (this.drums[step].length > 0) {
+                    this.drums[step] = [DRUMTYPES.TM];
+                }
+            }
+        } else {
+            for (const step of this.drums.keys()) {
+                this.remove_instr(step, DRUMTYPES.TM)
             }
         }
     }
@@ -372,7 +423,7 @@ class PolyphoneSequence {
         next.generate_guitar();
         next.generate_melody();
         //next.generate_bass();
-        next.permuteDrum();
+        next.permute_drum();
         next.generate_rhythm();
         next.generate_bass();
         //next.generate_tremolo();
