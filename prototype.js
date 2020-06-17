@@ -22,7 +22,12 @@ const config = {
 
     distortion: true,
 
+    length_multi: 2,
+
     guitar_rhythm_prob: 0.4,
+
+    make_ride: true,
+    make_toms: true,
 
 
 
@@ -128,7 +133,7 @@ let noteArray = [
     [68, "G#4"],
     [69, "A4"],
     [70, "A#4"],
-    [71, "B5"],
+    [71, "B4"],
     [72, "C5"],
     [73, "C#5"],
     [74, "D5"],
@@ -140,7 +145,31 @@ let noteArray = [
     [80, "G#5"],
     [81, "A5"],
     [82, "A#5"],
-    [83, "B5"]
+    [83, "B5"],
+    [84, "C6"],
+    [85, "C#6"],
+    [86, "D6"],
+    [87, "D#6"],
+    [88, "E6"],
+    [89, "F6"],
+    [90, "F#6"],
+    [91, "G6"],
+    [92, "G#6"],
+    [93, "A6"],
+    [94, "A#6"],
+    [95, "B6"],
+    [96, "C7"],
+    [97, "C#7"],
+    [98, "D7"],
+    [99, "D#7"],
+    [100, "E7"],
+    [101, "F7"],
+    [102, "F#7"],
+    [103, "G7"],
+    [104, "G#7"],
+    [105, "A7"],
+    [106, "A#7"],
+    [107, "B7"]
 
 ];
 
@@ -188,6 +217,18 @@ function getDrumNoteName(note){
     else if (note == 2){
         return randomNote(48, 12);
     }
+    else if (note == 3){
+        return randomNote(60, 12);
+    }
+    else if (note == 4){
+        return randomNote(72, 12);
+    }
+    else if (note == 5){
+        return randomNote(84, 12);
+    }
+    else if (note == 6){
+        return randomNote(96, 12);
+    }
 }
 
 // convert midi numbers to note names
@@ -196,9 +237,9 @@ function getNoteName(note){
 }
 
 // convert raltive length values into seconds
-function getLength(length){
+function getLength(length, multi = 1){
     let base_length = (60 / config.BPM) / 4;
-    return length * base_length;
+    return length * base_length * multi;
 }
 
 // generate a chord from a root note and type
@@ -284,8 +325,6 @@ let guitarSamplerRight = new GuitarSampler(0.4, 0.8, 1);
 let guitarPlayerRight = new GuitarPlayer(guitarSamplerRight, 3);
 let guitarSamplerLead = new GuitarSampler(0.5, 0.8, -0.2);
 let guitarPlayerLead = new GuitarPlayer(guitarSamplerLead, 4);
-let acousticSampler = new GuitarSampler(4, 0, 0.2, "./assets/samples/GuitarAcoustic/")
-let guitarPlayerAccoustic = new GuitarPlayer(acousticSampler);
 let bassSampler = new BassSampler(1.5, 0.25, 0);
 let bassPlayer = new BassPlayer(bassSampler);
 
@@ -325,6 +364,7 @@ function straight_beat(length){
 let polytree = new Pattern(new PolyphoneSequence(initialize_drum(config.base_pattern_length), initialize_guitar(config.base_pattern_length, config.base_root_notes)));
 polytree.base_pattern.generate_guitar();
 polytree.base_pattern.generate_melody();
+polytree.base_pattern.permute_drum();
 polytree.base_pattern.generate_rhythm();
 polytree.base_pattern.generate_bass();
 //polytree.base_pattern.generate_tremolo();
@@ -348,43 +388,44 @@ var sequencer = new Tone.Loop(function(time) {
     const step = stepcount%s_len;
 
     // player functions for all instruments
-    guitarPlayerLeft.playGuitar(
-        //sequence_part.guitar[step][0].chord.flatMap(x => getNoteName(x)),
-        sequence_part.guitar[step].flatMap(x => getNoteName(x)),
-        sequence_part.guitar_lengths[step].flatMap(x => getLength(x)),
-        time
-    );
+    if (config.rhythm_guitar){
+        guitarPlayerLeft.playGuitar(
+            //sequence_part.guitar[step][0].chord.flatMap(x => getNoteName(x)),
+            sequence_part.guitar[step].flatMap(x => getNoteName(x)),
+            sequence_part.guitar_lengths[step].flatMap(x => getLength(x)),
+            time
+        );
 
-    guitarPlayerRight.playGuitar(
-        //sequence_part.guitar[step][0].chord.flatMap(x => getNoteName(x)),
-        sequence_part.guitar[step].flatMap(x => getNoteName(x)),
-        sequence_part.guitar_lengths[step].flatMap(x => getLength(x)),
-        time
-    );
-
-    // guitarPlayerAccoustic.playGuitar(
-    //     sequence_part.guitar[step][0].chord.flatMap(x => getNoteName(x)),
-    //     sequence_part.guitar_lengths[step].flatMap(x => getLength(x)),
-    //     time
-    // );
-    if (true){
-        guitarPlayerLead.playGuitar(
-            sequence_part.guitar_melody[step].flatMap(x => getNoteName(x)),
-            sequence_part.guitar_melody_lengths[step].flatMap(x => getLength(x)),
+        guitarPlayerRight.playGuitar(
+            //sequence_part.guitar[step][0].chord.flatMap(x => getNoteName(x)),
+            sequence_part.guitar[step].flatMap(x => getNoteName(x)),
+            sequence_part.guitar_lengths[step].flatMap(x => getLength(x)),
             time
         );
     }
 
-    bassPlayer.playBass(
-        sequence_part.bass[step].flatMap(x => getNoteName(x)),
-        sequence_part.bass_lengths[step].flatMap(x => getLength(x)),
-        time
-    );
+    if (config.melody_guitar){
+        guitarPlayerLead.playGuitar(
+            sequence_part.guitar_melody[step].flatMap(x => getNoteName(x)),
+            sequence_part.guitar_melody_lengths[step].flatMap(x => getLength(x, config.length_multi)),
+            time
+        );
+    }
+
+    if (config.bass){
+        bassPlayer.playBass(
+            sequence_part.bass[step].flatMap(x => getNoteName(x)),
+            sequence_part.bass_lengths[step].flatMap(x => getLength(x)),
+            time
+        );
+    }
     
-    drum.kit.triggerAttackRelease(
-        sequence_part.drums[step].flatMap(x => getDrumNoteName(x)),
-        '1n', time
-    );
+    if (config.drums){
+        drum.kit.triggerAttackRelease(
+            sequence_part.drums[step].flatMap(x => getDrumNoteName(x)),
+            '1n', time
+        );
+    }
 
     // increase step
     stepcount++;
@@ -396,6 +437,7 @@ var sequencer = new Tone.Loop(function(time) {
             polytree = new Pattern(new PolyphoneSequence(initialize_drum(config.base_pattern_length), initialize_guitar(config.base_pattern_length, config.base_root_notes)));
             polytree.base_pattern.generate_guitar();
             polytree.base_pattern.generate_melody();
+            polytree.base_pattern.permute_drum();
             polytree.base_pattern.generate_rhythm();
             polytree.base_pattern.generate_bass();
             polytree.base_pattern.generate_tremolo();
