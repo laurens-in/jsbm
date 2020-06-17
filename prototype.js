@@ -7,9 +7,11 @@ const config = {
     // when to create a new tree
     explode_at: 10,
     // speed
-    BPM: 80,
+    BPM: 120,
+    // make blast beat?
+    blast_beat: false,
     // length of the initial pattern
-    base_pattern_length: 4,
+    base_pattern_length: 6,
     // how many root notes in inital guitar pattern
     base_root_notes: 1,
     // chord range
@@ -27,14 +29,108 @@ const config = {
     guitar_rhythm_prob: 0.4,
 
     make_ride: true,
-    make_toms: true,
+    make_toms: false,
 
 
 
 }
 
-function change_configs(){};
-function update_configs(){};
+function change_configs(){
+    //change BPM
+    config.BPM = Math.floor(Math.random() * 90) + 80;
+    Tone.Transport.bpm.value = config.BPM;
+
+    //decide if blast beat
+    if (config.BPM > 130){
+        Math.random() < 0.5 ? config.blast_beat = true : config.blast_beat = false;
+    } else {
+        config.blast_beat = false;
+    }
+
+    //decide traverse mode
+    if (config.BPM > 130){
+        Math.random() < 0.5 ? config.traverse_mode = 'random' : config.traverse_mode = 'linear'
+    } else {
+        Math.random() < 0.35 ? config.traverse_mode = 'random' : config.traverse_mode = 'linear'
+    }
+
+    //decide length
+    if (config.BPM > 130){
+        config.base_pattern_length = Math.floor(Math.random() * 5) + 11;
+    } else {
+        config.base_pattern_length = Math.floor(Math.random() * 7) + 3;
+    }
+
+    //set explode
+    if (config.BPM > 130){
+        config.traverse_mode == 'random' ? config.explode_at = Math.floor(Math.random() * 4) + 4 : config.explode_at = Math.floor(Math.random() * 12) + 5;
+    } else {
+        config.traverse_mode == 'random' ? config.explode_at = Math.floor(Math.random() * 2) + 4 : config.explode_at = Math.floor(Math.random() * 10) + 5;
+    }
+
+    //set chord range
+    config.chord_range[0] = Math.floor(Math.random() * 4)
+    if (config.chord_range[0] == 0){
+        config.chord_range[1] = Math.floor(Math.random() * 4);
+    } else if (config.chord_range[0] == 1){
+        config.chord_range[1] = 2;
+    } else if (config.chord_range[0] == 2){
+        config.chord_range[1] = Math.floor(Math.random() * 2) + 2;
+    } else if (config.chord_range[0] == 3) {
+        config.chord_range[1] = 3;
+    }
+
+    //decide how many root notes
+    config.base_root_notes = Math.floor(Math.random() * (config.base_root_notes / 2)) + 1;
+
+    //decide if distortion
+    if (!config.blast_beat && Math.random() < 0.4){
+        config.distortion = false;
+    } else {
+        config.distortion = true;
+    }
+
+    //choose which instruments to play
+    if (config.distortion){
+        config.bass = true;
+        config.drums = true;
+        //reset toms
+        config.make_toms = false;
+        //decide if ride or hihat
+        Math.random() < 0.5 ? config.make_ride = true : config.make_ride = false;
+        config.rhythm_guitar = true;
+        //decide if guitar melody
+        Math.random() < 0.65 ? config.melody_guitar = true : config.melody_guitar = false;
+
+        //set instrument values
+        guitarSamplerLead.volume.gain.value = 0.5;
+        guitarSamplerLead.dist.distortion = 0.8;
+        guitarSamplerLeft.volume.gain.value = 0.4;
+        guitarSamplerLeft.dist.distortion = 0.8;
+        guitarSamplerRight.volume.gain.value = 0.4;
+        guitarSamplerRight.dist.distortion = 0.8;
+
+    } else {
+        Math.random() < 0.5? config.drums = true : config.drums = false;
+        if (config.drums = true){
+            Math.random() < 0.5 ? config.make_toms = true : config.make_toms = false;
+            config.bass = true;
+            //decide if rhythm guitar
+            Math.random() < 0.6 ? config.rhythm_guitar = true : config.rhythm_guitar = false;
+            config.melody_guitar = true;
+        }
+
+        //set instrument values
+        guitarSamplerLead.volume.gain.value = 1.2;
+        guitarSamplerLead.dist.distortion = 0;
+        guitarSamplerLeft.volume.gain.value = 0.9;
+        guitarSamplerLeft.dist.distortion = 0;
+        guitarSamplerRight.volume.gain.value = 0.9;
+        guitarSamplerRight.dist.distortion = 0;
+    }
+
+    //continue...
+};
 
 // array to generate blast beat
 const blast_beat_array = [
@@ -268,26 +364,25 @@ function mergeArrays(...arrays) {
 
 // function for generating initial drum beat
 function initialize_drum(length){
-    if (Math.random() < 0.7){
-        return straight_beat(length)
-    } else {
+    if (config.blast_beat){
         return blast_beat(length * 4)
+    } else {
+        return straight_beat(length)
     }
 }
 
 function initialize_guitar(length, root_notes){
     let notes = [];
     let root_note_counter = 1;
-    notes[0] = [Math.floor((Math.random() * 12) + 38)];
+    notes[0] = [Math.floor((Math.random() * 12) + 40)];
     for(let i = 1; i < length; i++){
         notes[i] = [];
     }
     while (root_note_counter < root_notes){
-        notes[(Math.floor(Math.random() * length - 1) + 1)] = [Math.floor((Math.random() * 12) + 38)];
+        notes[(Math.floor(Math.random() * length - 1) + 1)] = [Math.floor((Math.random() * 12) + 40)];
         root_note_counter += 1;
     }
     let result = notes.flatMap((e) => [e, [],[],[]]);
-    console.log(result)
     return result;
 
 }
@@ -327,41 +422,10 @@ let guitarSamplerLead = new GuitarSampler(0.5, 0.8, -0.2);
 let guitarPlayerLead = new GuitarPlayer(guitarSamplerLead, 4);
 let bassSampler = new BassSampler(1.5, 0.25, 0);
 let bassPlayer = new BassPlayer(bassSampler);
-
-// function for generating initial drum beat
-function initialize_drum(length){
-    if (Math.random() < 0.7){
-        return straight_beat(length)
-    } else {
-        return blast_beat(length * 4)
-    }
-}
-
-function blast_beat(length) {
-    let beat = [];
-    let style = Math.floor(Math.random() * 2)
-    for(let i = 0; i < length; i++){
-        beat[i] = blast_beat_array[style][i%2];
-    }
-    return beat;
-}
-
-function straight_beat(length){
-    const length1 = Math.ceil(length/2);
-    const length2 = length - length1;
-    let beat = [];
-    for(let x = 0; x < length1; x++){
-        beat.push(straight_beat_array[0][x]);
-    }
-    for (let y = 0; y < length2; y++){
-        beat.push(straight_beat_array[1][y])
-    }
-    let result = beat.flatMap((e) => [e, [],[],[]]);
-    return result;
-}
-
+change_configs();
 // instantiate polytree object and apply first permutations
 let polytree = new Pattern(new PolyphoneSequence(initialize_drum(config.base_pattern_length), initialize_guitar(config.base_pattern_length, config.base_root_notes)));
+
 polytree.base_pattern.generate_guitar();
 polytree.base_pattern.generate_melody();
 polytree.base_pattern.permute_drum();
@@ -434,6 +498,7 @@ var sequencer = new Tone.Loop(function(time) {
     if (stepcount%polytree.base_pattern.drums.length == 0) {
 
         if (explosion_probability > config.explode_at) {
+            change_configs();
             polytree = new Pattern(new PolyphoneSequence(initialize_drum(config.base_pattern_length), initialize_guitar(config.base_pattern_length, config.base_root_notes)));
             polytree.base_pattern.generate_guitar();
             polytree.base_pattern.generate_melody();
@@ -443,7 +508,6 @@ var sequencer = new Tone.Loop(function(time) {
             polytree.base_pattern.generate_tremolo();
             polytree.base_pattern.generate_lengths();
             explosion_probability = 0;
-            config.explode_at = 2 + (Math.random() * 16);
             console.log('generating new tree');
         }
         sequence_part = polytree.next();

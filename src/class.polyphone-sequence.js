@@ -44,7 +44,7 @@ class PolyphoneSequence {
             } else {
                 // choose chord type
                 const ctypes = ['power', 'dyad', 'triad', 'barre'];
-                let type = ctypes[Math.floor(Math.random() * ctypes.length)]; // param lower upper chord range
+                let type = ctypes[Math.floor(Math.random() * (config.chord_range[1] - config.chord_range[0] + 1)) + config.chord_range[0]]; // param lower upper chord range
 
                 // generate array of all chords matching the type
                 let chordtypes = make_chords(root_note, type);
@@ -67,10 +67,8 @@ class PolyphoneSequence {
             if (chord_set.length > 0) {
                 selected_chord_set = chord_set[0];
                 if (chord_set[0].type !== 'power') {
-                    console.log('not power')
                     generated_chords = make_chords(selected_chord_set.chord[0], chord_set[0].type);
                 } else {
-                    console.log('power')
                     generated_chords = make_chords(selected_chord_set.chord[0], 'dyad');
                 }
             }
@@ -187,7 +185,6 @@ class PolyphoneSequence {
                 // use the same chord as rhythm guitar --> arpeggiate or create a new set from 3 chords
                 if (Math.random() < 0.5) {
                     selected_chord_set = chord_set[0].chord.flatMap(x => x - 12);
-                    console.log(selected_chord_set);
                 } else {
                     let bass_triad = make_chords((chord_set[0].chord[0] - 12), 'triad');
                     let bass_dyad = make_chords((chord_set[0].chord[0] - 12), 'dyad');
@@ -337,7 +334,6 @@ class PolyphoneSequence {
                 this.remove_instr(randomIndex, DRUMTYPES.HH);
                 this.remove_instr(randomIndex, DRUMTYPES.RD);
                 this.add_instr(randomIndex, DRUMTYPES.CC);
-                console.log('crash');
             }
             // if bassdrum add bassdrum 2 before or 2 after
             // if snare add bassdrum 2 before or 2 after
@@ -389,9 +385,9 @@ class PolyphoneSequence {
         } else {
             //third level
             // if cymbal add cymbal +/- 1
-            if (this.drums.length == 0 && Math.random() < 0.4){
-                this.add_instr(randomIndex, DRUMTYPES.HH);
-            }
+            // if (this.drums.length == 0 && Math.random() < 0.4){
+            //     this.add_instr(randomIndex, DRUMTYPES.HH);
+            // }
 
         }
 
