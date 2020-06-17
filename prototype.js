@@ -24,6 +24,11 @@ const config = {
 
     distortion: true,
 
+    lead_gain: 0.75,
+    lead_dist: 1,
+    rhythm_gain: 0.75,
+    rhythm_dist: 1,
+
     rhythm_tremolo: false,
     melody_tremolo: false,
     bass_offset: 0,
@@ -36,7 +41,7 @@ const config = {
     make_toms: false,
 
 
-
+    update_instruments: true
 }
 
 function change_configs(){
@@ -61,15 +66,17 @@ function change_configs(){
     //decide length
     if (config.BPM > 130){
         config.base_pattern_length = Math.floor(Math.random() * 5) + 11;
+        s_len = config.base_pattern_length * 4;
     } else {
         config.base_pattern_length = Math.floor(Math.random() * 7) + 3;
+        s_len = config.base_pattern_length * 4;
     }
 
     //set explode
     if (config.BPM > 130){
-        config.traverse_mode == 'random' ? config.explode_at = Math.floor(Math.random() * 4) + 4 : config.explode_at = Math.floor(Math.random() * 12) + 5;
+        config.traverse_mode == 'random' ? config.explode_at = Math.floor(Math.random() * 2) + 2 : config.explode_at = Math.floor(Math.random() * 12) + 5;
     } else {
-        config.traverse_mode == 'random' ? config.explode_at = Math.floor(Math.random() * 2) + 4 : config.explode_at = Math.floor(Math.random() * 10) + 5;
+        config.traverse_mode == 'random' ? config.explode_at = Math.floor(Math.random() * 2) + 2 : config.explode_at = Math.floor(Math.random() * 5) + 5;
     }
 
     //set chord range
@@ -109,14 +116,21 @@ function change_configs(){
         Math.random() < 0.5 ? config.rhythm_tremolo = true : config.rhythm_tremolo = false;
         Math.random() < 0.5 ? config.melody_tremolo = true : config.melody_tremolo = false;
 
+        //reset bass_offset
+        config.bass_offset = 0;
+
 
         //set instrument values
-        guitarSamplerLead.volume.gain.value = 0.75;
-        guitarSamplerLead.dist.distortion = 1;
-        guitarSamplerLeft.volume.gain.value = 0.65;
-        guitarSamplerLeft.dist.distortion = 1;
-        guitarSamplerRight.volume.gain.value = 0.65;
-        guitarSamplerRight.dist.distortion = 1;
+        // guitarSamplerLead.volume.gain.value = 0.75;
+        // guitarSamplerLead.dist.distortion = 1;
+        // guitarSamplerLeft.volume.gain.value = 0.65;
+        // guitarSamplerLeft.dist.distortion = 1;
+        // guitarSamplerRight.volume.gain.value = 0.65;
+        // guitarSamplerRight.dist.distortion = 1;
+        config.lead_gain = 0.75;
+        config.lead_dist = 1;
+        config.rhythm_gain = 0.75;
+        config.rhythm_dist = 1;
 
     } else {
         config.rhythm_tremolo = false;
@@ -133,17 +147,38 @@ function change_configs(){
         }
 
         //set instrument values
-        guitarSamplerLead.volume.gain.value = 1.5;
-        guitarSamplerLead.dist.distortion = 0;
-        guitarSamplerLeft.volume.gain.value = 1.2;
-        guitarSamplerLeft.dist.distortion = 0;
-        guitarSamplerRight.volume.gain.value = 1.2;
-        guitarSamplerRight.dist.distortion = 0;
+        // guitarSamplerLead.volume.gain.value = 1.8;
+        // guitarSamplerLead.dist.distortion = 0;
+        // guitarSamplerLeft.volume.gain.value = 1.2;
+        // guitarSamplerLeft.dist.distortion = 0;
+        // guitarSamplerRight.volume.gain.value = 1.2;
+        // guitarSamplerRight.dist.distortion = 0;
+        config.lead_gain = 1.8;
+        config.lead_dist = 0;
+        config.rhythm_gain = 1.3;
+        config.rhythm_dist = 0;
     }
 
     //continue...
+
+    //set config.update to false
+    config.update = false;
 };
 
+function update_instruments(){
+    guitarSamplerLead.volume.gain.value = config.lead_gain;
+    guitarSamplerLead.dist.distortion = config.lead_dist;
+    guitarSamplerLeft.volume.gain.value = config.rhythm_gain;
+    guitarSamplerLeft.dist.distortion = config.rhythm_dist;
+    guitarSamplerRight.volume.gain.value = config. rhythm_gain;
+    guitarSamplerRight.dist.distortion = config.rhythm_dist;
+
+    config.update_instruments = false;
+}
+
+function restart_sequencer(){
+    sequencer.start();
+}
 // array to generate blast beat
 const blast_beat_array = [
     [
@@ -434,6 +469,8 @@ let guitarSamplerLead = new GuitarSampler(0.5, 0.8, -0.2);
 let guitarPlayerLead = new GuitarPlayer(guitarSamplerLead, 4);
 let bassSampler = new BassSampler(1.5, 0.25, 0);
 let bassPlayer = new BassPlayer(bassSampler);
+
+let s_len = config.base_pattern_length * 4;
 change_configs();
 // instantiate polytree object and apply first permutations
 let polytree = new Pattern(new PolyphoneSequence(initialize_drum(config.base_pattern_length), initialize_guitar(config.base_pattern_length, config.base_root_notes)));
@@ -454,7 +491,6 @@ Tone.Transport.bpm.value = config.BPM;
 // define variables for counting through patterns
 let patterncount = 0;
 let stepcount = 0;
-const s_len = config.base_pattern_length * 4;
 let explosion_probability = 0;
 
 // define the sequencer and its player functions
@@ -462,7 +498,13 @@ var sequencer = new Tone.Loop(function(time) {
 
     // current step
     const step = stepcount%s_len;
-
+    let is_acoustic = false;
+    let time_offset = 0;
+    
+    if (stepcount%polytree.base_pattern.drums.length == 0 && config.update_instruments){
+        update_instruments();
+    }
+    
     // player functions for all instruments
     if (config.rhythm_guitar){
         guitarPlayerLeft.playGuitar(
@@ -510,6 +552,12 @@ var sequencer = new Tone.Loop(function(time) {
     if (stepcount%polytree.base_pattern.drums.length == 0) {
 
         if (explosion_probability > config.explode_at) {
+            config.update_instruments = true
+            if (!config.distortion){
+                is_acoustic = true;
+                time_offset = getLength(1);
+
+            }
             change_configs();
             polytree = new Pattern(new PolyphoneSequence(initialize_drum(config.base_pattern_length), initialize_guitar(config.base_pattern_length, config.base_root_notes)));
             polytree.base_pattern.generate_guitar();
@@ -521,6 +569,39 @@ var sequencer = new Tone.Loop(function(time) {
             polytree.base_pattern.generate_lengths();
             explosion_probability = 0;
             console.log('generating new tree');
+            stepcount = 0;
+
+            // implement breaks between changes from acoustic to distortion and vice versa
+            if (is_acoustic && config.distortion){
+                sequencer.stop();
+                guitarPlayerLead.playGuitar(
+                    sequence_part.guitar[0].flatMap(x => getNoteName(x)), 4, time + time_offset
+                );
+                drum.kit.triggerAttackRelease(
+                    [0, 3].flatMap(x => getDrumNoteName(x)), 4, time + time_offset
+                );
+                bassPlayer.playBass(
+                    sequence_part.bass[0].flatMap(x => getNoteName(x + config.bass_offset)), 4, time + time_offset
+                );
+                setTimeout(restart_sequencer, 5000);
+            }
+
+            if (!is_acoustic && !config.distortion){
+                sequencer.stop();
+                guitarPlayerLeft.playGuitar(
+                    sequence_part.guitar[0].flatMap(x => getNoteName(x)), 4, time + time_offset
+                );
+                guitarPlayerRight.playGuitar(
+                    sequence_part.guitar[0].flatMap(x => getNoteName(x)), 4, time + time_offset
+                );
+                drum.kit.triggerAttackRelease(
+                    [0,4].flatMap(x => getDrumNoteName(x)), 4, time + time_offset
+                );
+                bassPlayer.playBass(
+                    sequence_part.bass[0].flatMap(x => getNoteName(x + config.bass_offset)), 4, time + time_offset
+                );
+                setTimeout(restart_sequencer, 5000);
+            }
         }
         sequence_part = polytree.next();
         patterncount++;

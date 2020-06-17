@@ -6,6 +6,7 @@ class Drum {
     constructor(volume) {
 
         this.gain = new Tone.Gain(volume);
+        this.eq = new Tone.EQ3(0, 0, -2);
 
         this.kit = new Tone.Sampler({
             'C1' : "Kick/Kick1.opus",
@@ -83,7 +84,7 @@ class Drum {
            
         }, () => {
         
-            this.kit.chain(this.gain, reverb, Tone.Master);
+            this.kit.chain(this.eq, this.gain, reverb, Tone.Master);
 
         }, "./assets/samples/");
     };   

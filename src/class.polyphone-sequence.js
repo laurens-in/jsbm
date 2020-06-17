@@ -418,11 +418,10 @@ class PolyphoneSequence {
         const next = new PolyphoneSequence(this.drums, this.guitar_base_pattern);
         next.generate_guitar();
         next.generate_melody();
-        //next.generate_bass();
         next.permute_drum();
         next.generate_rhythm();
         next.generate_bass();
-        //next.generate_tremolo();
+        next.generate_tremolo();
         next.generate_lengths();
         return next;
     }
