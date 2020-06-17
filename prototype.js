@@ -117,6 +117,8 @@ function change_configs(){
         guitarSamplerRight.dist.distortion = 0.8;
 
     } else {
+        config.rhythm_tremolo = false;
+        config.melody_tremolo = false;
         Math.random() < 0.5? config.drums = true : config.drums = false;
         if (config.drums = true){
             Math.random() < 0.5 ? config.make_toms = true : config.make_toms = false;
