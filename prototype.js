@@ -7,7 +7,7 @@ const config = {
     // when to create a new tree
     explode_at: 10,
     // speed
-    BPM: 170,
+    BPM: 80,
     // length of the initial pattern
     base_pattern_length: 4,
     // how many root notes in inital guitar pattern
@@ -19,6 +19,12 @@ const config = {
     melody_guitar: true,
     bass: true,
     drums: true,
+
+    distortion: true,
+
+    guitar_rhythm_prob: 0.4,
+
+
 
 }
 
@@ -231,12 +237,12 @@ function initialize_drum(length){
 function initialize_guitar(length, root_notes){
     let notes = [];
     let root_note_counter = 1;
-    notes[0] = [Math.floor((Math.random() * 12) + 36)];
+    notes[0] = [Math.floor((Math.random() * 12) + 38)];
     for(let i = 1; i < length; i++){
         notes[i] = [];
     }
-    while (root_note_counter <= root_notes){
-        notes[(Math.floor(Math.random() * length - 1) + 1)] = [Math.floor((Math.random() * 12) + 36)];
+    while (root_note_counter < root_notes){
+        notes[(Math.floor(Math.random() * length - 1) + 1)] = [Math.floor((Math.random() * 12) + 38)];
         root_note_counter += 1;
     }
     let result = notes.flatMap((e) => [e, [],[],[]]);
