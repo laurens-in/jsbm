@@ -111,12 +111,12 @@ function change_configs(){
 
 
         //set instrument values
-        guitarSamplerLead.volume.gain.value = 0.5;
-        guitarSamplerLead.dist.distortion = 0.8;
-        guitarSamplerLeft.volume.gain.value = 0.4;
-        guitarSamplerLeft.dist.distortion = 0.8;
-        guitarSamplerRight.volume.gain.value = 0.4;
-        guitarSamplerRight.dist.distortion = 0.8;
+        guitarSamplerLead.volume.gain.value = 0.65;
+        guitarSamplerLead.dist.distortion = 1;
+        guitarSamplerLeft.volume.gain.value = 0.5;
+        guitarSamplerLeft.dist.distortion = 1;
+        guitarSamplerRight.volume.gain.value = 0.5;
+        guitarSamplerRight.dist.distortion = 1;
 
     } else {
         config.rhythm_tremolo = false;
@@ -133,11 +133,11 @@ function change_configs(){
         }
 
         //set instrument values
-        guitarSamplerLead.volume.gain.value = 1.2;
+        guitarSamplerLead.volume.gain.value = 3;
         guitarSamplerLead.dist.distortion = 0;
-        guitarSamplerLeft.volume.gain.value = 0.9;
+        guitarSamplerLeft.volume.gain.value = 3;
         guitarSamplerLeft.dist.distortion = 0;
-        guitarSamplerRight.volume.gain.value = 0.9;
+        guitarSamplerRight.volume.gain.value = 3;
         guitarSamplerRight.dist.distortion = 0;
     }
 

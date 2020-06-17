@@ -17,7 +17,7 @@ class GuitarSampler {
         this.guitarOut = new Tone.Gain(1);
         this.volume = new Tone.Gain(volume);
         this.pan = new Tone.Panner(panning);
-        this.guitarOut.chain(this.dist, this.doubledist, this.volume, this.pan, reverb, Tone.Master);
+        this.guitarOut.chain(this.dist, this.volume, this.pan, reverb, Tone.Master);
 
         this.guitar1 = new Tone.Sampler({
             'D2' : "guitar_-_10.opus"
