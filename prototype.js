@@ -24,6 +24,9 @@ const config = {
 
     distortion: true,
 
+    rhythm_tremolo: false,
+    melody_tremolo: false,
+
     length_multi: 2,
 
     guitar_rhythm_prob: 0.4,
@@ -101,6 +104,9 @@ function change_configs(){
         config.rhythm_guitar = true;
         //decide if guitar melody
         Math.random() < 0.65 ? config.melody_guitar = true : config.melody_guitar = false;
+        Math.random() < 0.5 ? config.rhythm_tremolo = true : config.rhythm_tremolo = false;
+        Math.random() < 0.5 ? config.melody_tremolo = true : config.melody_tremolo = false;
+
 
         //set instrument values
         guitarSamplerLead.volume.gain.value = 0.5;

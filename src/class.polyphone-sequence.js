@@ -159,7 +159,7 @@ class PolyphoneSequence {
     }
 
     generate_tremolo() {
-        if (Math.random() < 1) { // param rhythm_tremolo_prob
+        if (config.rhythm_tremolo) { // param rhythm_tremolo_prob
             this.guitar.forEach((chord_set, i) => {
                 if (this.guitar[i].length == 0 && i > 0) {
                     this.guitar[i] = this.guitar[i - 1];
@@ -167,7 +167,7 @@ class PolyphoneSequence {
             })
         }
 
-        if (Math.random() < 1) { // param melody_tremolo_prob
+        if (config.melody_tremolo) { // param melody_tremolo_prob
             this.guitar_melody.forEach((chord_set, i) => {
                 if (this.guitar_melody[i].length == 0 && i > 0) {
                     this.guitar_melody[i] = this.guitar_melody[i - 1];
