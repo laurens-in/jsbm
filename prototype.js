@@ -111,11 +111,11 @@ function change_configs(){
 
 
         //set instrument values
-        guitarSamplerLead.volume.gain.value = 0.65;
+        guitarSamplerLead.volume.gain.value = 0.75;
         guitarSamplerLead.dist.distortion = 1;
-        guitarSamplerLeft.volume.gain.value = 0.5;
+        guitarSamplerLeft.volume.gain.value = 0.65;
         guitarSamplerLeft.dist.distortion = 1;
-        guitarSamplerRight.volume.gain.value = 0.5;
+        guitarSamplerRight.volume.gain.value = 0.65;
         guitarSamplerRight.dist.distortion = 1;
 
     } else {
@@ -133,11 +133,11 @@ function change_configs(){
         }
 
         //set instrument values
-        guitarSamplerLead.volume.gain.value = 3;
+        guitarSamplerLead.volume.gain.value = 1.5;
         guitarSamplerLead.dist.distortion = 0;
-        guitarSamplerLeft.volume.gain.value = 3;
+        guitarSamplerLeft.volume.gain.value = 1.5;
         guitarSamplerLeft.dist.distortion = 0;
-        guitarSamplerRight.volume.gain.value = 3;
+        guitarSamplerRight.volume.gain.value = 1.5;
         guitarSamplerRight.dist.distortion = 0;
     }
 
