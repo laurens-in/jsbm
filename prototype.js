@@ -96,6 +96,7 @@ function change_configs(){
 
     //choose which instruments to play
     if (config.distortion){
+        reverb.wet.value = 0.4;
         config.bass = true;
         config.drums = true;
         //reset toms
@@ -125,6 +126,7 @@ function change_configs(){
             Math.random() < 0.5 ? config.make_toms = true : config.make_toms = false;
             config.bass = true;
             config.make_toms? config.bass_offset = 12 : config.bass_offset = 0;
+            config.make_toms? reverb.wet.value = 0.3 : reverb.wet.value = 0.5;
             //decide if rhythm guitar
             Math.random() < 0.6 ? config.rhythm_guitar = true : config.rhythm_guitar = false;
             config.melody_guitar = true;
