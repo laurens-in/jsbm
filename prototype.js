@@ -124,7 +124,7 @@ function change_configs(){
 
     //choose which instruments to play
     if (config.distortion){
-        reverb.wet.value = 0.4;
+        reverb.wet.value = 0.3;
         config.bass = true;
         config.drums = true;
         config.rhythm_guitar = true;
@@ -146,9 +146,9 @@ function change_configs(){
 
 
         //set instrument values
-        config.lead_gain = 0.75;
+        config.lead_gain = 0.7;
         config.lead_dist = 1;
-        config.rhythm_gain = 0.75;
+        config.rhythm_gain = 0.65;
         config.rhythm_dist = 1;
 
     } else {
@@ -159,7 +159,7 @@ function change_configs(){
             Math.random() < 0.5 ? config.make_toms = true : config.make_toms = false;
             config.bass = true;
             config.make_toms? config.bass_offset = 12 : config.bass_offset = 0;
-            config.make_toms? reverb.wet.value = 0.3 : reverb.wet.value = 0.5;
+            config.make_toms? reverb.wet.value = 0.2 : reverb.wet.value = 0.4;
             //decide if rhythm guitar
             Math.random() < 0.6 ? config.rhythm_guitar = true : config.rhythm_guitar = false;
             config.melody_guitar = true;
@@ -380,7 +380,7 @@ const melody_patterns = [
     [0, 1, 2, 3, 4, 5, 6],
     [6, 5, 4, 3, 2, 1, 0],
     [0, 3, 6, 3],
-    [0, 6, 0, 5, 0, 4, 0, 3, 0, 2]
+    [0, 6, 0, 5, 0, 4, 0, 3, 0, 2],
     [0, 3, 0, 4, 2, 1]
 ]
 //utility functions
@@ -549,6 +549,10 @@ var sequencer = new Tone.Loop(function(time) {
     const step = stepcount%s_len;
     let is_acoustic = false;
     let time_offset = 0;
+    let has_rhythm_guitar = false;
+    let has_melody_guitar = false;
+    let has_bass = false;
+    let has_drums = false;
     
     if (stepcount%polytree.base_pattern.drums.length == 0 && config.update_instruments){
         update_instruments();
@@ -605,8 +609,15 @@ var sequencer = new Tone.Loop(function(time) {
             if (!config.distortion){
                 is_acoustic = true;
                 time_offset = getLength(1);
-
             }
+
+            config.rhythm_guitar ? has_rhythm_guitar = true : has_rhythm_guitar = false;
+            config.melody_guitar ? has_melody_guitar = true : has_melody_guitar = false;
+            config.drums ? has_drums = true : has_drums = false;
+            config.bass ? has_bass = true : has_bass = false;
+
+
+
             change_configs();
             polytree = new Pattern(new PolyphoneSequence(initialize_drum(config.base_pattern_length), initialize_guitar(config.base_pattern_length, config.base_root_notes)));
             polytree.base_pattern.generate_guitar();
@@ -623,32 +634,65 @@ var sequencer = new Tone.Loop(function(time) {
             //implement breaks between changes from acoustic to distortion and vice versa
             if (is_acoustic && config.distortion){
                 sequencer.stop();
-                guitarPlayerLead.playGuitar(
-                    sequence_part.guitar[0].flatMap(x => getNoteName(x)), 4, time + time_offset
-                );
-                drum.kit.triggerAttackRelease(
-                    [0, 3].flatMap(x => getDrumNoteName(x)), 4, time + time_offset
-                );
-                bassPlayer.playBass(
-                    sequence_part.bass[0].flatMap(x => getNoteName(x + config.bass_offset)), 4, time + time_offset
-                );
+                if (has_rhythm_guitar){
+                    guitarPlayerLeft.playGuitar(
+                        sequence_part.guitar[0].flatMap(x => getNoteName(x)), 4, time + time_offset
+                    );
+                    guitarPlayerRight.playGuitar(
+                        sequence_part.guitar[0].flatMap(x => getNoteName(x)), 4, time + time_offset
+                    );
+                }
+
+                if (has_melody_guitar){
+                    guitarPlayerLead.playGuitar(
+                        sequence_part.guitar_melody[0].flatMap(x => getNoteName(x)), 4, time + time_offset
+                    );
+                }
+
+                if (has_drums){
+                    drum.kit.triggerAttackRelease(
+                        [0, 3].flatMap(x => getDrumNoteName(x)), 4, time + time_offset
+                    );
+                }
+                
+                if (has_bass){
+                    bassPlayer.playBass(
+                        sequence_part.bass[0].flatMap(x => getNoteName(x + config.bass_offset)), 4, time + time_offset
+                    );
+                }
                 setTimeout(restart_sequencer, 5000);
             }
 
             if (!is_acoustic && !config.distortion){
                 sequencer.stop();
-                guitarPlayerLeft.playGuitar(
-                    sequence_part.guitar[0].flatMap(x => getNoteName(x)), 4, time + time_offset
-                );
-                guitarPlayerRight.playGuitar(
-                    sequence_part.guitar[0].flatMap(x => getNoteName(x)), 4, time + time_offset
-                );
-                drum.kit.triggerAttackRelease(
-                    [0,4].flatMap(x => getDrumNoteName(x)), 4, time + time_offset
-                );
-                bassPlayer.playBass(
-                    sequence_part.bass[0].flatMap(x => getNoteName(x + config.bass_offset)), 4, time + time_offset
-                );
+
+                if (has_rhythm_guitar){
+                    guitarPlayerLeft.playGuitar(
+                        sequence_part.guitar[0].flatMap(x => getNoteName(x)), 4, time + time_offset
+                    );
+                    guitarPlayerRight.playGuitar(
+                        sequence_part.guitar[0].flatMap(x => getNoteName(x)), 4, time + time_offset
+                    );
+                }
+
+                if (has_melody_guitar){
+                    guitarPlayerLead.playGuitar(
+                        sequence_part.guitar_melody[0].flatMap(x => getNoteName(x)), 4, time + time_offset
+                    );
+                }
+
+                if (has_drums){
+                    drum.kit.triggerAttackRelease(
+                        [0, 4].flatMap(x => getDrumNoteName(x)), 4, time + time_offset
+                    );
+                }
+
+                if (has_bass){
+                    bassPlayer.playBass(
+                        sequence_part.bass[0].flatMap(x => getNoteName(x + config.bass_offset)), 4, time + time_offset
+                    );
+                }
+
                 setTimeout(restart_sequencer, 5000);
             }
         }
