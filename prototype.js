@@ -1,20 +1,20 @@
-// arrays & objects
+//arrays & objects
 
-// config object, holds all parameters
+//config object, holds all parameters
 const config = {
-    // how to progress in the tree, 'linear' = follow one branch, 'random' = alternate between branches
+    //how to progress in the tree, 'linear' = follow one branch, 'random' = alternate between branches
     traverse_mode: 'linear',
-    // when to create a new tree
+    //when to create a new tree
     explode_at: 10,
-    // speed
+    //speed
     BPM: 120,
-    // make blast beat?
+    //make blast beat?
     blast_beat: false,
-    // length of the initial pattern
+    //length of the initial pattern
     base_pattern_length: 6,
-    // how many root notes in inital guitar pattern
+    //how many root notes in inital guitar pattern
     base_root_notes: 1,
-    // chord range
+    //chord range
     chord_range: [0, 3],
 
     rhythm_guitar: true,
@@ -31,12 +31,33 @@ const config = {
 
     rhythm_tremolo: false,
     melody_tremolo: false,
+    
+    
+    guitar_rhythm_prob: 0.5,
+    guitar_rhythm_min_gap: 4,
+    guitar_chord_repetition: 0.2,
+    
+    melody_pattern: [0, 6, 5, 0, 5, 6],
+    melody1_prob: 0.9,
+    melody1_level1_step: 9,
+    melody1_level2_step: 5,
+    melody1_level3_step: 3,
+    melody2_prob: 0.4,
+    melody2_min_gap: 4,
+    length_multi: 2,
+    
+    bass_prob: 0.7,
     bass_offset: 0,
 
-    length_multi: 2,
-
-    guitar_rhythm_prob: 0.4,
-
+    bd_add: 0.3,
+    bd_remove: 0.8,
+    sd_add: 0.3,
+    sd_remove: 0.8,
+    cc_add: 0.1,
+    drum_level0_step: 1,
+    drum_doublebass_prob: 0.1,
+    drum_halftime_prob: 0.5,
+    drum_doubletime_prob: 0.5,
     make_ride: true,
     make_toms: false,
 
@@ -106,6 +127,7 @@ function change_configs(){
         reverb.wet.value = 0.4;
         config.bass = true;
         config.drums = true;
+        config.rhythm_guitar = true;
         //reset toms
         config.make_toms = false;
         //decide if ride or hihat
@@ -115,18 +137,15 @@ function change_configs(){
         Math.random() < 0.65 ? config.melody_guitar = true : config.melody_guitar = false;
         Math.random() < 0.5 ? config.rhythm_tremolo = true : config.rhythm_tremolo = false;
         Math.random() < 0.5 ? config.melody_tremolo = true : config.melody_tremolo = false;
+        if(!config.melody_guitar && Math.random() < 0.05){
+            config.rhythm_guitar = false;
+        }
 
         //reset bass_offset
         config.bass_offset = 0;
 
 
         //set instrument values
-        // guitarSamplerLead.volume.gain.value = 0.75;
-        // guitarSamplerLead.dist.distortion = 1;
-        // guitarSamplerLeft.volume.gain.value = 0.65;
-        // guitarSamplerLeft.dist.distortion = 1;
-        // guitarSamplerRight.volume.gain.value = 0.65;
-        // guitarSamplerRight.dist.distortion = 1;
         config.lead_gain = 0.75;
         config.lead_dist = 1;
         config.rhythm_gain = 0.75;
@@ -145,19 +164,40 @@ function change_configs(){
             Math.random() < 0.6 ? config.rhythm_guitar = true : config.rhythm_guitar = false;
             config.melody_guitar = true;
         }
-
         //set instrument values
-        // guitarSamplerLead.volume.gain.value = 1.8;
-        // guitarSamplerLead.dist.distortion = 0;
-        // guitarSamplerLeft.volume.gain.value = 1.2;
-        // guitarSamplerLeft.dist.distortion = 0;
-        // guitarSamplerRight.volume.gain.value = 1.2;
-        // guitarSamplerRight.dist.distortion = 0;
         config.lead_gain = 1.8;
         config.lead_dist = 0;
         config.rhythm_gain = 1.3;
         config.rhythm_dist = 0;
     }
+
+    //set rhythm values
+    config.guitar_rhythm_prob = (Math.random() * 0.5) + 0.5;
+    config.guitar_rhythm_min_gap = (Math.floor(Math.random() * 6)) + 2;
+    config.guitar_chord_repetition = Math.random();
+
+    //set melody values
+    config.melody1_prob = (Math.random() * 0.5) + 0.5;
+    config.melody1_level1_step = (Math.floor(Math.random() * 8) + 8);
+    config.melody1_level2_step = (Math.floor(Math.random() * (config.melody1_level1_step - 4)) + 4);
+    config.melody1_level3_step = (Math.floor(Math.random() * (config.melody1_level2_step - 2)) + 2);
+    config.melody2_prob = (Math.random() * 0.4) + 0.4;
+    config.melody2_min_gap = (Math.floor(Math.random() * 6)) + 2;
+    config.melody_pattern = melody_patterns[Math.floor(Math.random() * melody_patterns.length)];
+
+    //set bass values
+    config.bass_prob = (Math.random() * 0.5) + 0.3;
+
+    //set drum values
+    config.bd_add = Math.random() * 0.4;
+    config.bd_remove = Math.random() * 0.8;
+    config.sd_add = Math.random() * 0.4;
+    config.sd_remove = Math.random() * 0.6;
+    config.cc_add = Math.random() * 0.15;
+    config.drum_level0_step = Math.floor(Math.random() * (config.base_pattern_length - 1)) + 1;
+    config.drum_doublebass_prob = Math.random();
+    config.drum_doubletime_prob = Math.random();
+    config.drum_halftime_prob = Math.random();
 
     //continue...
 
@@ -179,7 +219,7 @@ function update_instruments(){
 function restart_sequencer(){
     sequencer.start();
 }
-// array to generate blast beat
+//array to generate blast beat
 const blast_beat_array = [
     [
         [0,2],
@@ -191,7 +231,7 @@ const blast_beat_array = [
     ]
 ]
 
-// array to generate straight beat
+//array to generate straight beat
 const straight_beat_array = [
     [
         [0, 2],
@@ -215,7 +255,7 @@ const straight_beat_array = [
     ]
 ];
 
-// array of midi numbers with their corresponding note names
+//array of midi numbers with their corresponding note names
 let noteArray = [
     [12, "C0"], 
     [13, "C#0"], 
@@ -316,7 +356,7 @@ let noteArray = [
 
 ];
 
-// object containing all chord shapes with their type
+//object containing all chord shapes with their type
 const chord_templates = Array(
     { type: 'power', shape: [0, 7] },
     { type: 'dyad', shape: [0, 8] },
@@ -334,22 +374,31 @@ const chord_templates = Array(
     { type: 'barre', shape: [0, 7, 12, 14, 17, 24] }
 );
 
-// utility functions
+const melody_patterns = [
+    [0, 6, 5, 0, 6, 5],
+    [0, 6, 5, 0, 5, 4],
+    [0, 1, 2, 3, 4, 5, 6],
+    [6, 5, 4, 3, 2, 1, 0],
+    [0, 3, 6, 3],
+    [0, 6, 0, 5, 0, 4, 0, 3, 0, 2]
+    [0, 3, 0, 4, 2, 1]
+]
+//utility functions
 
-// get a random integer
+//get a random integer
 function getRandomInt(max) {
     return Math.floor(Math.random() * Math.floor(max));
   }
 
-// get a random integer in a certain range (used for choosing drum notes)
+//get a random integer in a certain range (used for choosing drum notes)
 function randomNote(min, max) {
     return noteMap.get((Math.floor(Math.random() * Math.floor(max)) + min));
 }
 
-// create a map of noteArray
+//create a map of noteArray
 let noteMap = new Map(noteArray);
 
-// convert drum numbers to note names
+//convert drum numbers to note names
 function getDrumNoteName(note){
     if (note == 0){
         return randomNote(24, 12);
@@ -374,20 +423,20 @@ function getDrumNoteName(note){
     }
 }
 
-// convert midi numbers to note names
+//convert midi numbers to note names
 function getNoteName(note){
     return noteMap.get(note);
 }
 
-// convert raltive length values into seconds
+//convert raltive length values into seconds
 function getLength(length, multi = 1){
     let base_length = (60 / config.BPM) / 4;
     return length * base_length * multi;
 }
 
-// generate a chord from a root note and type
+//generate a chord from a root note and type
 function make_chords(note, type) {
-    // template can contain multiple chords of a type
+    //template can contain multiple chords of a type
     const template = chord_templates.filter(t => t.type === type);
     const chords = template.map(t => {
         return Object.assign({type: type}, {chord: t.shape.map(n => n + note)});
@@ -395,7 +444,7 @@ function make_chords(note, type) {
     return chords;
 }
 
-// merge arrays, used to create scales from different chords
+//merge arrays, used to create scales from different chords
 function mergeArrays(...arrays) {
     let jointArray = []
 
@@ -409,7 +458,7 @@ function mergeArrays(...arrays) {
     return numbers; 
 }
 
-// function for generating initial drum beat
+//function for generating initial drum beat
 function initialize_drum(length){
     if (config.blast_beat){
         return blast_beat(length * 4)
@@ -434,7 +483,7 @@ function initialize_guitar(length, root_notes){
 
 }
 
-// generate a blast beat
+//generate a blast beat
 function blast_beat(length) {
     let beat = [];
     let style = Math.floor(Math.random() * 2)
@@ -444,7 +493,7 @@ function blast_beat(length) {
     return beat;
 }
 
-// generate a straight beat
+//generate a straight beat
 function straight_beat(length){
     const length1 = Math.ceil(length/2);
     const length2 = length - length1;
@@ -459,8 +508,8 @@ function straight_beat(length){
     return result;
 }
 
-// defining samplers & players
-let drum = new Drum(0.6);
+//defining samplers & players
+let drum = new Drum(0.65);
 let guitarSamplerLeft = new GuitarSampler(0.4, 0.8, -1);
 let guitarPlayerLeft = new GuitarPlayer(guitarSamplerLeft);
 let guitarSamplerRight = new GuitarSampler(0.4, 0.8, 1);
@@ -472,7 +521,7 @@ let bassPlayer = new BassPlayer(bassSampler);
 
 let s_len = config.base_pattern_length * 4;
 change_configs();
-// instantiate polytree object and apply first permutations
+//instantiate polytree object and apply first permutations
 let polytree = new Pattern(new PolyphoneSequence(initialize_drum(config.base_pattern_length), initialize_guitar(config.base_pattern_length, config.base_root_notes)));
 
 polytree.base_pattern.generate_guitar();
@@ -480,23 +529,23 @@ polytree.base_pattern.generate_melody();
 polytree.base_pattern.permute_drum();
 polytree.base_pattern.generate_rhythm();
 polytree.base_pattern.generate_bass();
-//polytree.base_pattern.generate_tremolo();
+polytree.base_pattern.generate_tremolo();
 polytree.base_pattern.generate_lengths();
 let sequence_part = polytree.next();
 
-// start Tone.Transport and set tempo
+//start Tone.Transport and set tempo
 Tone.Transport.start();
 Tone.Transport.bpm.value = config.BPM;
 
-// define variables for counting through patterns
+//define variables for counting through patterns
 let patterncount = 0;
 let stepcount = 0;
 let explosion_probability = 0;
 
-// define the sequencer and its player functions
+//define the sequencer and its player functions
 var sequencer = new Tone.Loop(function(time) {
 
-    // current step
+    //current step
     const step = stepcount%s_len;
     let is_acoustic = false;
     let time_offset = 0;
@@ -505,7 +554,7 @@ var sequencer = new Tone.Loop(function(time) {
         update_instruments();
     }
     
-    // player functions for all instruments
+    //player functions for all instruments
     if (config.rhythm_guitar){
         guitarPlayerLeft.playGuitar(
             //sequence_part.guitar[step][0].chord.flatMap(x => getNoteName(x)),
@@ -545,13 +594,13 @@ var sequencer = new Tone.Loop(function(time) {
         );
     }
 
-    // increase step
+    //increase step
     stepcount++;
 
-    // functions that get called at the end of a sequence_part
+    //functions that get called at the end of a sequence_part
     if (stepcount%polytree.base_pattern.drums.length == 0) {
 
-        if (explosion_probability > config.explode_at) {
+        if (explosion_probability >= config.explode_at) {
             config.update_instruments = true
             if (!config.distortion){
                 is_acoustic = true;
@@ -571,7 +620,7 @@ var sequencer = new Tone.Loop(function(time) {
             console.log('generating new tree');
             stepcount = 0;
 
-            // implement breaks between changes from acoustic to distortion and vice versa
+            //implement breaks between changes from acoustic to distortion and vice versa
             if (is_acoustic && config.distortion){
                 sequencer.stop();
                 guitarPlayerLead.playGuitar(
