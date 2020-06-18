@@ -328,7 +328,7 @@ class PolyphoneSequence {
         if (randomIndex % 4 == 0){
             //first level (downbeat)
             //if hihat make crash
-            if ((this.drums[randomIndex].includes(DRUMTYPES.HH) || this.drums[randomIndex].includes(DRUMTYPES.RD)) && Math.random() < 0.5){
+            if ((this.drums[randomIndex].includes(DRUMTYPES.HH) || this.drums[randomIndex].includes(DRUMTYPES.RD)) && Math.random() < 0.2){
                 this.remove_instr(randomIndex, DRUMTYPES.HH);
                 this.remove_instr(randomIndex, DRUMTYPES.RD);
                 this.add_instr(randomIndex, DRUMTYPES.CC);
