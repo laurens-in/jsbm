@@ -1,27 +1,27 @@
 <html lang="en">
-<head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, user-scalable=no">
 
-  <title>Live Eternal</title>
-  <meta name="description" content="Generative Black Metal">
-  <meta name="author" content="Laurens Inauen">
-  <link rel="shortcut icon" type="image/png" href="favicon.png" | prepend: site.baseurl }}" >
-  <link rel="manifest" href="manifest.json">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no">
+
+    <title>Live Eternal</title>
+    <meta name="description" content="Generative Black Metal">
+    <meta name="author" content="Laurens Inauen">
+    <link rel="shortcut icon" type="image/png" href="favicon.png" | prepend: site.baseurl }}">
+    <link rel="manifest" href="manifest.json">
 
 </head>
 
 <style>
-
     @import url('https://fonts.googleapis.com/css2?family=IM+Fell+Great+Primer+SC&display=swap');
 
     body {
-        margin:0;
-        padding:0;
-                /* Location of the image */
+        margin: 0;
+        padding: 0;
+        /* Location of the image */
         background-image: url(assets/images/background.png);
         background-position: center center;
-        background-repeat: no-repeat;       
+        background-repeat: no-repeat;
         /* Background image is fixed in the viewport so that it doesn't move when 
             the content's height is greater than the image's height */
         background-attachment: fixed;
@@ -68,7 +68,8 @@
         align-items: center;
     }
 
-    .play, .pause {
+    .play,
+    .pause {
         max-height: 25vh;
         -webkit-tap-highlight-color: transparent;
         outline-width: 0;
@@ -97,25 +98,24 @@
     }
 
     #loader {
-            display: flex;
-            justify-content: center;
-            text-align: center;
-            align-items: center;
-            flex-direction: column;
-            background-color: black;
-            color: white;
-            width: 100%;
-            height: 100%;
-            position: absolute;
-            top: 0;
-            left: 0;
-        }
+        display: flex;
+        justify-content: center;
+        text-align: center;
+        align-items: center;
+        flex-direction: column;
+        background-color: black;
+        color: white;
+        width: 100%;
+        height: 100%;
+        position: absolute;
+        top: 0;
+        left: 0;
+    }
 
     .pentagram {
         max-width: 50vw;
         max-height: 50vh;
     }
-
 </style>
 
 <body id='body'>
@@ -127,19 +127,23 @@
             <h1>Generative Black Metal</h1>
         </div>
         <div id="button" style="display:none">
-            <input type="image" src="assets/images/play.png" class="play" onclick="toggle(this);"/>
+            <input type="image" src="assets/images/play.png" class="play" onclick="toggle(this);" />
         </div>
         <div class="info">
-            <a href="https://thesis.live-eternal.ch" target="_blank" rel="noopener"><img src="assets/images/info.png" class="infoimg"></a>
-            <a href="https://blacklivesmatter.com/" target="_blank" rel="noopener"><img src="assets/images/fist.png" class="infoimg"></a>
+            <a href="https://thesis.live-eternal.ch" target="_blank" rel="noopener"><img src="assets/images/info.png"
+                    class="infoimg"></a>
+            <a href="https://blacklivesmatter.com/" target="_blank" rel="noopener"><img src="assets/images/fist.png"
+                    class="infoimg"></a>
         </div>
     </main>
     <div id="loader">
         <h1>loading</h1>
-      <input type="image" src="assets/images/Pentagram.gif" class="pentagram"/>
-      <p><b>Supported Browsers</b><br> Mobile: <br> <i>Firefox Nightly, Chrome</i> <br> Desktop: <br> <i>Firefox, Chromium, Chrome</i></p>
+        <input type="image" src="assets/images/Pentagram.gif" class="pentagram" />
+        <p><b>Supported Browsers</b><br> Mobile: <br> <i>Firefox Nightly, Chrome</i> <br> Desktop: <br> <i>Firefox,
+                Chromium, Chrome</i></p>
     </div>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/tone/13.8.25/Tone.js"></script>
+    <script defer data-domain="live-eternal.ch" src="https://plausible.io/js/plausible.js"></script>
     <script src="src/reverb.js"></script>
     <script src="src/class.pattern.js"></script>
     <script src="src/class.polyphone-sequence.js"></script>
@@ -150,7 +154,7 @@
     <script src="src/class.bass-player.js"></script>
     <script src="prototype.js"></script>
     <script>
-        if(!((!(navigator.userAgent.toLowerCase().indexOf('firefox') > -1)) && (navigator.userAgent.toLowerCase().indexOf('chrome') > -1) || ((navigator.userAgent.toLowerCase().indexOf('firefox') > -1) && (!(navigator.userAgent.toLowerCase().indexOf('chrome') > -1))))){
+        if (!((!(navigator.userAgent.toLowerCase().indexOf('firefox') > -1)) && (navigator.userAgent.toLowerCase().indexOf('chrome') > -1) || ((navigator.userAgent.toLowerCase().indexOf('firefox') > -1) && (!(navigator.userAgent.toLowerCase().indexOf('chrome') > -1))))) {
             var div = document.createElement("div");
             div.style.display = "flex";
             div.style.justifyContent = "center";
@@ -160,7 +164,7 @@
             div.style.top = "0";
             div.style.left = "0";
             div.style.margin = "auto";
-            div.style.minWidth= "100%";
+            div.style.minWidth = "100%";
             div.style.minHeight = "7%";
             div.style.background = "red";
             div.style.color = "black";
@@ -172,18 +176,18 @@
 
 
 
-        function toggle(el){
-        if(el.className!="pause"){
-            el.src='assets/images/pause.png';
-            el.className="pause";
-            Tone.context.resume();
-            sequencer.start();
-        } else if(el.className=="pause"){
-            el.src='assets/images/play.png';
-            el.className="play";
-            Tone.context.suspend();
+        function toggle(el) {
+            if (el.className != "pause") {
+                el.src = 'assets/images/pause.png';
+                el.className = "pause";
+                Tone.context.resume();
+                sequencer.start();
+            } else if (el.className == "pause") {
+                el.src = 'assets/images/play.png';
+                el.className = "play";
+                Tone.context.suspend();
+            }
+            return false;
         }
-        return false;
-        }  
-        </script>
+    </script>
 </body>
